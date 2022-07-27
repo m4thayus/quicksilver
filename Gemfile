@@ -11,8 +11,11 @@ gem "sqlite3", "~> 1.4" # NOTE: Default rails minimum version requirement
 
 gem "puma", "~> 5.0" # NOTE: Default rails minimum version requirement
 
-gem "sprockets-rails"
 gem "jsbundling-rails"
+gem "slim-rails"
+gem "sprockets-rails"
+# Use Sass to process CSS
+# gem "sassc-rails"
 
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
 gem "turbo-rails"
@@ -38,9 +41,6 @@ gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
-
-# Use Sass to process CSS
-# gem "sassc-rails"
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
