@@ -16,6 +16,7 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
+/spec/examples.txt
 
 # Ignore pidfiles, but keep the directory.
 /tmp/pids/*
@@ -38,3 +39,9 @@
 !/app/assets/builds/.keep
 
 /node_modules
+
+# Ignore developer personal files
+.envrc
+.powenv
+
+/sandbox
