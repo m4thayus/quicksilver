@@ -41,6 +41,9 @@ Metrics/MethodLength:
 Naming/MethodParameterName:
   Enabled: false
 
+RSpec/LeadingSubject:
+  Enabled: false
+
 RSpec/NotToNot:
   EnforcedStyle: to_not
 

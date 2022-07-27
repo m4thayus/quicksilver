@@ -5,4 +5,15 @@ class User < ApplicationRecord
 
   validates :name, presence: true
   validates :email, presence: true, uniqueness: true
+
+  ADMINISTRATORS = %w[admin].map { |u| "#{u}@domain.me" }.freeze
+  ENGINEERS = %w[engineer].map { |u| "#{u}@domain.me" }.freeze
+
+  def admin?
+    ADMINISTRATORS.include?(email)
+  end
+
+  def engineer?
+    ENGINEERS.include?(email)
+  end
 end
