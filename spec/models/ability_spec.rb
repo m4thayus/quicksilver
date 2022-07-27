@@ -4,9 +4,13 @@ require "rails_helper"
 require "cancan/matchers"
 
 RSpec.describe Ability, type: :model do
+  subject { described_class.new(user) }
+
   let(:user) { nil }
 
-  subject { described_class.new(user) }
+  it "has serializable permissions" do
+    expect(subject.permissions).to include :can, :cannot
+  end
 
   context "when the user is a guest" do
     it { is_expected.to_not be_able_to(:read, :all) }
