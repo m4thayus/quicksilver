@@ -1,17 +1,15 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  get "users/index"
-  get "users/new"
-  get "users/create"
+  resources :users, only: %i[index new create]
 end
 
 # rubocop:disable Style/BlockComments
 =begin
                                   Prefix Verb   URI Pattern                                                                                       Controller#Action
-                             users_index GET    /users/index(.:format)                                                                            users#index
-                               users_new GET    /users/new(.:format)                                                                              users#new
-                            users_create GET    /users/create(.:format)                                                                           users#create
+                                   users GET    /users(.:format)                                                                                  users#index
+                                         POST   /users(.:format)                                                                                  users#create
+                                new_user GET    /users/new(.:format)                                                                              users#new
         turbo_recede_historical_location GET    /recede_historical_location(.:format)                                                             turbo/native/navigation#recede
         turbo_resume_historical_location GET    /resume_historical_location(.:format)                                                             turbo/native/navigation#resume
        turbo_refresh_historical_location GET    /refresh_historical_location(.:format)                                                            turbo/native/navigation#refresh
