@@ -24,4 +24,15 @@ RSpec.configure do |config|
   # config.use_transactional_fixtures = true
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!
+
+  config.before(:each, type: :request) do |example|
+    role = example.metadata[:user]
+    current_user = case role
+                   when :admin
+                     create(:admin_user)
+                   when :engineer
+                     create(:engineer_user)
+                   end
+    post "/login", params: { user: { email: current_user.email, password: current_user.password } } if current_user.present?
+  end
 end

@@ -6,7 +6,21 @@ RSpec.describe "Users", type: :request do
   describe "GET /index" do
     it "returns http success" do
       get "/users"
-      expect(response).to have_http_status(:success)
+      expect(response).to have_http_status(:found)
+    end
+
+    context "when an admin", user: :admin do
+      it "returns http success" do
+        get "/users"
+        expect(response).to have_http_status(:success)
+      end
+    end
+
+    context "when an engineer", user: :engineer do
+      it "returns http success" do
+        get "/users"
+        expect(response).to have_http_status(:success)
+      end
     end
   end
 

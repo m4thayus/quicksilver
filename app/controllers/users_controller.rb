@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
+  before_action :authorize, only: %i[index]
+
   def index
     @users = User.all
   end
@@ -17,5 +19,11 @@ class UsersController < ApplicationController
 
   def user_params
     @user_params ||= params.require(:user).permit %i[email name password password_confirmation]
+  end
+
+  def authorize
+    return if can? :read, User
+
+    redirect_to login_path
   end
 end
