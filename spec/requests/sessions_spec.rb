@@ -42,8 +42,8 @@ RSpec.describe "Sessions", type: :request do
     end
   end
 
-  describe "DELETE /logout" do
-    subject { delete "/logout" }
+  describe "GET /logout" do
+    subject { get "/logout" }
 
     let(:current_user) { create(:user) }
 
