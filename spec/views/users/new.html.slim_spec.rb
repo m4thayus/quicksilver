@@ -23,5 +23,10 @@ RSpec.describe "users/new", type: :view do
       render
       expect(rendered).to match(/input.*name="user\[password_confirmation\]"/)
     end
+
+    it "renders a submit button" do
+      render
+      expect(rendered).to match(/input.*type="submit"/)
+    end
   end
 end
