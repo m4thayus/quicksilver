@@ -2,5 +2,7 @@ h1 Users#index
 ul
   - @users.each do |user|
     li
-      = user.name
-      = user.email
+      span
+        = user.name
+      span
+        = user.email

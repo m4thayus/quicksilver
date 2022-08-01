@@ -11,13 +11,27 @@ RSpec.describe "users/index", type: :view do
     assign(:users, users)
   end
 
-  it "renders the first user" do
-    render
-    expect(rendered).to match(/#{users.first.name}/)
+  describe "the first user" do
+    it "renders the name" do
+      render
+      expect(rendered).to match(/#{users.first.name}/)
+    end
+
+    it "renders the email" do
+      render
+      expect(rendered).to match(/#{users.first.email}/)
+    end
   end
 
-  it "renders the last user" do
-    render
-    expect(rendered).to match(/#{users.last.name}/)
+  describe "the last user" do
+    it "renders the name" do
+      render
+      expect(rendered).to match(/#{users.last.name}/)
+    end
+
+    it "renders the email" do
+      render
+      expect(rendered).to match(/#{users.last.email}/)
+    end
   end
 end
