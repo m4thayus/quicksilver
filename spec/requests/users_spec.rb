@@ -18,9 +18,15 @@ RSpec.describe "Users", type: :request do
   end
 
   describe "POST /create" do
+    subject { post "/users", params: { user: attributes_for(:user) } }
+
     it "returns http success" do
-      post "/users"
-      expect(response).to have_http_status(:success)
+      subject
+      expect(response).to have_http_status(:created)
+    end
+
+    it "creates a new user" do
+      expect { subject }.to change { User.count }.by(1)
     end
   end
 end

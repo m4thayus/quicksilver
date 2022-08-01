@@ -1,2 +1,6 @@
 h1 Users#index
-p Find me in app/views/users/index.html.slim
+ul
+  - @users.each do |user|
+    li
+      = user.name
+      = user.email
