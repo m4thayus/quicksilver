@@ -7,12 +7,15 @@ ruby File.read(".ruby-version")
 
 gem "rails", "~> 7.0.3", ">= 7.0.3.1"
 
-gem "sqlite3", "~> 1.4"
+gem "sqlite3", "~> 1.4" # NOTE: Default rails minimum version requirement
 
-gem "puma", "~> 5.0"
+gem "puma", "~> 5.0" # NOTE: Default rails minimum version requirement
 
-gem "sprockets-rails"
 gem "jsbundling-rails"
+gem "slim-rails"
+gem "sprockets-rails"
+# Use Sass to process CSS
+# gem "sassc-rails"
 
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
 gem "turbo-rails"
@@ -29,16 +32,15 @@ gem "jbuilder"
 # gem "kredis"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
+gem "bcrypt", "~> 3.1.7" # NOTE: Default rails minimum version requirement
+
+gem "cancancan"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
-
-# Use Sass to process CSS
-# gem "sassc-rails"
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
@@ -68,6 +70,8 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "webdrivers"
+
+  gem "database_cleaner-active_record"
 
   gem "webmock"
   gem "timecop"

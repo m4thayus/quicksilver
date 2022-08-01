@@ -41,6 +41,15 @@ Metrics/MethodLength:
 Naming/MethodParameterName:
   Enabled: false
 
+RSpec/ExpectChange:
+  EnforcedStyle: block
+
+RSpec/NamedSubject:
+  Enabled: false
+
+RSpec/NotToNot:
+  EnforcedStyle: to_not
+
 Style/AccessorGrouping:
   Enabled: false
 
