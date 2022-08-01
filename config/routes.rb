@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  post :login, controller: :users
+  delete :logout, controller: :users
   resources :users, only: %i[index new create]
 end
 
 # rubocop:disable Style/BlockComments
 =begin
                                   Prefix Verb   URI Pattern                                                                                       Controller#Action
+                                   login POST   /login(.:format)                                                                                  users#login
+                                  logout DELETE /logout(.:format)                                                                                 users#logout
                                    users GET    /users(.:format)                                                                                  users#index
                                          POST   /users(.:format)                                                                                  users#create
                                 new_user GET    /users/new(.:format)                                                                              users#new
