@@ -3,4 +3,6 @@
 class Task < ApplicationRecord
   has_many :assignees, dependent: :destroy
   has_many :users, through: :assignees
+
+  validates :title, presence: true
 end
