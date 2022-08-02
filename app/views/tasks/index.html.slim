@@ -1,2 +1,13 @@
-h1 Tasks#index
-p Find me in app/views/tasks/index.html.slim
+h1 List of Tasks
+
+ul
+  - @tasks.each do |task|
+    li
+      a href=task_path(task)
+        span
+          = task.title
+      span
+        ' Assigned To:
+      - task.assignees.map do |assignee|
+        span
+          = assignee.user.name
