@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class TasksController < ApplicationController
+  before_action :authorize
   before_action :set_task, except: %i[index new create]
+
   def index
     @tasks = Task.all
   end
@@ -44,5 +46,11 @@ class TasksController < ApplicationController
 
   def task_params
     @task_params ||= params.require(:task).permit %i[title description]
+  end
+
+  def authorize
+    return if can? :read, Task
+
+    redirect_to login_path
   end
 end

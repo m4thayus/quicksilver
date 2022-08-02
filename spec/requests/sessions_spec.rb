@@ -16,9 +16,9 @@ RSpec.describe "Sessions", type: :request do
     context "when password is correct" do
       subject { post "/login", params: { user: { email: current_user.email, password: current_user.password } } }
 
-      it "redirects to users#index" do
+      it "redirects to tasks list" do
         subject
-        expect(response).to redirect_to(users_path)
+        expect(response).to redirect_to(tasks_path)
       end
 
       it "sets the current user in the session" do
