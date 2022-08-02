@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  has_many :assignees
+  has_many :tasks, through: :assignees
+
   has_secure_password
 
   validates :name, presence: true
