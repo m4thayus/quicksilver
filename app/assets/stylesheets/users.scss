@@ -2,11 +2,12 @@ span {
   margin-right: 0.5rem;
 }
 
-label {
-  text-transform: capitalize;
-}
-
-input {
-  display: block;
-  margin-bottom: 1rem;
+form {
+  label {
+    text-transform: capitalize;
+  }
+  input {
+    display: block;
+    margin-bottom: 1rem;
+  }
 }
