@@ -1,0 +1,11 @@
+ol
+  - if @current_user.present?
+    li
+      a href=logout_path Logout
+    li
+      a href=users_path Users
+  - else
+    li
+      a href=login_path Login
+    li
+      a href=new_user_path Sign Up

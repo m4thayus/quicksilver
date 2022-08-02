@@ -14,8 +14,7 @@ gem "puma", "~> 5.0" # NOTE: Default rails minimum version requirement
 gem "jsbundling-rails"
 gem "slim-rails"
 gem "sprockets-rails"
-# Use Sass to process CSS
-# gem "sassc-rails"
+gem "sassc-rails"
 
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
 gem "turbo-rails"
