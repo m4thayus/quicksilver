@@ -2,6 +2,21 @@
 
 require "rails_helper"
 
-RSpec.describe "tasks/new.html.slim", type: :view do
-  pending "add some examples to (or delete) #{__FILE__}"
+RSpec.describe "tasks/new", type: :view do
+  describe "the new task form" do
+    it "renders a name input" do
+      render
+      expect(rendered).to match(/input.*name="task\[title\]"/)
+    end
+
+    it "renders an email input" do
+      render
+      expect(rendered).to match(/textarea.*name="task\[description\]"/)
+    end
+
+    it "renders a submit button" do
+      render
+      expect(rendered).to match(/input.*type="submit"/)
+    end
+  end
 end
