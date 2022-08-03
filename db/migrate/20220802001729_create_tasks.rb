@@ -9,6 +9,7 @@ class CreateTasks < ActiveRecord::Migration[7.0]
       t.datetime :started_at
       t.datetime :expected_at
       t.datetime :completed_at
+      t.references :owner
 
       t.timestamps
     end

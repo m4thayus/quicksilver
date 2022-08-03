@@ -7,7 +7,5 @@ ul
         span
           = task.title
       span
-        ' Assigned To:
-      - task.assignees.map do |assignee|
-        span
-          = assignee.user.name
+        ' Owner:
+        = task.owner.name

@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 class Task < ApplicationRecord
-  has_many :assignees, dependent: :destroy
-  has_many :users, through: :assignees
+  belongs_to :owner, class_name: "User", optional: true
 
   validates :title, presence: true
 end

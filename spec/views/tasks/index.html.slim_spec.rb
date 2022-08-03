@@ -6,7 +6,7 @@ RSpec.describe "tasks/index", type: :view do
   let(:tasks) do
     [0..2].map do
       create(:task) do |t|
-        create(:assignee, task: t)
+        t.owner = create(:user)
       end
     end
   end
@@ -23,7 +23,7 @@ RSpec.describe "tasks/index", type: :view do
 
     it "renders the assignee" do
       render
-      expect(rendered).to match(/#{tasks.first.assignees.first.user.name}/)
+      expect(rendered).to match(/#{tasks.first.owner.name}/)
     end
   end
 
@@ -35,7 +35,7 @@ RSpec.describe "tasks/index", type: :view do
 
     it "renders the assignee" do
       render
-      expect(rendered).to match(/#{tasks.last.assignees.first.user.name}/)
+      expect(rendered).to match(/#{tasks.last.owner.name}/)
     end
   end
 end
