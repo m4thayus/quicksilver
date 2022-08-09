@@ -49,6 +49,28 @@ RSpec.describe "Tasks", type: :request, user: :engineer do
       expect { subject }.to change { Task.count }.by(1)
     end
 
+    context "when an owner is set" do
+      let(:owner) { create(:user) }
+
+      before do
+        params[:task].merge!(owner: { email: owner.email })
+      end
+
+      it "returns http success" do
+        subject
+        expect(response).to redirect_to task_path(Task.last)
+      end
+
+      it "creates the task" do
+        expect { subject }.to change { Task.count }.by(1)
+      end
+
+      it "has an owner" do
+        subject
+        expect(Task.last.owner).to eq owner
+      end
+    end
+
     context "when bad params present" do
       it "returns http bad request" do
         params[:task].delete(:title)
@@ -78,6 +100,22 @@ RSpec.describe "Tasks", type: :request, user: :engineer do
 
     it "updates the task" do
       expect { subject }.to(change { task.reload.title })
+    end
+
+    context "when an owner is set" do
+      let(:owner) { create(:user) }
+      let(:params) { { task: { owner: { email: owner.email } } } }
+
+      let(:task) { create(:task) }
+
+      it "returns http success" do
+        subject
+        expect(response).to redirect_to task_path(task)
+      end
+
+      it "updates the task owner" do
+        expect { subject }.to(change { task.reload.owner })
+      end
     end
 
     context "when bad params present" do

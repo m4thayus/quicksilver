@@ -13,7 +13,7 @@ class TasksController < ApplicationController
   def new; end
 
   def create
-    task = Task.new(task_params)
+    task = Task.new(owner: task_owner, **task_params)
     if task.save
       redirect_to task_path(task)
     else
@@ -24,7 +24,7 @@ class TasksController < ApplicationController
   def edit; end
 
   def update
-    if @task.update(task_params)
+    if @task.update(owner: task_owner, **task_params)
       redirect_to task_path(@task)
     else
       head :bad_request
@@ -45,7 +45,15 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    @task_params ||= params.require(:task).permit %i[title description]
+    @task_params ||= params.require(:task).permit :title, :description, owner: [:email]
+  end
+
+  def task_owner
+    @task_owner ||= User.find_by email: begin
+                                          owner_email = task_params.dig(:owner, :email)
+                                          task_params.delete(:owner)
+                                          owner_email
+                                        end
   end
 
   def authorize
