@@ -9,3 +9,5 @@ ul
       span
         ' Owner:
         = task.owner.name
+
+= button_to "New Task", new_task_path, method: :get

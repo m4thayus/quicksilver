@@ -38,4 +38,9 @@ RSpec.describe "tasks/index", type: :view do
       expect(rendered).to match(/#{tasks.last.owner.name}/)
     end
   end
+
+  it "renders a new button" do
+    render
+    expect(rendered).to match(%r{<button.*>New Task</button>})
+  end
 end
