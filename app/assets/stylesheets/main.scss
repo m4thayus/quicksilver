@@ -2,11 +2,33 @@ span {
   margin-right: 0.5rem;
 }
 
+table {
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: thin solid;
+  margin-bottom: 1rem;
+  th, td {
+    border: thin solid;
+    padding: 0.5rem;
+  }
+  tbody {
+    tr {
+      &:nth-child(even) {
+        background-color: whitesmoke;
+      }
+    }
+  }
+}
+
 form {
   label {
     text-transform: capitalize;
   }
   input {
+    display: block;
+    margin-bottom: 1rem;
+  }
+  textarea {
     display: block;
     margin-bottom: 1rem;
   }

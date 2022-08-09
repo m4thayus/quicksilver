@@ -1,0 +1,17 @@
+h1 List of Tasks
+
+table
+  thead
+    - %w[Title Owner].each do |header|
+      th
+        = header
+  tbody
+    - @tasks.each do |task|
+      tr
+        td
+          a href=task_path(task)
+            = task.title
+        td
+          = task.owner.name
+
+= button_to "New Task", new_task_path, method: :get

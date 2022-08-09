@@ -1,0 +1,13 @@
+= form.label :title, "title:"
+= form.text_field :title
+
+= form.fields_for :owner do |owner_form|
+  = owner_form.label :email, "owner:"
+  = owner_form.email_field :email, list: "task_owners", value: @task&.owner&.email
+  datalist#task_owners
+    = options_for_select(User.all.map {|u| [u.name, u.email] })
+
+= form.label :description, "description:"
+= form.text_area :description
+
+= form.submit
