@@ -45,7 +45,7 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    @task_params ||= params.require(:task).permit :title, :description, owner: [:email]
+    @task_params ||= params.require(:task).permit :title, :description, :started_at, :expected_at, :completed_at, owner: [:email]
   end
 
   def task_owner

@@ -5,9 +5,9 @@ class CreateTasks < ActiveRecord::Migration[7.0]
     create_table :tasks do |t|
       t.string :title
       t.text :description
-      t.datetime :started_at
-      t.datetime :expected_at
-      t.datetime :completed_at
+      t.date :started_at
+      t.date :expected_at
+      t.date :completed_at
       t.references :owner
 
       t.timestamps
