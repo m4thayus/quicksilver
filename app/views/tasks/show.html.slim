@@ -5,3 +5,4 @@ h3
   = @task.owner&.name
 p
   = @task.description
+= button_to "Edit Task", edit_task_path(@task), method: :get

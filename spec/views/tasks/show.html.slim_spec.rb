@@ -27,4 +27,9 @@ RSpec.describe "tasks/show", type: :view do
     render
     expect(rendered).to match(/#{task.description}/)
   end
+
+  it "renders an edit button" do
+    render
+    expect(rendered).to match(%r{<button.*>Edit Task</button>})
+  end
 end
