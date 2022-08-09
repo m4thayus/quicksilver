@@ -6,7 +6,7 @@ lock "~> 3.17.1"
 set :application, "quicksilver"
 set :repo_url, "https://github.com/mercuryanalytics/quicksilver.git"
 
-set :rbenv_ruby, File.read(".ruby_version")
+set :rbenv_ruby, File.read(".ruby-version").chomp
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
@@ -29,7 +29,7 @@ set :branch, "main"
 append :linked_files, "config/database.yml", "config/master.key"
 
 # Default value for linked_dirs is []
-append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "tmp/webpacker", "public/system", "vendor", "storage"
+append :linked_dirs, "data", "log", "tmp/pids", "tmp/cache", "tmp/sockets", "tmp/webpacker", "public/system", "vendor", "storage"
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
