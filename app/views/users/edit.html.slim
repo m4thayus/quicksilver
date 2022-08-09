@@ -1,0 +1,5 @@
+h1
+  ' Edit
+  = @user.email
+= form_with model: @user do |form|
+  = render "form", form: form

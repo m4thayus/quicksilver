@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   get :login, to: "sessions#new"
   post :login, to: "sessions#create"
   get :logout, to: "sessions#destroy"
-  resources :users, only: %i[index new create]
+  resources :users, only: %i[index new create edit update]
   resources :tasks
 end
 
@@ -19,6 +19,9 @@ end
                                    users GET    /users(.:format)                                                                                  users#index
                                          POST   /users(.:format)                                                                                  users#create
                                 new_user GET    /users/new(.:format)                                                                              users#new
+                               edit_user GET    /users/:id/edit(.:format)                                                                         users#edit
+                                    user PATCH  /users/:id(.:format)                                                                              users#update
+                                         PUT    /users/:id(.:format)                                                                              users#update
                                    tasks GET    /tasks(.:format)                                                                                  tasks#index
                                          POST   /tasks(.:format)                                                                                  tasks#create
                                 new_task GET    /tasks/new(.:format)                                                                              tasks#new

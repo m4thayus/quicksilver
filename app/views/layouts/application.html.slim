@@ -13,5 +13,7 @@ html
   body
     nav
       = render "nav"
+    aside.notice
+      = flash[:notice]
     main
       == yield
