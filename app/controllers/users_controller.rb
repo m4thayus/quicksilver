@@ -24,7 +24,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    redirect_to users_path unless can? :update, @user
+    return redirect_to users_path unless can? :update, @user
 
     if @user.update(user_params)
       redirect_to users_path

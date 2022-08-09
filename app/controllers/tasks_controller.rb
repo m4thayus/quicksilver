@@ -18,7 +18,7 @@ class TasksController < ApplicationController
   end
 
   def create
-    redirect_to tasks_path unless can? :create, @task
+    return redirect_to tasks_path if can? :create, @task
 
     task = Task.new(owner: task_owner, **task_params)
     if task.save
@@ -36,7 +36,7 @@ class TasksController < ApplicationController
   end
 
   def update
-    redirect_to tasks_path unless can? :update, @task
+    return redirect_to tasks_path unless can? :update, @task
 
     if @task.update(owner: task_owner, **task_params)
       redirect_to task_path(@task)
