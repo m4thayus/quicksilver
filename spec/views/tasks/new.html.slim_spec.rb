@@ -9,7 +9,7 @@ RSpec.describe "tasks/new", type: :view do
       expect(rendered).to match(/input.*name="task\[title\]"/)
     end
 
-    it "renders an email input" do
+    it "renders a descrition input" do
       render
       expect(rendered).to match(/textarea.*name="task\[description\]"/)
     end

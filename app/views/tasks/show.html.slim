@@ -1,2 +1,7 @@
-h1 Tasks#show
-p Find me in app/views/tasks/show.html.slim
+h1
+  = @task.title
+h3
+  ' Owner:
+  = @task.owner&.name
+p
+  = @task.description

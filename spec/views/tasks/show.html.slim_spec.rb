@@ -2,6 +2,29 @@
 
 require "rails_helper"
 
-RSpec.describe "tasks/show.html.slim", type: :view do
-  pending "add some examples to (or delete) #{__FILE__}"
+RSpec.describe "tasks/show", type: :view do
+  let(:task) do
+    create(:task) do |t|
+      t.owner = create(:user)
+    end
+  end
+
+  before do
+    assign(:task, task)
+  end
+
+  it "renders the title" do
+    render
+    expect(rendered).to match(/#{task.title}/)
+  end
+
+  it "renders the assignee" do
+    render
+    expect(rendered).to match(/#{task.owner.name}/)
+  end
+
+  it "renders the description" do
+    render
+    expect(rendered).to match(/#{task.description}/)
+  end
 end
