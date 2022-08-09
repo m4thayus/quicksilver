@@ -14,7 +14,7 @@ table
           a href=task_path(task)
             = task.title
         td
-          = task.owner.name
+          = task.owner&.name
         td
           = task.started_at
         td

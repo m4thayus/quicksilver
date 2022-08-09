@@ -10,9 +10,16 @@ class TasksController < ApplicationController
 
   def show; end
 
-  def new; end
+  def new
+    return if can? :new, Task
+
+    flash[:notice] = "You do not have permission to create tasks!"
+    redirect_to tasks_path
+  end
 
   def create
+    redirect_to tasks_path unless can? :create, @task
+
     task = Task.new(owner: task_owner, **task_params)
     if task.save
       redirect_to task_path(task)
@@ -21,9 +28,16 @@ class TasksController < ApplicationController
     end
   end
 
-  def edit; end
+  def edit
+    return if can? :edit, @task
+
+    flash[:notice] = "You do not have permission to edit that task!"
+    redirect_to tasks_path
+  end
 
   def update
+    redirect_to tasks_path unless can? :update, @task
+
     if @task.update(owner: task_owner, **task_params)
       redirect_to task_path(@task)
     else

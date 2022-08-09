@@ -8,9 +8,12 @@ class Ability
 
     can :manage, user
 
-    can :manage, Task if user.engineer?
+    can :read, Task if user.member?
+    can :read, User if user.member?
 
     can :read, :all if user.engineer?
+    can :manage, Task if user.engineer?
+
     can :manage, :all if user.admin?
   end
 end
