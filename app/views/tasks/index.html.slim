@@ -2,9 +2,9 @@ h1 List of Tasks
 
 table
   thead
-    - %w[Task Title Owner Started Expected Duration Completed Over/Under].each do |header|
+    - %w[task title owner started_on expected_on completed_on expected_duration actual_duration delta].each do |header|
       th
-        = header
+        = header.titleize
   tbody
     - @tasks.each do |task|
       tr
@@ -20,14 +20,15 @@ table
         td
           = task.expected_at
         td
-          - if task.expected_at.present? && task.started_at.present?
-            = (task.expected_at - task.started_at).to_i
-            '  Days
-        td
           = task.completed_at
         td
-          - if  task.completed_at.present? && task.expected_at.present? && task.started_at.present?
-            = ((task.completed_at - task.started_at) - (task.expected_at - task.started_at)).to_i
-            '  Days
+          - if task.expected_duration.present?
+            = Task.humanize_duration(task.expected_duration)
+        td
+          - if task.actual_duration.present?
+            = Task.humanize_duration(task.actual_duration)
+        td
+          - if task.duration_delta.present?
+            = task.duration_delta.to_s + " Days"
 
 = button_to "New Task", new_task_path, method: :get
