@@ -18,11 +18,11 @@ class TasksController < ApplicationController
   end
 
   def create
-    return redirect_to tasks_path if can? :create, @task
+    return redirect_to tasks_path unless can? :create, Task
 
     task = Task.new(owner: task_owner, **task_params)
     if task.save
-      redirect_to task_path(task)
+      redirect_to tasks_path
     else
       head :bad_request
     end
