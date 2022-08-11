@@ -42,7 +42,7 @@ RSpec.describe "Tasks", type: :request, user: :engineer do
 
     it "returns http success" do
       subject
-      expect(response).to redirect_to task_path(Task.last)
+      expect(response).to redirect_to tasks_path
     end
 
     it "creates the task" do
@@ -58,7 +58,7 @@ RSpec.describe "Tasks", type: :request, user: :engineer do
 
       it "returns http success" do
         subject
-        expect(response).to redirect_to task_path(Task.last)
+        expect(response).to redirect_to tasks_path
       end
 
       it "creates the task" do
