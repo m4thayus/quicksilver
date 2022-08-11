@@ -4,5 +4,5 @@ h3
   ' Owner:
   = @task.owner&.name
 p
-  = @task.description
+  == markdown.render(@task.description)
 = button_to "Edit Task", edit_task_path(@task), method: :get
