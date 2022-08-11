@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe "tasks/show", type: :view do
   let(:task) do
-    create(:task) do |t|
+    create(:task, description: "Test *markdown* processing") do |t|
       t.owner = create(:user)
     end
   end
@@ -25,7 +25,7 @@ RSpec.describe "tasks/show", type: :view do
 
   it "renders the description" do
     render
-    expect(rendered).to match(/#{task.description}/)
+    expect(rendered).to match("<p>Test <em>markdown</em> processing</p>")
   end
 
   it "renders an edit button" do
