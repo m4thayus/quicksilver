@@ -2,9 +2,9 @@ h1 List of Tasks
 
 table
   thead
-    - %w[Task Title Owner Started Expected Duration Completed Over/Under].each do |header|
+    - %w[task title owner started_on expected_on completed_on expected_duration actual_duration delta].each do |header|
       th
-        = header
+        = header.titleize
   tbody
     - @tasks.each do |task|
       tr
@@ -16,18 +16,23 @@ table
         td
           = task.owner&.name
         td
-          = task.started_at
+          = time_tag(task.started_at) if task.started_at.present?
         td
-          = task.expected_at
+          = time_tag(task.expected_at) if task.expected_at.present?
+        td
+          = time_tag(task.completed_at) if task.completed_at.present?
         td
           - if task.expected_at.present? && task.started_at.present?
-            = (task.expected_at - task.started_at).to_i
-            '  Days
+            = distance_of_time_in_words(task.expected_at, task.started_at)
         td
-          = task.completed_at
+          - if task.completed_at.present? && task.started_at.present?
+            = distance_of_time_in_words(task.completed_at, task.started_at)
         td
-          - if  task.completed_at.present? && task.expected_at.present? && task.started_at.present?
-            = ((task.completed_at - task.started_at) - (task.expected_at - task.started_at)).to_i
-            '  Days
+          - if task.completed_at.present? && task.expected_at.present?
+            = distance_of_time_in_words(task.completed_at, task.expected_at)
+            - if task.completed_at > task.expected_at
+              '  over
+            - else
+              '  under
 
 = button_to "New Task", new_task_path, method: :get
