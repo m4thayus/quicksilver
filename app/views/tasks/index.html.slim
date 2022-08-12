@@ -16,19 +16,23 @@ table
         td
           = task.owner&.name
         td
-          = task.started_at
+          = time_tag(task.started_at) if task.started_at.present?
         td
-          = task.expected_at
+          = time_tag(task.expected_at) if task.expected_at.present?
         td
-          = task.completed_at
+          = time_tag(task.completed_at) if task.completed_at.present?
         td
-          - if task.expected_duration.present?
-            = Task.humanize_duration(task.expected_duration)
+          - if task.expected_at.present? && task.started_at.present?
+            = distance_of_time_in_words(task.expected_at, task.started_at)
         td
-          - if task.actual_duration.present?
-            = Task.humanize_duration(task.actual_duration)
+          - if task.completed_at.present? && task.started_at.present?
+            = distance_of_time_in_words(task.completed_at, task.started_at)
         td
-          - if task.duration_delta.present?
-            = task.duration_delta.to_s + " Days"
+          - if task.completed_at.present? && task.expected_at.present?
+            = distance_of_time_in_words(task.completed_at, task.expected_at)
+            - if task.completed_at > task.expected_at
+              '  over
+            - else
+              '  under
 
 = button_to "New Task", new_task_path, method: :get
