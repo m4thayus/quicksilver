@@ -47,7 +47,11 @@ class TasksController < ApplicationController
   end
 
   def destroy
-    @task.destroy
+    if can? :destroy, @task
+      @task.destroy
+    else
+      flash[:notice] = "You do not have permission to destroy that task!"
+    end
     redirect_to_tasks_path
   end
 
