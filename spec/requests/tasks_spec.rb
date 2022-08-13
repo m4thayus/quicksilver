@@ -95,7 +95,7 @@ RSpec.describe "Tasks", type: :request, user: :engineer do
 
     it "returns http success" do
       subject
-      expect(response).to redirect_to task_path(task)
+      expect(response).to redirect_to tasks_path
     end
 
     it "updates the task" do
@@ -110,7 +110,7 @@ RSpec.describe "Tasks", type: :request, user: :engineer do
 
       it "returns http success" do
         subject
-        expect(response).to redirect_to task_path(task)
+        expect(response).to redirect_to tasks_path
       end
 
       it "updates the task owner" do

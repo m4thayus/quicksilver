@@ -11,8 +11,12 @@ table
         td
           = task.id
         td
-          a href=task_path(task)
-            = task.title
+          - if @board.present?
+            a href=board_task_path(@board, task)
+              = task.title
+          - else
+            a href=task_path(task)
+              = task.title
         td
           = task.owner&.name
         td
@@ -35,4 +39,7 @@ table
             - else
               '  under
 
-= button_to "New Task", new_task_path, method: :get
+- if @board.present?
+  = button_to "New Task", new_board_task_path(@board), method: :get
+- else
+  = button_to "New Task", new_task_path, method: :get

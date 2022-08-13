@@ -5,4 +5,8 @@ h3
   = @task.owner&.name
 p
   == markdown.render(@task.description)
-= button_to "Edit Task", edit_task_path(@task), method: :get
+
+- if @board.present?
+  = button_to "Edit Task", edit_board_task_path(@board, @task), method: :get
+- else
+  = button_to "Edit Task", edit_task_path(@task), method: :get
