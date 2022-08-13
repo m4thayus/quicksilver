@@ -1,0 +1,14 @@
+h1 List of Boards
+ul
+  li
+    a href=tasks_path
+      ' Default
+    span
+      ' All tasks not on a specific board
+ul
+  - @boards.each do |board|
+    li
+      a href=board_tasks_path(board)
+        = board.name.titleize
+      span
+        = board.description

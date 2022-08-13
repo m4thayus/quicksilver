@@ -7,6 +7,10 @@ class Board < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
 
+  def self.wishlist
+    Board.find_by(name: "wishlist")
+  end
+
   private
 
   def parameterize_name

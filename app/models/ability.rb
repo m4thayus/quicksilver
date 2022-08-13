@@ -8,11 +8,18 @@ class Ability
 
     can :manage, user
 
-    can :read, Task if user.member?
-    can :read, User if user.member?
+    if user.member?
+      can :read, Board
+      can :read, User
+      can :read, Task
+      can %i[create update destroy], Task, board: Board.wishlist
+    end
 
-    can :read, :all if user.engineer?
-    can :manage, Task if user.engineer?
+    if user.engineer?
+      can :read, :all
+      can :manage, Task
+      can :manage, Board
+    end
 
     can :manage, :all if user.admin?
   end

@@ -12,16 +12,16 @@ class TasksController < ApplicationController
   def show; end
 
   def new
-    return if can? :new, Task
+    return if can? :new, Task.new(board: @board)
 
     flash[:notice] = "You do not have permission to create tasks!"
     redirect_to_tasks_path
   end
 
   def create
-    return redirect_to_tasks_path unless can? :create, Task
-
     task = Task.new(owner: task_owner, board: @board, **task_params)
+    return redirect_to_tasks_path unless can? :create, task
+
     if task.save
       redirect_to_tasks_path
     else

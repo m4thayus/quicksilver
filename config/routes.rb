@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  root to: "tasks#index"
+  root to: "boards#index"
 
   get :login, to: "sessions#new"
   post :login, to: "sessions#create"
@@ -18,7 +18,7 @@ end
 # rubocop:disable Style/BlockComments
 =begin
                                   Prefix Verb   URI Pattern                                                                                       Controller#Action
-                                    root GET    /                                                                                                 tasks#index
+                                    root GET    /                                                                                                 boards#index
                                    login GET    /login(.:format)                                                                                  sessions#new
                                          POST   /login(.:format)                                                                                  sessions#create
                                   logout GET    /logout(.:format)                                                                                 sessions#destroy
