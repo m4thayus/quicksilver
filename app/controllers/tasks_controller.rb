@@ -58,7 +58,7 @@ class TasksController < ApplicationController
   private
 
   def set_board
-    @board = Board.find(params[:board_id]) if params[:board_id].present?
+    @board = Board.find_by(name: params[:board_name]) if params[:board_name].present?
   rescue ActiveRecord::RecordNotFound
     @board = nil
   end

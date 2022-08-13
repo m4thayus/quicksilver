@@ -11,6 +11,10 @@ class Board < ApplicationRecord
     Board.find_by(name: "wishlist")
   end
 
+  def to_param
+    name
+  end
+
   private
 
   def parameterize_name

@@ -13,7 +13,7 @@ class BoardsController < ApplicationController
   private
 
   def set_board
-    @board = Board.find(params[:id])
+    @board = Board.find_by(name: params[:name])
   end
 
   def authorize

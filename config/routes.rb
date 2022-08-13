@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   resources :users, only: %i[index new create edit update]
 
   resources :tasks
-  resources :boards, only: %i[index show] do
+  resources :boards, param: :name, only: %i[index show] do
     resources :tasks, controller: :tasks
   end
 end
@@ -36,16 +36,16 @@ end
                                          PATCH  /tasks/:id(.:format)                                                                              tasks#update
                                          PUT    /tasks/:id(.:format)                                                                              tasks#update
                                          DELETE /tasks/:id(.:format)                                                                              tasks#destroy
-                             board_tasks GET    /boards/:board_id/tasks(.:format)                                                                 tasks#index
-                                         POST   /boards/:board_id/tasks(.:format)                                                                 tasks#create
-                          new_board_task GET    /boards/:board_id/tasks/new(.:format)                                                             tasks#new
-                         edit_board_task GET    /boards/:board_id/tasks/:id/edit(.:format)                                                        tasks#edit
-                              board_task GET    /boards/:board_id/tasks/:id(.:format)                                                             tasks#show
-                                         PATCH  /boards/:board_id/tasks/:id(.:format)                                                             tasks#update
-                                         PUT    /boards/:board_id/tasks/:id(.:format)                                                             tasks#update
-                                         DELETE /boards/:board_id/tasks/:id(.:format)                                                             tasks#destroy
+                             board_tasks GET    /boards/:board_name/tasks(.:format)                                                               tasks#index
+                                         POST   /boards/:board_name/tasks(.:format)                                                               tasks#create
+                          new_board_task GET    /boards/:board_name/tasks/new(.:format)                                                           tasks#new
+                         edit_board_task GET    /boards/:board_name/tasks/:id/edit(.:format)                                                      tasks#edit
+                              board_task GET    /boards/:board_name/tasks/:id(.:format)                                                           tasks#show
+                                         PATCH  /boards/:board_name/tasks/:id(.:format)                                                           tasks#update
+                                         PUT    /boards/:board_name/tasks/:id(.:format)                                                           tasks#update
+                                         DELETE /boards/:board_name/tasks/:id(.:format)                                                           tasks#destroy
                                   boards GET    /boards(.:format)                                                                                 boards#index
-                                   board GET    /boards/:id(.:format)                                                                             boards#show
+                                   board GET    /boards/:name(.:format)                                                                           boards#show
         turbo_recede_historical_location GET    /recede_historical_location(.:format)                                                             turbo/native/navigation#recede
         turbo_resume_historical_location GET    /resume_historical_location(.:format)                                                             turbo/native/navigation#resume
        turbo_refresh_historical_location GET    /refresh_historical_location(.:format)                                                            turbo/native/navigation#refresh
