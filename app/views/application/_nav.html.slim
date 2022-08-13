@@ -6,6 +6,9 @@ ol
       a href=users_path Users
     li
       a href=tasks_path Tasks
+    - if Board.wishlist.present?
+      li
+        a href=board_tasks_path(Board.wishlist) Wishlist
   - else
     li
       a href=login_path Login

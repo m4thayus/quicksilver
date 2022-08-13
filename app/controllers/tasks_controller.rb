@@ -2,27 +2,28 @@
 
 class TasksController < ApplicationController
   before_action :authorize
+  before_action :set_board
   before_action :set_task, except: %i[index new create]
 
   def index
-    @tasks = Task.all
+    @tasks = Task.where(board: @board)
   end
 
   def show; end
 
   def new
-    return if can? :new, Task
+    return if can? :new, Task.new(board: @board)
 
     flash[:notice] = "You do not have permission to create tasks!"
-    redirect_to tasks_path
+    redirect_to_tasks_path
   end
 
   def create
-    return redirect_to tasks_path unless can? :create, Task
+    task = Task.new(owner: task_owner, board: @board, **task_params)
+    return redirect_to_tasks_path unless can? :create, task
 
-    task = Task.new(owner: task_owner, **task_params)
     if task.save
-      redirect_to tasks_path
+      redirect_to_tasks_path
     else
       head :bad_request
     end
@@ -32,25 +33,35 @@ class TasksController < ApplicationController
     return if can? :edit, @task
 
     flash[:notice] = "You do not have permission to edit that task!"
-    redirect_to tasks_path
+    redirect_to_tasks_path
   end
 
   def update
-    return redirect_to tasks_path unless can? :update, @task
+    return redirect_to_tasks_path unless can? :update, @task
 
-    if @task.update(owner: task_owner, **task_params)
-      redirect_to task_path(@task)
+    if @task.update(owner: task_owner, board: @board, **task_params)
+      redirect_to_tasks_path
     else
       head :bad_request
     end
   end
 
   def destroy
-    @task.destroy
-    redirect_to tasks_path
+    if can? :destroy, @task
+      @task.destroy
+    else
+      flash[:notice] = "You do not have permission to destroy that task!"
+    end
+    redirect_to_tasks_path
   end
 
   private
+
+  def set_board
+    @board = Board.find_by(name: params[:board_name]) if params[:board_name].present?
+  rescue ActiveRecord::RecordNotFound
+    @board = nil
+  end
 
   def set_task
     @task = Task.find(params[:id])
@@ -74,5 +85,13 @@ class TasksController < ApplicationController
     return if can? :read, Task
 
     redirect_to login_path
+  end
+
+  def redirect_to_tasks_path
+    if @board.present?
+      redirect_to board_tasks_path(@board)
+    else
+      redirect_to tasks_path
+    end
   end
 end

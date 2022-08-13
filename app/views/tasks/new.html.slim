@@ -1,3 +1,7 @@
 h1 Create A Task
-= form_with model: Task.new do |form|
-  = render "form", form: form
+- if @board.present?
+  = form_with model: Task.new, url: board_tasks_path(@board) do |form|
+    = render "form", form: form
+- else
+  = form_with model: Task.new do |form|
+    = render "form", form: form

@@ -1,4 +1,4 @@
-span {
+span, li a {
   margin-right: 0.5rem;
 }
 
@@ -21,6 +21,7 @@ table {
 }
 
 form {
+  margin-bottom: 1rem;
   label {
     text-transform: capitalize;
   }

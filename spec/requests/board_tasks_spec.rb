@@ -2,16 +2,18 @@
 
 require "rails_helper"
 
-RSpec.describe "Tasks", type: :request, user: :engineer do
-  describe "GET /tasks" do
+RSpec.describe "Board Tasks", type: :request, user: :engineer do
+  let(:board) { create(:board) }
+
+  describe "GET /boards/:board_name/tasks" do
     it "returns http success" do
-      get tasks_path
+      get board_tasks_path(board)
       expect(response).to have_http_status(:success)
     end
   end
 
-  describe "GET /tasks/:id" do
-    subject { get task_path(create(:task)) }
+  describe "GET /boards/:board_name/tasks/:id" do
+    subject { get board_task_path(board, create(:task)) }
 
     it "returns http success" do
       subject
@@ -19,7 +21,7 @@ RSpec.describe "Tasks", type: :request, user: :engineer do
     end
 
     context "when task does not exist" do
-      subject { get task_path(id: :id) }
+      subject { get board_task_path(board, id: :id) }
 
       it "returns http not found" do
         subject
@@ -28,21 +30,21 @@ RSpec.describe "Tasks", type: :request, user: :engineer do
     end
   end
 
-  describe "GET /tasks/new" do
+  describe "GET /boards/:board_name/tasks/new" do
     it "returns http success" do
-      get new_task_path
+      get new_board_task_path(board)
       expect(response).to have_http_status(:success)
     end
   end
 
-  describe "POST /tasks" do
-    subject { post tasks_path, params: params }
+  describe "POST /boards/:board_name/tasks" do
+    subject { post board_tasks_path(board), params: params }
 
     let(:params) { { task: attributes_for(:task) } }
 
     it "returns http success" do
       subject
-      expect(response).to redirect_to tasks_path
+      expect(response).to redirect_to board_tasks_path(board)
     end
 
     it "creates the task" do
@@ -58,7 +60,7 @@ RSpec.describe "Tasks", type: :request, user: :engineer do
 
       it "returns http success" do
         subject
-        expect(response).to redirect_to tasks_path
+        expect(response).to redirect_to board_tasks_path(board)
       end
 
       it "creates the task" do
@@ -80,22 +82,22 @@ RSpec.describe "Tasks", type: :request, user: :engineer do
     end
   end
 
-  describe "GET /tasks/edit" do
+  describe "GET /boards/:board_name/tasks/edit" do
     it "returns http success" do
-      get edit_task_path(create(:task))
+      get edit_board_task_path(board, create(:task))
       expect(response).to have_http_status(:success)
     end
   end
 
-  describe "PUT /task/:id" do
-    subject { put task_path(task), params: params }
+  describe "PUT /boards/:board_name/task/:id" do
+    subject { put board_task_path(board, task), params: params }
 
     let(:task) { create(:task) }
     let(:params) { { task: { title: "new title" } } }
 
     it "returns http success" do
       subject
-      expect(response).to redirect_to tasks_path
+      expect(response).to redirect_to board_tasks_path(board)
     end
 
     it "updates the task" do
@@ -110,7 +112,7 @@ RSpec.describe "Tasks", type: :request, user: :engineer do
 
       it "returns http success" do
         subject
-        expect(response).to redirect_to tasks_path
+        expect(response).to redirect_to board_tasks_path(board)
       end
 
       it "updates the task owner" do
@@ -127,14 +129,14 @@ RSpec.describe "Tasks", type: :request, user: :engineer do
     end
   end
 
-  describe "DELETE /tasks/:id" do
-    subject { delete task_path(task) }
+  describe "DELETE /boards/:board_name/tasks/:id" do
+    subject { delete board_task_path(board, task) }
 
     let!(:task) { create(:task) }
 
     it "redirects to index" do
       subject
-      expect(response).to redirect_to tasks_path
+      expect(response).to redirect_to board_tasks_path(board)
     end
 
     it "destroys the task" do
@@ -142,7 +144,7 @@ RSpec.describe "Tasks", type: :request, user: :engineer do
     end
 
     context "when task does not exist" do
-      subject { delete task_path(id: :id) }
+      subject { delete board_task_path(board, id: :id) }
 
       it "returns http not found" do
         subject

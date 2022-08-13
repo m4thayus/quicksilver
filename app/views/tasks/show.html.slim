@@ -5,4 +5,10 @@ h3
   = @task.owner&.name
 p
   == markdown.render(@task.description)
-= button_to "Edit Task", edit_task_path(@task), method: :get
+
+- if @board.present?
+  = button_to "Edit Task", edit_board_task_path(@board, @task), method: :get
+  = button_to "Destroy Task", board_task_path(@board, @task), method: :delete, form: { data: { turbo_confirm: "Are you sure?" } }
+- else
+  = button_to "Edit Task", edit_task_path(@task), method: :get
+  = button_to "Destroy Task", task_path(@task), method: :delete, form: { data: { turbo_confirm: "Are you sure?" } }
