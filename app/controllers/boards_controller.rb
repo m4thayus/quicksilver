@@ -1,12 +1,8 @@
 # frozen_string_literal: true
 
 class BoardsController < ApplicationController
-  before_action :authorize
-  before_action :set_board, only: :show
-
-  def index
-    @boards = Board.all
-  end
+  before_action :set_board, only: %i[show]
+  load_and_authorize_resource
 
   def show; end
 
@@ -14,11 +10,5 @@ class BoardsController < ApplicationController
 
   def set_board
     @board = Board.find_by(name: params[:name])
-  end
-
-  def authorize
-    return if can? :read, Board
-
-    redirect_to login_path
   end
 end

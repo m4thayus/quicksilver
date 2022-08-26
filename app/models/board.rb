@@ -7,7 +7,7 @@ class Board < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
 
-  WISHLIST_SLUG = "wishlist".freeze
+  WISHLIST_SLUG = "wishlist"
 
   def self.wishlist
     Board.find_by(name: WISHLIST_SLUG)
