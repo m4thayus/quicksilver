@@ -19,11 +19,10 @@ RSpec.describe "Tasks", type: :request, user: :engineer do
     end
 
     context "when task does not exist" do
-      subject { get task_path(id: :id) }
+      subject { get task_path(id: 1) }
 
       it "returns http not found" do
-        subject
-        expect(response).to have_http_status(:not_found)
+        expect { subject }.to raise_error ActiveRecord::RecordNotFound
       end
     end
   end
@@ -53,7 +52,7 @@ RSpec.describe "Tasks", type: :request, user: :engineer do
       let(:owner) { create(:user) }
 
       before do
-        params[:task].merge!(owner: { email: owner.email })
+        params[:task].merge!(owner_id: owner.id)
       end
 
       it "returns http success" do
@@ -104,7 +103,7 @@ RSpec.describe "Tasks", type: :request, user: :engineer do
 
     context "when an owner is set" do
       let(:owner) { create(:user) }
-      let(:params) { { task: { owner: { email: owner.email } } } }
+      let(:params) { { task: { owner_id: owner.id } } }
 
       let(:task) { create(:task) }
 
@@ -145,8 +144,7 @@ RSpec.describe "Tasks", type: :request, user: :engineer do
       subject { delete task_path(id: :id) }
 
       it "returns http not found" do
-        subject
-        expect(response).to have_http_status(:not_found)
+        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end
