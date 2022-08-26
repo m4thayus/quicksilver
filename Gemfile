@@ -45,7 +45,7 @@ gem "redcarpet"
 # gem "image_processing", "~> 1.2"
 
 group :production do
-  gem "strscan", "3.0.1" # remove this when passenger isn't broken
+  gem "strscan", "3.0.4" # remove this when passenger isn't broken
 end
 
 group :development, :test do
