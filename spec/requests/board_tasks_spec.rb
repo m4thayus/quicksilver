@@ -24,8 +24,7 @@ RSpec.describe "Board Tasks", type: :request, user: :engineer do
       subject { get board_task_path(board, id: :id) }
 
       it "returns http not found" do
-        subject
-        expect(response).to have_http_status(:not_found)
+        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end
@@ -55,7 +54,7 @@ RSpec.describe "Board Tasks", type: :request, user: :engineer do
       let(:owner) { create(:user) }
 
       before do
-        params[:task].merge!(owner: { email: owner.email })
+        params[:task].merge!(owner_id: owner.id)
       end
 
       it "returns http success" do
@@ -92,7 +91,7 @@ RSpec.describe "Board Tasks", type: :request, user: :engineer do
   describe "PUT /boards/:board_name/task/:id" do
     subject { put board_task_path(board, task), params: params }
 
-    let(:task) { create(:task) }
+    let(:task) { create(:task, board: board) }
     let(:params) { { task: { title: "new title" } } }
 
     it "returns http success" do
@@ -106,9 +105,9 @@ RSpec.describe "Board Tasks", type: :request, user: :engineer do
 
     context "when an owner is set" do
       let(:owner) { create(:user) }
-      let(:params) { { task: { owner: { email: owner.email } } } }
+      let(:params) { { task: { owner_id: owner.id } } }
 
-      let(:task) { create(:task) }
+      let(:task) { create(:task, board: board) }
 
       it "returns http success" do
         subject
@@ -132,7 +131,7 @@ RSpec.describe "Board Tasks", type: :request, user: :engineer do
   describe "DELETE /boards/:board_name/tasks/:id" do
     subject { delete board_task_path(board, task) }
 
-    let!(:task) { create(:task) }
+    let!(:task) { create(:task, board: board) }
 
     it "redirects to index" do
       subject
@@ -147,8 +146,7 @@ RSpec.describe "Board Tasks", type: :request, user: :engineer do
       subject { delete board_task_path(board, id: :id) }
 
       it "returns http not found" do
-        subject
-        expect(response).to have_http_status(:not_found)
+        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end
