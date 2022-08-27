@@ -32,4 +32,4 @@
 en:
   sessions:
     create:
-      failed: "Login failed"
+      failed: "Login failed."
