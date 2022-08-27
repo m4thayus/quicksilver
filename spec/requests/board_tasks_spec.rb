@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "Board Tasks", type: :request, user: :engineer do
+RSpec.describe "Board Tasks", type: :request, user: :engineer_user do
   let(:board) { create(:board) }
 
   describe "GET /boards/:board_name/tasks" do
