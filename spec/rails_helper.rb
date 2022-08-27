@@ -18,21 +18,12 @@ end
 
 RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
-  # If you're not using ActiveRecord, or you'd prefer not to run each of your
-  # examples within a transaction, remove the following line or assign false
-  # instead of true.
-  # config.use_transactional_fixtures = true
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!
 
   config.before(:each, type: :request) do |example|
     role = example.metadata[:user]
-    current_user = case role
-                   when :admin
-                     create(:admin_user)
-                   when :engineer
-                     create(:engineer_user)
-                   end
-    post "/login", params: { user: { email: current_user.email, password: current_user.password } } if current_user.present?
+    current_user = UserHelper.for_role(role)
+    post "/login", params: { user: UserHelper.credentials(current_user) } if current_user.present?
   end
 end
