@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "Tasks", type: :request, user: :engineer do
+RSpec.describe "Tasks", type: :request, user: :engineer_user do
   describe "GET /tasks" do
     it "returns http success" do
       get tasks_path

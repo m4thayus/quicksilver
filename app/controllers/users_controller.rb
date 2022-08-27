@@ -12,9 +12,6 @@ class UsersController < ApplicationController
   end
 
   def edit
-    return if can? :edit, @user
-
-    flash[:notice] = "You do not have permission to edit that user!"
     redirect_to users_path
   end
 

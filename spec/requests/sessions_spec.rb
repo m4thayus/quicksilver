@@ -53,7 +53,7 @@ RSpec.describe "Sessions", type: :request do
 
     it "redirects to users#index" do
       subject
-      expect(response).to redirect_to(users_path)
+      expect(response).to redirect_to(login_path)
     end
 
     it "clears the session" do

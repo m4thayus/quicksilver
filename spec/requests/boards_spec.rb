@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "Boards", type: :request, user: :admin do
+RSpec.describe "Boards", type: :request, user: :admin_user do
   describe "GET /boards" do
     it "is successful" do
       get boards_path

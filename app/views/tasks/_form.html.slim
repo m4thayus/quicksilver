@@ -4,8 +4,9 @@
 = form.label :owner_id, "owner:"
 = form.select :owner_id, User.all.collect {|u| [u.name, u.id] }
 
-= form.label :description, "description:"
-= form.text_area :description, class: "markdown"
+div
+  = form.label :description, "description:"
+  = form.text_area :description, class: "markdown"
 
 = form.label :started_at, "started at:"
 = form.date_field :started_at

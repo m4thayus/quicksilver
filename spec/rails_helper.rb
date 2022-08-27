@@ -22,8 +22,12 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
 
   config.before(:each, type: :request) do |example|
+    next unless example.metadata.key?(:user)
+
     role = example.metadata[:user]
     current_user = UserHelper.for_role(role)
     post "/login", params: { user: UserHelper.credentials(current_user) } if current_user.present?
   end
+
+  config.include UserHelper, type: :feature
 end
