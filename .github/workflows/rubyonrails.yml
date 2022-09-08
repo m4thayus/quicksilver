@@ -7,24 +7,14 @@
 name: "Ruby on Rails CI"
 on:
   push:
-    branches: [ "*" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 jobs:
   test:
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:11-alpine
-        ports:
-          - "5432:5432"
-        env:
-          POSTGRES_DB: rails_test
-          POSTGRES_USER: rails
-          POSTGRES_PASSWORD: password
     env:
       RAILS_ENV: test
-      DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -32,8 +22,12 @@ jobs:
         uses: ruby/setup-ruby@0a29871fe2b0200a17a4497bae54fe5df0d973aa # v1.115.3
         with:
           bundler-cache: true
+      - name: Install esbuild
+        run: npm install esbuild
       - name: Set up database schema
         run: bin/rails db:schema:load
+      - name: Build js and css
+        run: yarn build
       - name: Run tests
         run: bin/rspec
 
