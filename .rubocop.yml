@@ -8,7 +8,7 @@ AllCops:
   Exclude:
     - 'db/schema.rb'
     - 'bin/*'
-    - 'vendor/bundle'
+    - 'vendor/bundle/**/*'
 
 Bundler/OrderedGems:
   Enabled: false
