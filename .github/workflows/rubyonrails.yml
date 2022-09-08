@@ -24,6 +24,8 @@ jobs:
           bundler-cache: true
       - name: Set up database schema
         run: bin/rails db:schema:load
+      - name: Build js and css
+        run: yarn build
       - name: Run tests
         run: bundle exec rspec
 
@@ -37,4 +39,4 @@ jobs:
         with:
           bundler-cache: true
       - name: Lint Ruby files
-        run: bundle exec rubocop --parallel
+        run: rubocop --parallel
