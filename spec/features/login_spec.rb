@@ -26,13 +26,10 @@ RSpec.describe "Login", type: :feature do
   describe "Guest users" do
     let!(:user) { create(:user) }
 
-    it "ends up at the tasks page" do
+    it "redisplays the login page" do
       login_as user
 
-      aggregate_failures("error response") do
-        expect(page).to have_text "You are not authorized"
-        expect(page.status_code).to eq 401
-      end
+      expect(page).to have_current_path login_path
     end
 
     it "fails on bad passwords", :aggregate_failures do
