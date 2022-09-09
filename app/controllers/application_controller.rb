@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from CanCan::AccessDenied do |exception|
-    render status: :unauthorized, plain: exception.message
+    @message = exception.message
+    render "unauthorized", status: :unauthorized
   end
 end
