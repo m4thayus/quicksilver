@@ -3,6 +3,13 @@
 class TasksController < ApplicationController
   before_action :set_board
   load_and_authorize_resource
+  skip_authorize_resource only: :index
+
+  def index
+    authorize! :index, Task
+  rescue CanCan::AccessDenied
+    redirect_to login_path
+  end
 
   def create
     @task.board = @board
