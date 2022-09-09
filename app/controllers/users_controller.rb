@@ -11,10 +11,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def edit
-    redirect_to users_path
-  end
-
   def update
     return redirect_to users_path unless can? :update, @user
 
