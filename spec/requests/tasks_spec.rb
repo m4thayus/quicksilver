@@ -35,7 +35,7 @@ RSpec.describe "Tasks", type: :request, user: :engineer_user do
   end
 
   describe "POST /tasks" do
-    subject { post tasks_path, params: params }
+    subject { post tasks_path, params: }
 
     let(:params) { { task: attributes_for(:task) } }
 
@@ -87,7 +87,7 @@ RSpec.describe "Tasks", type: :request, user: :engineer_user do
   end
 
   describe "PUT /task/:id" do
-    subject { put task_path(task), params: params }
+    subject { put task_path(task), params: }
 
     let(:task) { create(:task) }
     let(:params) { { task: { title: "new title" } } }

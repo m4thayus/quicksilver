@@ -6,7 +6,7 @@ module UserHelper
   end
 
   def self.credentials(user, password = user.password)
-    { email: user.email, password: password }
+    { email: user.email, password: }
   end
 
   def login_as(user, password: user.password)

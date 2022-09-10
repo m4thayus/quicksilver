@@ -37,7 +37,7 @@ RSpec.describe "Board Tasks", type: :request, user: :engineer_user do
   end
 
   describe "POST /boards/:board_name/tasks" do
-    subject { post board_tasks_path(board), params: params }
+    subject { post board_tasks_path(board), params: }
 
     let(:params) { { task: attributes_for(:task) } }
 
@@ -89,9 +89,9 @@ RSpec.describe "Board Tasks", type: :request, user: :engineer_user do
   end
 
   describe "PUT /boards/:board_name/task/:id" do
-    subject { put board_task_path(board, task), params: params }
+    subject { put board_task_path(board, task), params: }
 
-    let(:task) { create(:task, board: board) }
+    let(:task) { create(:task, board:) }
     let(:params) { { task: { title: "new title" } } }
 
     it "returns http success" do
@@ -107,7 +107,7 @@ RSpec.describe "Board Tasks", type: :request, user: :engineer_user do
       let(:owner) { create(:user) }
       let(:params) { { task: { owner_id: owner.id } } }
 
-      let(:task) { create(:task, board: board) }
+      let(:task) { create(:task, board:) }
 
       it "returns http success" do
         subject
@@ -131,7 +131,7 @@ RSpec.describe "Board Tasks", type: :request, user: :engineer_user do
   describe "DELETE /boards/:board_name/tasks/:id" do
     subject { delete board_task_path(board, task) }
 
-    let!(:task) { create(:task, board: board) }
+    let!(:task) { create(:task, board:) }
 
     it "redirects to index" do
       subject
