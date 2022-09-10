@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+  def authorized_users
+    User.all.pluck(:name, :id)
+  end
+
   def markdown
     @markdown ||= begin
                     opts = optionize(%i[with_toc_data hard_wrap gh_blockcode])
@@ -11,6 +15,6 @@ module ApplicationHelper
   end
 
   def optionize(options)
-    options.each_with_object({}) { |option, memo| memo[option] = true }
+    options.index_with { true }
   end
 end

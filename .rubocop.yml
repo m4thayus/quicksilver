@@ -6,8 +6,9 @@ AllCops:
   TargetRubyVersion: 3.1
   NewCops: enable
   Exclude:
-    - 'db/schema.rb'
-    - 'bin/*'
+    - "db/schema.rb"
+    - "bin/*"
+    - "sandbox/*"
     - 'vendor/bundle/**/*'
 
 Bundler/OrderedGems:
@@ -30,7 +31,7 @@ Lint/AmbiguousOperatorPrecedence:
 
 Metrics/BlockLength:
   Exclude:
-    - 'spec/**/*'
+    - "spec/**/*"
 
 Metrics/ClassLength:
   Enabled: false
@@ -41,8 +42,16 @@ Metrics/MethodLength:
 Naming/MethodParameterName:
   Enabled: false
 
+RSpec/ExampleLength:
+  Exclude:
+    - "spec/features/**/*_spec.rb"
+
 RSpec/ExpectChange:
   EnforcedStyle: block
+
+RSpec/MultipleExpectations:
+  Exclude:
+    - "spec/features/**/*_spec.rb"
 
 RSpec/NamedSubject:
   Enabled: false

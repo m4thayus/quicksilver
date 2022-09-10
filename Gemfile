@@ -45,7 +45,7 @@ gem "redcarpet"
 # gem "image_processing", "~> 1.2"
 
 group :production do
-  gem "strscan", "3.0.1" # remove this when passenger isn't broken
+  gem "strscan", "3.0.4" # remove this when passenger isn't broken
 end
 
 group :development, :test do
@@ -54,6 +54,7 @@ group :development, :test do
   gem "rubocop-rspec", require: false
 
   gem "factory_bot_rails"
+  gem "launchy"
 
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[mri mingw x64_mingw]

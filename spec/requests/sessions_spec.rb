@@ -14,7 +14,7 @@ RSpec.describe "Sessions", type: :request do
     let(:current_user) { create(:user) }
 
     context "when password is correct" do
-      subject { post "/login", params: { user: { email: current_user.email, password: current_user.password } } }
+      subject { post "/login", params: { user: UserHelper.credentials(current_user) } }
 
       it "redirects to tasks list" do
         subject
@@ -28,7 +28,7 @@ RSpec.describe "Sessions", type: :request do
     end
 
     context "when password is wrong" do
-      subject { post "/login", params: { user: { email: current_user.email, password: "wrong" } } }
+      subject { post "/login", params: { user: UserHelper.credentials(current_user, "wrong") } }
 
       it "redirects to users#index" do
         subject
@@ -48,12 +48,12 @@ RSpec.describe "Sessions", type: :request do
     let(:current_user) { create(:user) }
 
     before do
-      post "/login", params: { user: { email: current_user.email, password: current_user.password } }
+      post "/login", params: { user: UserHelper.credentials(current_user) }
     end
 
     it "redirects to users#index" do
       subject
-      expect(response).to redirect_to(users_path)
+      expect(response).to redirect_to(login_path)
     end
 
     it "clears the session" do

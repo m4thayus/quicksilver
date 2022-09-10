@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "Tasks", type: :request, user: :engineer do
+RSpec.describe "Tasks", type: :request, user: :engineer_user do
   describe "GET /tasks" do
     it "returns http success" do
       get tasks_path
@@ -19,11 +19,10 @@ RSpec.describe "Tasks", type: :request, user: :engineer do
     end
 
     context "when task does not exist" do
-      subject { get task_path(id: :id) }
+      subject { get task_path(id: 1) }
 
       it "returns http not found" do
-        subject
-        expect(response).to have_http_status(:not_found)
+        expect { subject }.to raise_error ActiveRecord::RecordNotFound
       end
     end
   end
@@ -36,7 +35,7 @@ RSpec.describe "Tasks", type: :request, user: :engineer do
   end
 
   describe "POST /tasks" do
-    subject { post tasks_path, params: params }
+    subject { post tasks_path, params: }
 
     let(:params) { { task: attributes_for(:task) } }
 
@@ -53,7 +52,7 @@ RSpec.describe "Tasks", type: :request, user: :engineer do
       let(:owner) { create(:user) }
 
       before do
-        params[:task].merge!(owner: { email: owner.email })
+        params[:task].merge!(owner_id: owner.id)
       end
 
       it "returns http success" do
@@ -88,7 +87,7 @@ RSpec.describe "Tasks", type: :request, user: :engineer do
   end
 
   describe "PUT /task/:id" do
-    subject { put task_path(task), params: params }
+    subject { put task_path(task), params: }
 
     let(:task) { create(:task) }
     let(:params) { { task: { title: "new title" } } }
@@ -104,7 +103,7 @@ RSpec.describe "Tasks", type: :request, user: :engineer do
 
     context "when an owner is set" do
       let(:owner) { create(:user) }
-      let(:params) { { task: { owner: { email: owner.email } } } }
+      let(:params) { { task: { owner_id: owner.id } } }
 
       let(:task) { create(:task) }
 
@@ -145,8 +144,7 @@ RSpec.describe "Tasks", type: :request, user: :engineer do
       subject { delete task_path(id: :id) }
 
       it "returns http not found" do
-        subject
-        expect(response).to have_http_status(:not_found)
+        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end

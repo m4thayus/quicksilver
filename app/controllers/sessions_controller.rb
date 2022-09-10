@@ -2,18 +2,18 @@
 
 class SessionsController < ApplicationController
   def create
-    current_user = User.find_by(email: login_params[:email]).authenticate(login_params[:password])
+    current_user = User.find_by(email: login_params[:email])&.authenticate(login_params[:password])
     if current_user.present?
       session[:current_user] = current_user.email
       redirect_to tasks_path
     else
-      head :unauthorized
+      render status: :unauthorized, plain: t(".failed")
     end
   end
 
   def destroy
     reset_session
-    redirect_to users_path
+    redirect_to login_path
   end
 
   private
