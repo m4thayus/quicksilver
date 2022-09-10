@@ -5,19 +5,6 @@ require "rails_helper"
 RSpec.describe "tasks/new", type: :view do
   let(:user) { create(:engineer_user) }
 
-  # def without_verifying_partial_doubles
-  #   verify = RSpec::Mocks.configuration.verify_partial_doubles?
-  #   RSpec::Mocks.configuration.verify_partial_doubles = false if verify
-  #   yield
-  #   RSpec::Mocks.configuration.verify_partial_doubles = verify
-  # end
-
-  # before do
-  #   without_verifying_partial_doubles do
-  #     allow(controller).to receive(:current_user).and_return(user)
-  #   end
-  # end
-
   before do
     assign(:task, build(:task))
   end
