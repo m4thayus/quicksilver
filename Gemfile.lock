@@ -291,7 +291,7 @@ GEM
     sshkit (1.21.3)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
-    strscan (3.0.4)
+    strscan (3.0.1)
     temple (0.8.2)
     thor (1.2.1)
     tilt (2.0.11)
@@ -361,7 +361,7 @@ DEPENDENCIES
   spring
   sprockets-rails
   sqlite3 (~> 1.4)
-  strscan (= 3.0.4)
+  strscan (= 3.0.1)
   timecop
   turbo-rails
   tzinfo-data
