@@ -3,13 +3,13 @@ require:
   - rubocop-rspec
 
 AllCops:
-  TargetRubyVersion: 3.0
-  TargetRailsVersion: 6.1
+  TargetRubyVersion: 3.1
   NewCops: enable
   Exclude:
     - "db/schema.rb"
     - "bin/*"
     - "sandbox/*"
+    - 'vendor/bundle/**/*'
 
 Bundler/OrderedGems:
   Enabled: false

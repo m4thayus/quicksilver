@@ -50,6 +50,9 @@ end
 
 group :development, :test do
   gem "rspec-rails"
+  gem "rubocop-rails", require: false
+  gem "rubocop-rspec", require: false
+
   gem "factory_bot_rails"
   gem "launchy"
 
@@ -59,9 +62,6 @@ end
 
 group :development do
   gem "spring"
-
-  gem "rubocop-rails", require: false
-  gem "rubocop-rspec", require: false
 
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
