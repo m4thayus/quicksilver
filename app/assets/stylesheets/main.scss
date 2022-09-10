@@ -33,6 +33,10 @@ form {
     display: block;
     margin-bottom: 1rem;
   }
+  label[for=task_description] + .disabled_field {
+    border: solid black 1px;
+    padding: 0 1rem;
+  }
 }
 
 aside.notice {

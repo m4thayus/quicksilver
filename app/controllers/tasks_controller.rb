@@ -2,10 +2,11 @@
 
 class TasksController < ApplicationController
   before_action :set_board
-  load_and_authorize_resource
-  skip_authorize_resource only: :index
+  load_and_authorize_resource except: :index
+  before_action :associate_board
 
   def index
+    @tasks = Task.where(board: @board)
     authorize! :index, Task
   rescue CanCan::AccessDenied
     redirect_to login_path
@@ -37,6 +38,10 @@ class TasksController < ApplicationController
 
   def set_board
     @board = Board.find_by(name: params[:board_name]) if params[:board_name].present?
+  end
+
+  def associate_board
+    @task.board = @board if @task
   end
 
   def task_params

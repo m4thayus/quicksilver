@@ -29,5 +29,14 @@ RSpec.configure do |config|
     post "/login", params: { user: UserHelper.credentials(current_user) } if current_user.present?
   end
 
+  config.include ViewUserHelper, type: :view
   config.include UserHelper, type: :feature
+
+  config.before(:each, type: :view) do |example|
+    without_verifying_partial_doubles do
+      role = example.metadata[:user]
+      current_user = UserHelper.for_role(role) if role
+      allow(controller).to receive(:current_user).and_return(current_user)
+    end
+  end
 end

@@ -20,12 +20,12 @@ RSpec.describe "tasks/edit", type: :view do
       expect(rendered).to match(/value="#{task.title}"/)
     end
 
-    it "renders a description input" do
+    it "renders a description input", user: :engineer_user do
       render
       expect(rendered).to match(/textarea.*name="task\[description\]"/)
     end
 
-    it "renders the description value" do
+    it "renders the description value", user: :engineer_user do
       render
       expect(rendered).to match(%r{<textarea.*>\s*#{task.description}\s*</textarea>})
     end

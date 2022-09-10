@@ -12,7 +12,8 @@ class Ability
       can :read, Board
       can :read, User
       can :read, Task
-      can %i[create update destroy], Task, board: Board.wishlist
+      can :update, Task, :description
+      can :manage, Task, board: Board.wishlist
     end
 
     if user.engineer?

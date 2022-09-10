@@ -1,21 +1,28 @@
+- @current_action = controller.request.path_parameters[:action].to_sym
+
 = form.label :title, "title:"
-= form.text_field :title, size: "80"
+= form.text_field :title, size: "80", disabled: cannot?(@current_action, @task, :title)
 
 = form.label :owner_id, "owner:"
-= form.select :owner_id, User.all.collect {|u| [u.name, u.id] }
+= form.select :owner_id, authorized_users, {}, disabled: cannot?(@current_action, @task, :owner_id)
 
 div
   = form.label :description, "description:"
-  = form.text_area :description, class: "markdown"
+  - if can?(@current_action, @task, :description)
+    = form.text_area :description, class: "markdown"
+  - elsif @task.description?
+    = form.fields :description do
+      .disabled_field
+        == markdown.render(@task.description)
 
 = form.label :started_at, "started at:"
-= form.date_field :started_at
+= form.date_field :started_at, disabled: cannot?(@current_action, @task, :started_at)
 
 = form.label :expected_at, "expected at:"
-= form.date_field :expected_at
+= form.date_field :expected_at, disabled: cannot?(@current_action, @task, :expected_at)
 
 = form.label :completed_at, "completed at:"
-= form.date_field :completed_at
+= form.date_field :completed_at, disabled: cannot?(@current_action, @task, :completed_at)
 
 = form.submit
 
