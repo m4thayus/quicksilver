@@ -6,7 +6,9 @@ class TasksController < ApplicationController
   before_action :associate_board
 
   def index
-    @tasks = Task.where(board: @board)
+    board_tasks = Task.where(board: @board)
+    @active_tasks = board_tasks.active
+    @recently_completed_tasks = board_tasks.recently_completed
     authorize! :index, Task
   rescue CanCan::AccessDenied
     redirect_to login_path

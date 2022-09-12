@@ -1,43 +1,10 @@
 h1 List of Tasks
 
-table
-  thead
-    - %w[task title point_of_contact started_on expected_on completed_on expected_duration actual_duration delta].each do |header|
-      th
-        = header.titleize
-  tbody
-    - @tasks.each do |task|
-      tr
-        td
-          = task.id
-        td
-          - if @board.present?
-            a href=board_task_path(@board, task)
-              = task.title
-          - else
-            a href=task_path(task)
-              = task.title
-        td
-          = task.owner&.name
-        td
-          = time_tag(task.started_at) if task.started_at.present?
-        td
-          = time_tag(task.expected_at) if task.expected_at.present?
-        td
-          = time_tag(task.completed_at) if task.completed_at.present?
-        td
-          - if task.expected_at.present? && task.started_at.present?
-            = distance_of_time_in_words(task.expected_at, task.started_at)
-        td
-          - if task.completed_at.present? && task.started_at.present?
-            = distance_of_time_in_words(task.completed_at, task.started_at)
-        td
-          - if task.completed_at.present? && task.expected_at.present?
-            = distance_of_time_in_words(task.completed_at, task.expected_at)
-            - if task.completed_at > task.expected_at
-              '  over
-            - else
-              '  under
+- unless @active_tasks.empty?
+  = render "table", board: @board, tasks: @active_tasks, caption: "Active", show_statistics: false
+
+- unless @recently_completed_tasks.empty?
+  = render "table", board: @board, tasks: @recently_completed_tasks, caption: "Recently Completed", show_statistics: true
 
 - if @board.present?
   = button_to "New Task", new_board_task_path(@board), method: :get

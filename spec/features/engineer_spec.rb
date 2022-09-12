@@ -15,7 +15,7 @@ RSpec.describe "Engineer", type: :feature do
     create_list(:task, 3)
     visit current_path
 
-    expect(page.all("tr").length).to eq 3
+    expect(page.all("tr").size).to eq 3
   end
 
   it "creates new tasks" do

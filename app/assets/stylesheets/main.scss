@@ -7,6 +7,11 @@ table {
   border-collapse: collapse;
   border: thin solid;
   margin-bottom: 1rem;
+  caption {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 0.75rem;
+  }
   th, td {
     border: thin solid;
     padding: 0.5rem;
