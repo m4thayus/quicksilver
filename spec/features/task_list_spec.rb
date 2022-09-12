@@ -13,18 +13,18 @@ RSpec.describe "Task List", type: :feature do
   it "shows all the tasks" do
     visit tasks_path
 
-    expect(page.all("tr").length).to eq 6
+    expect(page.all("tr").size).to eq 6
   end
 
   it "shows the active tasks" do
     visit tasks_path
 
-    expect(page.all("table:first-of-type tr").length).to eq 3
+    expect(page.all("table:first-of-type tr").size).to eq 3
   end
 
   it "shows the recently completed tasks" do
     visit tasks_path
 
-    expect(page.all("table:last-of-type tr").length).to eq 3
+    expect(page.all("table:last-of-type tr").size).to eq 3
   end
 end
