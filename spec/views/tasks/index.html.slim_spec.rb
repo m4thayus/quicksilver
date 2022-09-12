@@ -12,7 +12,8 @@ RSpec.describe "tasks/index", type: :view do
   end
 
   before do
-    assign(:tasks, tasks)
+    assign(:active_tasks, tasks)
+    assign(:recently_completed_tasks, [])
   end
 
   describe "the first task" do
