@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe "Task List", type: :feature do
   before do
-    login_as UserHelper.for_role(:engineer_user)
+    login_as :engineer_user
 
     create_list(:task, 3, completed_at: nil)
     create_list(:task, 3, completed_at: 3.days.ago)

@@ -9,16 +9,19 @@ module UserHelper
     { email: user.email, password: }
   end
 
-  def login_as(user, password: user.password)
-    email = if user.acts_like? :string
-              User.find_by(email: user)&.email || user
-            else
-              user.email
-            end
+  def login_as(user_selector, password: nil)
+    user = if user_selector.is_a? Symbol
+             UserHelper.for_role(user_selector)
+           elsif user_selector.acts_like? :string
+             build(:user, email: user_selector)
+           else
+             user_selector
+           end
+    user.password = password if password.present?
 
     visit login_path
-    fill_in "email", with: email
-    fill_in "password", with: password
+    fill_in "email", with: user.email
+    fill_in "password", with: user.password
     click_button "Login"
   end
 

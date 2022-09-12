@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe "Engineer", type: :feature do
   before do
-    login_as UserHelper.for_role(:engineer_user)
+    login_as :engineer_user
   end
 
   it "starts at the tasks page" do
