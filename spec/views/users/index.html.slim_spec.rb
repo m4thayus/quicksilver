@@ -3,9 +3,7 @@
 require "rails_helper"
 
 RSpec.describe "users/index", type: :view do
-  let(:users) do
-    [0..2].map { create(:user) }
-  end
+  let(:users) { create_list(:user, 3) }
 
   before do
     assign(:users, users)

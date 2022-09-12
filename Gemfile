@@ -50,7 +50,11 @@ end
 
 group :development, :test do
   gem "rspec-rails"
+  gem "rubocop-rails", require: false
+  gem "rubocop-rspec", require: false
+
   gem "factory_bot_rails"
+  gem "launchy"
 
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[mri mingw x64_mingw]
@@ -58,9 +62,6 @@ end
 
 group :development do
   gem "spring"
-
-  gem "rubocop-rails", require: false
-  gem "rubocop-rspec", require: false
 
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"

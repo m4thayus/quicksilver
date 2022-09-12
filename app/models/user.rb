@@ -17,10 +17,10 @@ class User < ApplicationRecord
   end
 
   def engineer?
-    ENGINEERS.include?(email)
+    ENGINEERS.include?(email) || admin?
   end
 
   def member?
-    MEMBERS.include?(email)
+    MEMBERS.include?(email) || engineer?
   end
 end

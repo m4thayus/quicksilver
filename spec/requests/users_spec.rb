@@ -2,21 +2,21 @@
 
 require "rails_helper"
 
-RSpec.describe "Users", type: :request do
+RSpec.describe "Users", type: :request, user: :admin_user do
   describe "GET /index" do
     it "returns http success" do
       get "/users"
-      expect(response).to have_http_status(:found)
+      expect(response).to have_http_status(:success)
     end
 
-    context "when an admin", user: :admin do
+    context "when an admin", user: :admin_user do
       it "returns http success" do
         get "/users"
         expect(response).to have_http_status(:success)
       end
     end
 
-    context "when an engineer", user: :engineer do
+    context "when an engineer", user: :engineer_user do
       it "returns http success" do
         get "/users"
         expect(response).to have_http_status(:success)
