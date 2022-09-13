@@ -9,5 +9,7 @@ pre-push:
   commands:
     audit:
       run: bin/brakeman --no-pager
+    bundle-audit:
+      run: bin/bundle-audit check --update
     rspec:
       run: bin/rspec

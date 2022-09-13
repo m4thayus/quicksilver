@@ -72,6 +72,9 @@ group :development do
   # Static analysis tool to check for security vulnerabilities
   gem "brakeman"
 
+  # Patch-level verification for bundler
+  gem "bundler-audit"
+
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
 
