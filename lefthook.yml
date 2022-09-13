@@ -7,7 +7,7 @@ pre-commit:
 pre-push:
   parallel: true
   commands:
-    # audit:
-    #   run: brakeman --no-pager
+    audit:
+      run: bin/brakeman --no-pager
     rspec:
       run: bin/rspec

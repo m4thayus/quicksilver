@@ -69,6 +69,9 @@ group :development do
   # Run linting and spec Git hooks
   gem "lefthook"
 
+  # Static analysis tool to check for security vulnerabilities
+  gem "brakeman"
+
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
 
