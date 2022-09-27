@@ -27,4 +27,10 @@ RSpec.describe "Task List", type: :feature do
 
     expect(page.all("table:last-of-type tr").size).to eq 3
   end
+
+  it "shows a column for approved" do
+    visit tasks_path
+
+    expect(page).to have_text "Approved"
+  end
 end

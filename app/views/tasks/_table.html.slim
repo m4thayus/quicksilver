@@ -2,7 +2,7 @@ table
   caption
     = caption
   thead
-    - %w[task title point_of_contact started_on expected_on expected_duration].each do |header|
+    - %w[task title point_of_contact started_on expected_on expected_duration approved].each do |header|
       th
         = header.titleize
     - if show_statistics
@@ -30,6 +30,11 @@ table
         td
           - if task.expected_at.present? && task.started_at.present?
             = distance_of_time_in_words(task.expected_at, task.started_at)
+        td
+          - if task.approved
+            ' yes
+          - else
+            ' no
         - if show_statistics.present?
           td
             = time_tag(task.completed_at) if task.completed_at.present?
