@@ -24,8 +24,8 @@ RSpec.describe Task, type: :model do
   describe "approved" do
     let(:new_task) { create(:task) }
 
-    it "instantiates to false" do
-      expect(new_task.approved).to be(false)
+    it "instantiates to nil" do
+      expect(new_task.approved).to be_nil
     end
 
     it "can be updated to be true" do

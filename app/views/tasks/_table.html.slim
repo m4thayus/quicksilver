@@ -1,4 +1,6 @@
 / TODO: Reorganize table structure
+- @current_action = controller.request.path_parameters[:action].to_sym
+
 table
   caption
     = caption
@@ -10,10 +12,10 @@ table
       - %w[completed_on actual_duration delta].each do |header|
         th
           = header.titleize
-    - elsif board.present?
+    - elsif board.present? && can?(@current_action, @task, :title)
         th
-          ' Approved for Promotion
-    - else
+          ' Promote?
+    - elsif !board.present?
         th
           ' Approved for Deployment
   tbody
@@ -50,7 +52,7 @@ table
                 '  over
               - else
                 '  under
-        - else
+        - elsif !@board.present?
           td
             - if task.approved
               span.approved
@@ -58,3 +60,7 @@ table
             - else
               span.pending
               '  ✕
+        - elsif board.present? && can?(@current_action, @task, :title)
+          td
+            button
+              'Promote
