@@ -21,6 +21,9 @@ div
 = form.label :expected_at, "expected at:"
 = form.date_field :expected_at, disabled: cannot?(@current_action, @task, :expected_at)
 
+= form.label :approved, "approved:"
+= form.check_box :approved
+
 = form.label :completed_at, "completed at:"
 = form.date_field :completed_at, disabled: cannot?(@current_action, @task, :completed_at)
 
