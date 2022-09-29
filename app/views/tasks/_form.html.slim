@@ -5,6 +5,7 @@
 
 = form.label :owner_id, "owner:"
 = form.select :owner_id, authorized_users, { :include_blank => true }, disabled: cannot?(@current_action, @task, :owner_id)
+= form.select :owner_id, authorized_users, { :include_blank => true }, disabled: cannot?(@current_action, @task, :owner_id)
 
 div
   = form.label :description, "description:"
