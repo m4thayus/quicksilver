@@ -7,6 +7,8 @@ table {
   border-collapse: collapse;
   border: thin solid;
   margin-bottom: 1rem;
+  .approved { color: green }
+  .pending { color: red }
   caption {
     font-size: 1.25rem;
     font-weight: bold;
