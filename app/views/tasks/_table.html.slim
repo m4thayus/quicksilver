@@ -1,4 +1,3 @@
-/ TODO: Reorganize table structure
 - @current_action = controller.request.path_parameters[:action].to_sym
 
 table
@@ -56,11 +55,13 @@ table
           td
             - if task.approved
               span.approved
-                '  ✓
+                '✓
             - else
               span.pending
-              '  ✕
-        - elsif board.present? && can?(@current_action, @task, :title)
+                '✕
+        - elsif board.present? && can?(@current_action, task, :title)
           td
-            button
-              'Promote
+            = form_with model: task do |form|
+              = form.hidden_field :approved, value: false
+              = form.hidden_field :board, value: nil
+              = form.submit "Promote"

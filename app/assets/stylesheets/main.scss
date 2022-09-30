@@ -7,6 +7,10 @@ table {
   border-collapse: collapse;
   border: thin solid;
   margin-bottom: 1rem;
+  .approved, .pending {
+    display: block;
+    text-align: center;
+  }
   .approved { color: green }
   .pending { color: red }
   caption {
@@ -25,10 +29,17 @@ table {
       }
     }
   }
+  input[type=submit] {
+    display: block;
+    background: green;
+    padding: 5px;
+    margin: 0px;
+    text-align: center;
+    color: white;
+  }
 }
 
 form {
-  margin-bottom: 1rem;
   label {
     text-transform: capitalize;
   }
