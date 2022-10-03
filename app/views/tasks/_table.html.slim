@@ -12,7 +12,7 @@ table
     - if @board && @board.name == "wishlist"
       th
         ' Approved for promotion from wishlist to active tasks
-    - else
+    - elsif !show_statistics
       th
         ' Approved for and awaiting Deployment
   tbody
@@ -49,10 +49,11 @@ table
                 '  over
               - else
                 '  under
-        td
-          - if task.approved
-            span.approved
-              '✓
-          - else
-            span.pending
-              '✕
+        - unless show_statistics
+          td
+            - if task.approved
+              span.approved
+                '✓
+            - else
+              span.pending
+                '✕
