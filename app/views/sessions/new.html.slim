@@ -1,9 +1,9 @@
 h1 Login
 = form_with model: User.new, url: login_path do |form|
   = form.label :email, "email:"
-  = form.email_field :email
+  = form.email_field :email, size: 30
 
   = form.label :password, "password:"
-  = form.password_field :password
+  = form.password_field :password, size: 30
 
   = form.submit value: "Login"
