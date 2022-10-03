@@ -32,15 +32,5 @@ RSpec.describe Task, type: :model do
       subject.approved = true
       expect(subject.approved).to be(true)
     end
-
-    context "when completed" do
-      before do
-        subject.update(completed_at: 3.days.ago)
-      end
-
-      it "is automatically set to true" do
-        expect(subject.reload.approved).to be(true)
-      end
-    end
   end
 end
