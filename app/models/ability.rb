@@ -13,7 +13,7 @@ class Ability
       can :read, User
       can :read, Task
       can :update, Task, :description
-      can :manage, Task, board: Board.wishlist
+      can %i[update create], Task, %i[description title owner_id approved], board: Board.wishlist
     end
 
     if user.engineer?
