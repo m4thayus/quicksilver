@@ -47,7 +47,7 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    @task_params ||= params.require(:task).permit(:title, :description, :started_at, :expected_at, :approved, :completed_at, :owner_id)
+    @task_params ||= params.require(:task).permit(:title, :description, :started_at, :expected_at, :approved, :board_id, :completed_at, :owner_id)
   end
 
   def board_path

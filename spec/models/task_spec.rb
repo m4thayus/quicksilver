@@ -28,9 +28,16 @@ RSpec.describe Task, type: :model do
       expect(subject.approved).to be false
     end
 
-    it "can be updated to be true" do
-      subject.approved = true
-      expect(subject.approved).to be(true)
+    context "when board changes" do
+      let(:previously_approved_task) { create(:task, approved: true) }
+
+      before do
+        previously_approved_task.update(board: create(:wishlist))
+      end
+
+      it "resets approved to false" do
+        expect(previously_approved_task.approved).to be(false)
+      end
     end
   end
 end

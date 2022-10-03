@@ -5,6 +5,11 @@ module ApplicationHelper
     User.all.pluck(:name, :id)
   end
 
+  def board_options
+    boards = Board.all.pluck(:name, :id)
+    boards << ["Default", nil]
+  end
+
   def markdown
     @markdown ||= begin
                     opts = optionize(%i[with_toc_data hard_wrap gh_blockcode])
