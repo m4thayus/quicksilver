@@ -9,10 +9,8 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true
 
   ADMINISTRATORS = %w[scottb mattw].map { |u| "#{u}@mercuryanalytics.com" }.freeze
-  ENGINEERS = %w[peterv deepthie elizabethk jamesa biancac amitp].map { |u| "#{u}@mercuryanalytics.com" }.freeze
-  MEMBERS = %w[ronh jail zoef].map { |u| "#{u}@mercuryanalytics.com" }.freeze
-  # ENGINEERS = %w[peterv deepthie elizabethk jamesa zoef biancac amitp].map { |u| "#{u}@mercuryanalytics.com" }.freeze
-  # MEMBERS = %w[ronh jail].map { |u| "#{u}@mercuryanalytics.com" }.freeze
+  ENGINEERS = %w[peterv deepthie elizabethk jamesa zoef biancac amitp].map { |u| "#{u}@mercuryanalytics.com" }.freeze
+  MEMBERS = %w[ronh jail].map { |u| "#{u}@mercuryanalytics.com" }.freeze
 
   def admin?
     ADMINISTRATORS.include?(email)
