@@ -21,16 +21,26 @@ RSpec.describe Task, type: :model do
     expect(described_class.recently_completed.count).to eq(1)
   end
 
-  describe "approved" do
-    let(:new_task) { create(:task) }
+  describe "approved property" do
+    subject { create(:task) }
 
     it "instantiates to false" do
-      expect(new_task.approved).to be false
+      expect(subject.approved).to be false
     end
 
     it "can be updated to be true" do
-      new_task.approved = true
-      expect(new_task.approved).to be(true)
+      subject.approved = true
+      expect(subject.approved).to be(true)
+    end
+
+    context "when completed" do
+      before do
+        subject.update(completed_at: 3.days.ago)
+      end
+
+      it "is automatically set to true" do
+        expect(subject.reload.approved).to be(true)
+      end
     end
   end
 end

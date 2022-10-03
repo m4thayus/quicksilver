@@ -1,5 +1,3 @@
-- @current_action = controller.request.path_parameters[:action].to_sym
-
 table
   caption
     = caption
@@ -11,12 +9,12 @@ table
       - %w[completed_on actual_duration delta].each do |header|
         th
           = header.titleize
-    - elsif board.present? && can?(@current_action, @task, :title)
-        th
-          ' Promote?
-    - elsif !board.present?
-        th
-          ' Approved
+    - if @board && @board.name == "wishlist"
+      th
+        ' Approved for promotion from wishlist to active tasks
+    - else
+      th
+        ' Approved for and awaiting Deployment
   tbody
     - tasks.each do |task|
       tr
@@ -51,17 +49,10 @@ table
                 '  over
               - else
                 '  under
-        - elsif !@board.present?
-          td
-            - if task.approved
-              span.approved
-                '✓
-            - else
-              span.pending
-                '✕
-        - elsif board.present? && can?(@current_action, @task, :title)
-          td
-            = form_with model: task do |form|
-              = form.hidden_field :approved, value: false
-              = form.hidden_field :board, value: nil
-              = form.submit "Promote"
+        td
+          - if task.approved
+            span.approved
+              '✓
+          - else
+            span.pending
+              '✕

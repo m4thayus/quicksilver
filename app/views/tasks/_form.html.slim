@@ -22,7 +22,10 @@ div
 = form.date_field :expected_at, disabled: cannot?(@current_action, @task, :expected_at)
 
 = form.label :approved, "approved:"
-= form.check_box :approved
+= form.check_box :approved, disabled: cannot?(@current_action, @task, :approved)
+
+= form.label :board_id, "board:"
+= form.select :board_id, Board.all.pluck(:name, :id), { include_blank: true }, disabled: cannot?(@current_action, @task, :owner_id)
 
 = form.label :completed_at, "completed at:"
 = form.date_field :completed_at, disabled: cannot?(@current_action, @task, :completed_at)
