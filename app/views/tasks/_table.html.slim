@@ -16,7 +16,7 @@ table
           ' Promote?
     - elsif !board.present?
         th
-          ' Approved for Deployment
+          ' Approved
   tbody
     - tasks.each do |task|
       tr
@@ -59,7 +59,7 @@ table
             - else
               span.pending
                 '✕
-        - elsif board.present? && can?(@current_action, task, :title)
+        - elsif board.present? && can?(@current_action, @task, :title)
           td
             = form_with model: task do |form|
               = form.hidden_field :approved, value: false

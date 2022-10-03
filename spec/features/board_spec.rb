@@ -54,8 +54,7 @@ RSpec.describe Board, type: :feature do
       visit "/boards/#{wishlist_board.name}/tasks"
     end
 
-    # FIXME: This is not longer passing
-    xit "shows buttons for promotion of wishlist" do
+    it "shows buttons for promotion of wishlist" do
       expect(page).to_not have_button "Promote"
     end
   end
