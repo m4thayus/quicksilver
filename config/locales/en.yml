@@ -33,3 +33,10 @@ en:
   sessions:
     create:
       failed: "Login failed."
+  activerecord:
+    errors:
+      models:
+        task:
+          attributes:
+            size:
+              inclusion: "\"%{value}\" is not a valid size"

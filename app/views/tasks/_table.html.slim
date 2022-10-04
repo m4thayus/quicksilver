@@ -2,7 +2,7 @@ table
   caption
     = caption
   thead
-    - %w[task title point_of_contact started_on expected_on expected_duration].each do |header|
+    - %w[task title size point_of_contact started_on expected_on expected_duration].each do |header|
       th
         = header.titleize
     - if show_statistics
@@ -21,6 +21,8 @@ table
           - else
             a href=task_path(task)
               = task.title
+        td
+          = task.size&.humanize
         td
           = task.owner&.name
         td

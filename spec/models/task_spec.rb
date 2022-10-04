@@ -20,4 +20,16 @@ RSpec.describe Task, type: :model do
     create(:task, completed_at: 3.days.ago)
     expect(described_class.recently_completed.count).to eq(1)
   end
+
+  it "allows valid sizes" do
+    expect(build(:task, size: "small")).to be_valid
+  end
+
+  it "does not allow invalid sizes" do
+    expect(build(:task, size: "invalid")).to_not be_valid
+  end
+
+  it "uses the custom size error message" do
+    expect { create(:task, size: "invalid") }.to raise_error(ActiveRecord::RecordInvalid, /"invalid"/)
+  end
 end

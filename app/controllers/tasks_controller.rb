@@ -47,7 +47,11 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    @task_params ||= params.require(:task).permit(:title, :description, :started_at, :expected_at, :completed_at, :owner_id)
+    @task_params ||= begin
+                       ps = params.require(:task).permit(:title, :description, :owner_id, :size, :started_at, :expected_at, :completed_at)
+                       ps[:size] = nil if ps[:size].blank?
+                       ps
+                     end
   end
 
   def board_path
