@@ -7,7 +7,7 @@ module ApplicationHelper
 
   def board_options
     boards = Board.all.pluck(:name, :id)
-    boards << [Board::DEFAULT_BOARD_NAME, nil]
+    boards << [Board::BLANK_BOARD, nil]
   end
 
   def markdown
