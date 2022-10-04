@@ -3,8 +3,8 @@
 h1 List of Tasks
 
 - unless @active_tasks.empty?
-  h2
-    - if @board
+  - if @board
+    h2
       = @board.name
 
   = render "table", board: @board, tasks: @active_tasks, caption: "Active", show_statistics: false

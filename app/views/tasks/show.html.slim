@@ -2,7 +2,10 @@ h1
   = @task.title
 h3
   ' Owner:
-  = @task.owner&.name
+  = @task.owner&.name || "none"
+h3
+  ' Board:
+  == @task.board&.name || "none"
 p
   == markdown.render(@task.description)
 p
