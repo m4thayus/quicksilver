@@ -1,3 +1,5 @@
+- @current_action = controller.request.path_parameters[:action].to_sym
+
 h1 List of Tasks
 
 - unless @active_tasks.empty?
@@ -13,4 +15,4 @@ h1 List of Tasks
 - if @board.present?
   = button_to "New Task", new_board_task_path(@board), method: :get
 - else
-  = button_to "New Task", new_task_path, method: :get
+  = button_to "New Task", new_task_path, method: :get, disabled: cannot?(@current_action, @task)

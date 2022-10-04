@@ -3,7 +3,7 @@
 class Ability
   include CanCan::Ability
 
-  def initialize(user)
+  def initialize(user) # rubocop:disable Metrics/AbcSize
     return if user.blank?
 
     can :manage, user
@@ -13,7 +13,9 @@ class Ability
       can :read, User
       can :read, Task
       can :update, Task, :description
-      can %i[update create], Task, %i[description title owner_id approved], board: Board.wishlist
+      can :manage, Task, board: Board.wishlist
+      cannot :update, Task, %i[started_at expected_at completed_at board_id]
+      cannot :create, Task, %i[started_at expected_at completed_at board_id]
     end
 
     if user.engineer?
