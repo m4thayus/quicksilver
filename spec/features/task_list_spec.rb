@@ -9,8 +9,9 @@ RSpec.describe "Task List", type: :feature do
 
   context "when visiting index of tasks without board" do
     before do
-      create_list(:task, 3, completed_at: nil)
+      create_list(:task, 2, completed_at: nil)
       create_list(:task, 3, completed_at: 3.days.ago)
+      create(:task, title: "Boardless Task")
     end
 
     it "shows all the tasks" do
@@ -36,13 +37,20 @@ RSpec.describe "Task List", type: :feature do
 
       expect(page).to have_text "Reviewed"
     end
+
+    it "shows tasks without a board" do
+      visit tasks_path
+
+      expect(page).to have_text "Boardless Task"
+    end
   end
 
   context "when visiting wishlist board" do
     let(:wishlist) { create(:wishlist) }
 
     before do
-      create_list(:task, 3, board: wishlist)
+      create_list(:task, 2, board: wishlist)
+      create(:task, title: "Wishlist Task", board: wishlist)
     end
 
     it "shows all the wishlist tasks" do
@@ -55,6 +63,18 @@ RSpec.describe "Task List", type: :feature do
       visit board_tasks_path(wishlist)
 
       expect(page).to have_text "Approved"
+    end
+
+    it "shows tasks belonging to the wishlist board" do
+      visit board_tasks_path(wishlist)
+
+      expect(page).to have_text "Wishlist Task"
+    end
+
+    it "does not show tasks that don't belong to the wishlist board" do
+      visit tasks_path
+
+      expect(page).to_not have_text "Boardless Task"
     end
   end
 end
