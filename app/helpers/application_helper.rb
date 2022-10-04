@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
-  DEFAULT_NAME = "default"
-
   def authorized_users
     User.all.pluck(:name, :id)
   end
 
   def board_options
     boards = Board.all.pluck(:name, :id)
-    boards << [DEFAULT_NAME, nil]
+    boards << [Board::DEFAULT_BOARD_NAME, nil]
   end
 
   def markdown
