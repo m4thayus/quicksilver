@@ -4,8 +4,6 @@ h1 List of Tasks
   h2
     - if @board
       = @board.name
-    - else
-      ' Engineering Team Board
 
   = render "table", board: @board, tasks: @active_tasks, caption: "Active", show_statistics: false
 

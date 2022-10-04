@@ -11,10 +11,10 @@ table
           = header.titleize
     - if @board && @board.name == "wishlist"
       th
-        ' Approved for promotion from wishlist to active tasks
+        ' Approved
     - elsif !show_statistics
       th
-        ' Approved for and awaiting Deployment
+        ' Reviewed
   tbody
     - tasks.each do |task|
       tr
