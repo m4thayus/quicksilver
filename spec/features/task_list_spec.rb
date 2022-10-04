@@ -31,6 +31,6 @@ RSpec.describe "Task List", type: :feature do
   it "shows a column for approved" do
     visit tasks_path
 
-    expect(page).to have_text "Approved"
+    expect(page).to have_text "Reviewed"
   end
 end

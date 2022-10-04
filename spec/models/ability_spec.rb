@@ -24,14 +24,39 @@ RSpec.describe Ability, type: :model do
     let(:wishlist_task) { create(:task, board: wishlist) }
 
     it { expect(task.board).to be_nil }
+
     it { is_expected.to be_able_to(:index, wishlist) }
     it { is_expected.to be_able_to(:read, user) }
     it { is_expected.to be_able_to(:read, other_user) }
     it { is_expected.to be_able_to(:read, task) }
+    it { is_expected.to be_able_to(:manage, wishlist_task) }
+    it { is_expected.to be_able_to(:create, build(:task, board: wishlist)) }
+    it { is_expected.to be_able_to(:update, wishlist_task, :title) }
+    it { is_expected.to be_able_to(:update, wishlist_task, :owner_id) }
+    it { is_expected.to be_able_to(:update, wishlist_task, :description) }
+    it { is_expected.to be_able_to(:update, wishlist_task, :approved) }
     it { is_expected.to_not be_able_to(:manage, task) }
-    # FIXME: this is broken now
-    # it { is_expected.to be_able_to(:create, Task, build(:task, board: wishlist)) }
-    it { is_expected.to be_able_to(:update, wishlist_task) }
+    it { is_expected.to_not be_able_to(:create, build(:task), :title) }
+    it { is_expected.to_not be_able_to(:create, build(:task), :owner_id) }
+    it { is_expected.to_not be_able_to(:create, build(:task), :description) }
+    it { is_expected.to_not be_able_to(:create, build(:task), :started_at) }
+    it { is_expected.to_not be_able_to(:create, build(:task), :expected_at) }
+    it { is_expected.to_not be_able_to(:create, build(:task), :board_id) }
+    it { is_expected.to_not be_able_to(:create, build(:task), :completed_at) }
+    it { is_expected.to_not be_able_to(:create, build(:task), :approved) }
+    it { is_expected.to_not be_able_to(:update, build(:task), :started_at) }
+    it { is_expected.to_not be_able_to(:update, build(:task), :expected_at) }
+    it { is_expected.to_not be_able_to(:update, build(:task), :board_id) }
+    it { is_expected.to_not be_able_to(:update, build(:task), :completed_at) }
+    it { is_expected.to_not be_able_to(:update, build(:task), :approved) }
+    it { is_expected.to_not be_able_to(:create, build(:task, board: wishlist), :started_at) }
+    it { is_expected.to_not be_able_to(:create, build(:task, board: wishlist), :expected_at) }
+    it { is_expected.to_not be_able_to(:create, build(:task, board: wishlist), :completed_at) }
+    it { is_expected.to_not be_able_to(:create, build(:task, board: wishlist), :board_id) }
+    it { is_expected.to_not be_able_to(:update, wishlist_task, :started_at) }
+    it { is_expected.to_not be_able_to(:update, wishlist_task, :expected_at) }
+    it { is_expected.to_not be_able_to(:update, wishlist_task, :completed_at) }
+    it { is_expected.to_not be_able_to(:update, wishlist_task, :board_id) }
   end
 
   context "when the user is an engineer" do
