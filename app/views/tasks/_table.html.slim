@@ -51,9 +51,4 @@ table
                 '  under
         - unless show_statistics
           td
-            - if task.approved
-              span.approved
-                '✓
-            - else
-              span.pending
-                '✕
+            input class="approved" type="checkbox" checked=task.approved

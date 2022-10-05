@@ -8,10 +8,10 @@ RSpec.describe "Task List", type: :feature do
   end
 
   context "when visiting index of tasks without board" do
+    let!(:boardless_list) { create_list(:task, 3, completed_at: nil) }
+
     before do
-      create_list(:task, 2, completed_at: nil)
       create_list(:task, 3, completed_at: 3.days.ago)
-      create(:task, title: "Boardless Task")
     end
 
     it "shows all the tasks" do
@@ -41,7 +41,7 @@ RSpec.describe "Task List", type: :feature do
     it "shows tasks without a board" do
       visit tasks_path
 
-      expect(page).to have_text "Boardless Task"
+      expect(page).to have_text boardless_list.first.title
     end
   end
 

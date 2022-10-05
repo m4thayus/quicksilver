@@ -1,12 +1,12 @@
 - @current_action = controller.request.path_parameters[:action].to_sym
 
-h1 List of Tasks
+h1
+  - if @board.present?
+    = @board.name
+  - else
+    ' List of Tasks
 
 - unless @active_tasks.empty?
-  - if @board
-    h2
-      = @board.name
-
   = render "table", board: @board, tasks: @active_tasks, caption: "Active", show_statistics: false
 
 - unless @recently_completed_tasks.empty?

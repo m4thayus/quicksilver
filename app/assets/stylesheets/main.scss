@@ -7,16 +7,17 @@ table {
   border-collapse: collapse;
   border: thin solid;
   margin-bottom: 1rem;
-  .approved, .pending {
-    display: block;
-    text-align: center;
-  }
-  .approved { color: green }
-  .pending { color: red }
   caption {
     font-size: 1.25rem;
     font-weight: bold;
     margin-bottom: 0.75rem;
+  }
+  td:has(.approved) {
+    text-align: center;
+    input[type="checkbox"] {
+      pointer-events: none;
+      accent-color: #059033;
+    }
   }
   th, td {
     border: thin solid;
