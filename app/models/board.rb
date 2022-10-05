@@ -8,7 +8,6 @@ class Board < ApplicationRecord
   validates :name, presence: true, uniqueness: true
 
   WISHLIST_SLUG = "wishlist"
-  BLANK_BOARD = "default"
 
   def self.wishlist
     Board.find_by(name: WISHLIST_SLUG)
