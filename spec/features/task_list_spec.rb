@@ -38,7 +38,7 @@ RSpec.describe "Task List", type: :feature do
 
   context "when visiting wishlist board" do
     let(:wishlist) { create(:wishlist) }
-    let!(:wishlist_list) { create_list(:task, 3, title: "Wishlist Task", board: wishlist) }
+    let!(:wishlist_list) { create_list(:task, 3, title: "Wishlist Task", board: wishlist, completed_at: nil) }
 
     before do
       visit board_tasks_path(wishlist)
