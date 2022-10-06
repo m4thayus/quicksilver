@@ -6,7 +6,7 @@ h1
   - else
     ' List of Tasks
 
-- unless @active_tasks.empty?
+- unless @active_tasks.blank?
   = render "table", board: @board, tasks: @active_tasks, caption: "Active", show_statistics: false
 
 - unless @recently_completed_tasks.empty?
