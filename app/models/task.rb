@@ -6,9 +6,11 @@ class Task < ApplicationRecord
   belongs_to :board, optional: true
   belongs_to :owner, class_name: "User", optional: true
 
+  before_validation :nillify_size
+  before_save :update_approved
+
   validates :title, presence: true
   validates :size, inclusion: { in: SIZES }, allow_nil: true
-  before_validation :nillify_size
 
   scope :active, -> { where(completed_at: nil) }
   scope :recently_completed, -> { where("completed_at > ?", 1.week.ago) }
@@ -17,5 +19,9 @@ class Task < ApplicationRecord
 
   def nillify_size
     self.size = nil if size&.empty? # rubocop:disable Lint/SafeNavigationWithEmpty
+  end
+
+  def update_approved
+    self.approved = false if board_changed?
   end
 end

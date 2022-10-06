@@ -9,6 +9,12 @@ table
       - %w[completed_on actual_duration delta].each do |header|
         th
           = header.titleize
+    - if @board && @board&.name
+      th
+        ' Approved
+    - elsif !show_statistics
+      th
+        ' Reviewed
   tbody
     - tasks.each do |task|
       tr
@@ -45,3 +51,6 @@ table
                 '  over
               - else
                 '  under
+        - unless show_statistics
+          td.approved
+            input type="checkbox" checked=task.approved readonly="readonly"

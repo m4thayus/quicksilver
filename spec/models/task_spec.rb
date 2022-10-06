@@ -32,4 +32,24 @@ RSpec.describe Task, type: :model do
   it "uses the custom size error message" do
     expect { create(:task, size: "invalid") }.to raise_error(ActiveRecord::RecordInvalid, /"invalid"/)
   end
+
+  describe "approved property" do
+    subject { create(:task) }
+
+    it "instantiates to false" do
+      expect(subject.approved).to be false
+    end
+
+    context "when board changes" do
+      let(:previously_approved_task) { create(:task, approved: true) }
+
+      before do
+        previously_approved_task.update(board: create(:wishlist))
+      end
+
+      it "resets approved to false" do
+        expect(previously_approved_task.approved).to be(false)
+      end
+    end
+  end
 end

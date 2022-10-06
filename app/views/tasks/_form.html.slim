@@ -24,8 +24,14 @@ div
 = form.label :expected_at, "expected at:"
 = form.date_field :expected_at, disabled: cannot?(@current_action, @task, :expected_at)
 
+= form.label :board_id, "board:"
+= form.collection_select :board_id, Board.order(:name), :id, :name, { include_blank: true }, disabled: cannot?(@current_action, @task, :board_id)
+
 = form.label :completed_at, "completed at:"
 = form.date_field :completed_at, disabled: cannot?(@current_action, @task, :completed_at)
+
+= form.label :approved, "approved:"
+= form.check_box :approved, disabled: cannot?(@current_action, @task, :approved)
 
 = form.submit
 
