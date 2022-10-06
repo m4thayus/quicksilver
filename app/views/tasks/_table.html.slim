@@ -9,12 +9,13 @@ table
       - %w[completed_on actual_duration delta].each do |header|
         th
           = header.titleize
-    - if @board && @board&.name
-      th
-        ' Approved
-    - elsif !show_statistics
-      th
-        ' Reviewed
+    - else
+      - if @board && @board&.name
+        th
+          ' Approved
+      - else
+        th
+          ' Reviewed
   tbody
     - tasks.each do |task|
       tr
