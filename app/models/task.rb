@@ -18,7 +18,7 @@ class Task < ApplicationRecord
   private
 
   def nillify_size
-    self.size = nil if size&.empty? # rubocop:disable Lint/SafeNavigationWithEmpty
+    self.size = nil if size&.blank? # rubocop:disable Lint/SafeNavigationWithBlank
   end
 
   def update_approved
