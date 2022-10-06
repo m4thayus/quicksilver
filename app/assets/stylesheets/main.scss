@@ -12,11 +12,22 @@ table {
     font-weight: bold;
     margin-bottom: 0.75rem;
   }
-  td:has(.approved) {
+  td.approved {
     text-align: center;
     input[type="checkbox"] {
-      pointer-events: none;
-      accent-color: #059033;
+      visibility: hidden;
+      &::before {
+        content: "\2A2F";
+        visibility: visible;
+        color: red;
+      }
+      &:checked {
+        &::before {
+          content: "\2713";
+          visibility: visible;
+          color: green;
+        }
+      }
     }
   }
   th, td {
