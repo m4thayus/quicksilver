@@ -20,4 +20,24 @@ RSpec.describe Task, type: :model do
     create(:task, completed_at: 3.days.ago)
     expect(described_class.recently_completed.count).to eq(1)
   end
+
+  describe "approved property" do
+    subject { create(:task) }
+
+    it "instantiates to false" do
+      expect(subject.approved).to be false
+    end
+
+    context "when board changes" do
+      let(:previously_approved_task) { create(:task, approved: true) }
+
+      before do
+        previously_approved_task.update(board: create(:wishlist))
+      end
+
+      it "resets approved to false" do
+        expect(previously_approved_task.approved).to be(false)
+      end
+    end
+  end
 end
