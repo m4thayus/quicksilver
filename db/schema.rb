@@ -29,8 +29,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_03_230124) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "board_id"
-    t.string "size"
     t.boolean "approved", default: false
+    t.string "size"
     t.index ["board_id"], name: "index_tasks_on_board_id"
     t.index ["owner_id"], name: "index_tasks_on_owner_id"
   end
