@@ -282,6 +282,9 @@ GEM
       actionpack (>= 3.1)
       railties (>= 3.1)
       slim (>= 3.0, < 5.0)
+    slim_lint (0.22.1)
+      rubocop (>= 0.78.0)
+      slim (>= 3.0, < 5.0)
     spring (4.0.0)
     sprockets (4.1.1)
       concurrent-ruby (~> 1.0)
@@ -366,6 +369,7 @@ DEPENDENCIES
   sassc-rails
   selenium-webdriver
   slim-rails
+  slim_lint
   spring
   sprockets-rails
   sqlite3 (~> 1.4)
@@ -381,4 +385,4 @@ RUBY VERSION
    ruby 3.1.2p20
 
 BUNDLED WITH
-   2.3.18
+   2.3.19

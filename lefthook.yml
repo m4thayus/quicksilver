@@ -4,6 +4,10 @@ pre-commit:
       files: git diff --name-only --staged
       glob: "*.rb"
       run: bin/rubocop --force-exclusion {files}
+    slim-lint:
+      files: git diff --name-only --staged app/**/*.slim
+      glob: "*.slim"
+      run: bin/slim-lint {files}
 pre-push:
   parallel: true
   commands:
