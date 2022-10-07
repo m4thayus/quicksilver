@@ -12,6 +12,24 @@ table {
     font-weight: bold;
     margin-bottom: 0.75rem;
   }
+  td.approved {
+    text-align: center;
+    input[type="checkbox"] {
+      visibility: hidden;
+      &::before {
+        content: "\2A2F";
+        visibility: visible;
+        color: red;
+      }
+      &:checked {
+        &::before {
+          content: "\2713";
+          visibility: visible;
+          color: green;
+        }
+      }
+    }
+  }
   th, td {
     border: thin solid;
     padding: 0.5rem;

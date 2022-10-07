@@ -2,13 +2,20 @@ table
   caption
     = caption
   thead
-    - %w[task title point_of_contact started_on expected_on expected_duration].each do |header|
+    - %w[task title size point_of_contact started_on expected_on expected_duration].each do |header|
       th
         = header.titleize
     - if show_statistics
       - %w[completed_on actual_duration delta].each do |header|
         th
           = header.titleize
+    - else
+      - if @board&.name
+        th
+          ' Approved
+      - else
+        th
+          ' Reviewed
   tbody
     - tasks.each do |task|
       tr
@@ -21,6 +28,8 @@ table
           - else
             a href=task_path(task)
               = task.title
+        td
+          = task.size&.humanize
         td
           = task.owner&.name
         td
@@ -43,3 +52,6 @@ table
                 '  over
               - else
                 '  under
+        - unless show_statistics
+          td.approved
+            input type="checkbox" checked=task.approved readonly="readonly"
