@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "rspec/rake"
 require "webmock/rspec"
 require "timecop"
 
