@@ -101,6 +101,18 @@ RSpec.describe "Tasks", type: :request, user: :engineer_user do
       expect { subject }.to(change { task.reload.title })
     end
 
+    context "when the board is changed" do
+      subject { put task_path(task), params: }
+
+      let(:wishlist) { create(:wishlist) }
+      let(:task) { create(:task, approved: true, board: wishlist) }
+      let(:params) { { task: { title: "new title" } } }
+
+      it "clears the approved flag" do
+        expect { subject }.to(change { task.reload.approved })
+      end
+    end
+
     context "when an owner is set" do
       let(:owner) { create(:user) }
       let(:params) { { task: { owner_id: owner.id } } }
