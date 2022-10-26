@@ -102,11 +102,11 @@ RSpec.describe "Tasks", type: :request, user: :engineer_user do
     end
 
     context "when the board is changed" do
-      subject { put task_path(task), params: }
+      subject { put board_task_path(wishlist, task), params: }
 
       let(:wishlist) { create(:wishlist) }
       let(:task) { create(:task, approved: true, board: wishlist) }
-      let(:params) { { task: { title: "new title" } } }
+      let(:params) { { task: { board_id: "" } } }
 
       it "clears the approved flag" do
         expect { subject }.to(change { task.reload.approved })
