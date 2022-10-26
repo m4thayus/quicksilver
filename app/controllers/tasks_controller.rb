@@ -24,7 +24,9 @@ class TasksController < ApplicationController
   end
 
   def update
-    if @task.update(task_params)
+    @task.assign_attributes(task_params)
+    @task.approved = false if @task.board_changed? && !@task.approved_changed?
+    if @task.save
       redirect_to board_path
     else
       head :bad_request
