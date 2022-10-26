@@ -11,8 +11,8 @@ pre-commit:
 pre-push:
   parallel: true
   commands:
-    # audit:
-    #   run: bin/brakeman --no-pager
+    audit:
+      run: bin/brakeman --no-pager
     bundle-audit:
       run: bin/bundle-audit check --update
     rspec:
