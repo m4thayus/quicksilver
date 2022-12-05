@@ -17,7 +17,7 @@ RSpec.describe Task, type: :model do
   end
 
   it "has a recently completed at scope" do
-    create(:task, completed_at: 3.days.ago)
+    create(:task, completed_at: 3.weeks.ago)
     expect(described_class.recently_completed.count).to eq(1)
   end
 
