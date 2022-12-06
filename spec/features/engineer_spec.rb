@@ -25,7 +25,7 @@ RSpec.describe "Engineer", type: :feature do
     expect(page).to have_current_path new_task_path
 
     fill_in "title", with: "A new task"
-    fill_in "description", with: "Task description"
+    fill_in "task[description]", with: "Task description"
 
     click_button "Create Task"
 

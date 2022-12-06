@@ -64,6 +64,24 @@ form {
   }
 }
 
+form.tasks {
+  #details, #dates, #points {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    gap: 0.33rem;
+    input, select {
+      margin-bottom: 0rem;
+    }
+    input[type=number] {
+      width: 2rem;
+    }
+  }
+  #dates {
+    margin-bottom: 1rem;
+  }
+}
+
 aside.notice {
   float: right;
   color: red;

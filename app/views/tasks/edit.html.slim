@@ -1,7 +1,7 @@
 h1 Edit Task
 - if @board.present?
-  = form_with model: @task, url: board_task_path(@board, @task) do |form|
+  = form_with model: @task, url: board_task_path(@board, @task), class: "tasks" do |form|
     = render "form", form:
 - else
-  = form_with model: @task do |form|
+  = form_with model: @task, class: "tasks" do |form|
     = render "form", form:

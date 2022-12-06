@@ -3,35 +3,49 @@
 = form.label :title, "title:"
 = form.text_field :title, size: "80", disabled: cannot?(@current_action, @task, :title)
 
-= form.label :owner_id, "owner:"
-= form.select :owner_id, authorized_users, { include_blank: true }, disabled: cannot?(@current_action, @task, :owner_id)
+= form.label :status, "status:"
+= form.text_field :status, size: "80", disabled: cannot?(@current_action, @task, :status)
 
-= form.label :size, "size:"
-= form.select :size, Task::SIZES.map { |s| [s.humanize, s] }, { include_blank: true }, disabled: cannot?(@current_action, @task, :size)
+h2 Details
+#details
+  = form.label :owner_id, "owner:"
+  = form.select :owner_id, authorized_users, { include_blank: true }, disabled: cannot?(@current_action, @task, :owner_id)
 
-div
-  = form.label :description, "description:"
+  = form.label :size, "size:"
+  = form.select :size, Task::SIZES.map { |s| [s.humanize, s] }, { include_blank: true }, disabled: cannot?(@current_action, @task, :size)
+
+  = form.label :board_id, "board:"
+  = form.collection_select :board_id, Board.order(:name), :id, :name, { include_blank: true }, disabled: cannot?(@current_action, @task, :board_id)
+
+  = form.label :approved, "approved:"
+  = form.check_box :approved, disabled: cannot?(@current_action, @task, :approved)
+
+h2 Statistics
+#dates
+  = form.label :started_at, "started at:"
+  = form.date_field :started_at, disabled: cannot?(@current_action, @task, :started_at)
+
+  = form.label :expected_at, "expected at:"
+  = form.date_field :expected_at, disabled: cannot?(@current_action, @task, :expected_at)
+
+  = form.label :completed_at, "completed at:"
+  = form.date_field :completed_at, disabled: cannot?(@current_action, @task, :completed_at)
+
+#points
+  = form.label :points, "points used:"
+  = form.number_field :points, min: 0, disabled: cannot?(@current_action, @task, :points)
+
+  = form.label :point_estimate, "point estimate:"
+  = form.number_field :point_estimate, min: 0, disabled: cannot?(@current_action, @task, :point_estimate)
+
+h2 Description
+#description
   - if can?(@current_action, @task, :description)
     = form.text_area :description, class: "markdown"
   - elsif @task.description?
     = form.fields :description do
       .disabled_field
         == markdown.render(@task.description)
-
-= form.label :started_at, "started at:"
-= form.date_field :started_at, disabled: cannot?(@current_action, @task, :started_at)
-
-= form.label :expected_at, "expected at:"
-= form.date_field :expected_at, disabled: cannot?(@current_action, @task, :expected_at)
-
-= form.label :board_id, "board:"
-= form.collection_select :board_id, Board.order(:name), :id, :name, { include_blank: true }, disabled: cannot?(@current_action, @task, :board_id)
-
-= form.label :completed_at, "completed at:"
-= form.date_field :completed_at, disabled: cannot?(@current_action, @task, :completed_at)
-
-= form.label :approved, "approved:"
-= form.check_box :approved, disabled: cannot?(@current_action, @task, :approved)
 
 = form.submit
 
