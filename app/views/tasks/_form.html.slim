@@ -1,4 +1,8 @@
 - @current_action = controller.request.path_parameters[:action].to_sym
+= content_for :head
+  = stylesheet_link_tag "easymde", "data-turbo-track": "reload"
+  = javascript_include_tag "easymde", "data-turbo-track": "reload", defer: true
+  = javascript_include_tag "task_form", "data-turbo-track": "reload", defer: true
 
 = form.label :title, "title:"
 = form.text_field :title, size: "80", disabled: cannot?(@current_action, @task, :title)
@@ -36,7 +40,7 @@ h2 Statistics
   = form.number_field :points, min: 0, disabled: cannot?(@current_action, @task, :points)
 
   = form.label :point_estimate, "point estimate:"
-  = form.number_field :point_estimate, min: 0, disabled: cannot?(@current_action, @task, :point_estimate)
+  = form.number_field :point_estimate, min: 0, readonly: @task.started_at.present?, disabled: cannot?(@current_action, @task, :point_estimate)
 
 h2 Description
 #description
@@ -48,7 +52,3 @@ h2 Description
         == markdown.render(@task.description)
 
 = form.submit
-
-= content_for :head
-  = stylesheet_link_tag "easymde", "data-turbo-track": "reload"
-  = javascript_include_tag "easymde", "data-turbo-track": "reload", defer: true
