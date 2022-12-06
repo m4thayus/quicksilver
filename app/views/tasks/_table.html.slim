@@ -2,24 +2,26 @@ table
   caption
     = caption
   thead
-    - %w[task title size point_of_contact started_on expected_on expected_duration].each do |header|
+    - %w[task title].each do |header|
       th
         = header.titleize
-    - if show_statistics
-      - %w[completed_on actual_duration delta].each do |header|
+    - if @board.nil?
+      - %w[point_of_contact status started_on expected_on].each do |header|
         th
           = header.titleize
-    - elsif @board&.name
-      th
-        ' Approved
+    - if show_statistics
+      - %w[completed_on].each do |header|
+        th
+          = header.titleize
     - else
       th
-        ' Reviewed
+        | &check;
   tbody
     - tasks.each do |task|
       tr
         td
-          = task.id
+          div class="task-size-#{task.size}"
+            = task.id
         td
           - if board.present?
             a href=board_task_path(board, task)
@@ -27,30 +29,18 @@ table
           - else
             a href=task_path(task)
               = task.title
-        td
-          = task.size&.humanize
-        td
-          = task.owner&.name
-        td
-          = time_tag(task.started_at) if task.started_at.present?
-        td
-          = time_tag(task.expected_at) if task.expected_at.present?
-        td
-          - if task.expected_at.present? && task.started_at.present?
-            = distance_of_time_in_words(task.expected_at, task.started_at)
+        - if task.board.nil?
+          td
+            = task.owner&.name
+          td
+            = task.status
+          td
+            = time_tag(task.started_at) if task.started_at.present?
+          td
+            = time_tag(task.expected_at) if task.expected_at.present?
         - if show_statistics.present?
           td
             = time_tag(task.completed_at) if task.completed_at.present?
-          td
-            - if task.completed_at.present? && task.started_at.present?
-              = distance_of_time_in_words(task.completed_at, task.started_at)
-          td
-            - if task.completed_at.present? && task.expected_at.present?
-              = distance_of_time_in_words(task.completed_at, task.expected_at)
-              - if task.completed_at > task.expected_at
-                '  over
-              - else
-                '  under
-        - unless show_statistics
+        - else
           td.approved
             input type="checkbox" checked=task.approved readonly="readonly"

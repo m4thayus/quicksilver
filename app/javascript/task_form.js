@@ -1,9 +1,8 @@
 const expectedAtField = document.querySelector("form input[name='task[expected_at]']")
+const ownerField = document.querySelector("form select[name='task[owner_id]']")
 const pointEstimateField = document.querySelector("form input[name='task[point_estimate]']")
 const setRequiredAttribute = (target) => {
-  const toggle = !!target.value
-  expectedAtField.required = toggle
-  pointEstimateField.required = toggle
+  expectedAtField.required = ownerField.required = pointEstimateField.required = !!target.value
 }
 
 const startedAtField = document.querySelector("form input[name='task[started_at]']")
