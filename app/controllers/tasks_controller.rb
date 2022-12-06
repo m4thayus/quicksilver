@@ -7,7 +7,8 @@ class TasksController < ApplicationController
 
   def index
     board_tasks = Task.where(board: @board)
-    @active_tasks = board_tasks.active
+    @active_tasks = board_tasks.active.order(approved: :desc).order(:expected_at)
+    @available_tasks = board_tasks.available.order(approved: :desc) # FIXME: order by size
     @recently_completed_tasks = board_tasks.recently_completed
     authorize! :index, Task
   rescue CanCan::AccessDenied

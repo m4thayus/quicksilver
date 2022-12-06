@@ -2,23 +2,28 @@ table
   caption
     = caption
   thead
+    th
+      | &check;
     - %w[task title].each do |header|
       th
         = header.titleize
     - if @board.nil?
-      - %w[point_of_contact status started_on expected_on].each do |header|
+      - %w[point_of_contact started_on].each do |header|
         th
           = header.titleize
     - if show_statistics
       - %w[completed_on].each do |header|
         th
           = header.titleize
-    - else
-      th
-        | &check;
+    - elsif @board.nil?
+      - %w[expected_on status].each do |header|
+        th
+          = header.titleize
   tbody
     - tasks.each do |task|
       tr
+        td.approved
+          input type="checkbox" checked=task.approved readonly="readonly"
         td
           div class="task-size-#{task.size}"
             = task.id
@@ -33,14 +38,12 @@ table
           td
             = task.owner&.name
           td
-            = task.status
-          td
             = time_tag(task.started_at) if task.started_at.present?
-          td
-            = time_tag(task.expected_at) if task.expected_at.present?
         - if show_statistics.present?
           td
             = time_tag(task.completed_at) if task.completed_at.present?
-        - else
-          td.approved
-            input type="checkbox" checked=task.approved readonly="readonly"
+        - elsif task.board.nil?
+          td
+            = time_tag(task.expected_at) if task.expected_at.present?
+          td
+            = task.status

@@ -9,6 +9,9 @@ h1
 - unless @active_tasks.empty?
   = render "table", board: @board, tasks: @active_tasks, caption: "Active", show_statistics: false
 
+- unless @available_tasks.empty?
+  = render "table", board: @board, tasks: @available_tasks, caption: "Available", show_statistics: false
+
 - unless @recently_completed_tasks.empty?
   = render "table", board: @board, tasks: @recently_completed_tasks, caption: "Recently Completed", show_statistics: true
 

@@ -11,7 +11,8 @@ class Task < ApplicationRecord
   validates :title, presence: true
   validates :size, inclusion: { in: SIZES }, allow_nil: true
 
-  scope :active, -> { where(completed_at: nil) }
+  scope :available, -> { where(started_at: nil, completed_at: nil) }
+  scope :active, -> { where.not(started_at: nil).where(completed_at: nil) }
   scope :recently_completed, -> { where("completed_at > ?", 1.month.ago) }
   scope :approved, -> { where(approved: true) }
 
