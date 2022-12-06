@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Task < ApplicationRecord
-  SIZES = %w[small medium large].freeze
+  SIZES = %w[small medium large xlarge].freeze
 
   belongs_to :board, optional: true
   belongs_to :owner, class_name: "User", optional: true

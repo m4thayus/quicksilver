@@ -26,6 +26,9 @@ table {
     &[class$=large] {
       background-color: rgba(255, 0, 0, 0.5);
     }
+    &[class$=xlarge] {
+      background-color: rgba(255, 0, 0, 0.8);
+    }
   }
   td.approved {
     text-align: center;
