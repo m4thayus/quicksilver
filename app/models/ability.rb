@@ -14,8 +14,8 @@ class Ability
       can :read, Task
       can :update, Task, :description
       can :manage, Task, board: Board.wishlist
-      cannot :update, Task, %i[started_at expected_at completed_at board_id]
-      cannot :create, Task, %i[started_at expected_at completed_at board_id]
+      cannot :update, Task, %i[board_id started_at expected_at completed_at points point_estimate]
+      cannot :create, Task, %i[board_id started_at expected_at completed_at points point_estimate]
     end
 
     if user.engineer?

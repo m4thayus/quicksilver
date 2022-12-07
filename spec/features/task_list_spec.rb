@@ -28,7 +28,7 @@ RSpec.describe "Task List", type: :feature do
     end
 
     it "shows a column for reviewed tasks" do
-      expect(page).to have_text "Reviewed"
+      expect(page).to have_text "&check;"
     end
 
     it "shows tasks without a board" do
@@ -49,7 +49,7 @@ RSpec.describe "Task List", type: :feature do
     end
 
     it "shows a column for approved tasks" do
-      expect(page).to have_text "Approved"
+      expect(page).to have_text "&check;"
     end
 
     it "shows tasks belonging to the wishlist board" do

@@ -4,29 +4,54 @@ li {
   }
 }
 
+main {
+  width: 95%;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+}
+
 table {
   table-layout: fixed;
   border-collapse: collapse;
   border: thin solid;
   margin-bottom: 1rem;
+  min-width: 100%;
   caption {
     font-size: 1.25rem;
     font-weight: bold;
     margin-bottom: 0.75rem;
+  }
+  div[class^=task-size] {
+    border-radius: 1rem;
+    text-align: center;
+    &[class$=small] {
+      background-color: rgba(0, 255, 0, 0.6);
+    }
+    &[class$=medium] {
+      background-color: rgba(255, 255, 0, 0.7);
+    }
+    &[class$=large] {
+      background-color: rgba(255, 128, 0, 0.8);
+    }
+    &[class$=xlarge] {
+      background-color: rgba(255, 0, 0, 0.8);
+    }
   }
   td.approved {
     text-align: center;
     input[type="checkbox"] {
       visibility: hidden;
       &::before {
-        content: "\2A2F";
+        content: "\2717";
         visibility: visible;
+        font-size: 1.25em;
         color: red;
       }
       &:checked {
         &::before {
           content: "\2713";
           visibility: visible;
+          font-size: 1.25em;
           color: green;
         }
       }
@@ -61,6 +86,32 @@ form {
   label[for=task_description] + .disabled_field {
     border: solid black 1px;
     padding: 0 1rem;
+  }
+}
+
+form.tasks {
+  #statistics {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 0.33rem;
+    row-gap: 1rem;
+  }
+  #details, #dates, #points {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: center;
+    gap: 0.33rem;
+    input, select {
+      margin-bottom: 0rem;
+    }
+    input[type=number] {
+      width: 2rem;
+    }
+  }
+  fieldset > legend {
+    font-weight: bold;
   }
 }
 

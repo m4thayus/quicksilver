@@ -1,16 +1,61 @@
 - @current_action = controller.request.path_parameters[:action].to_sym
+= content_for :head
+  = stylesheet_link_tag "easymde", "data-turbo-track": "reload"
+  = javascript_include_tag "easymde", "data-turbo-track": "reload", defer: true
+  = javascript_include_tag "task_form", "data-turbo-track": "reload", defer: true
 
 = form.label :title, "title:"
 = form.text_field :title, size: "80", disabled: cannot?(@current_action, @task, :title)
 
-= form.label :owner_id, "owner:"
-= form.select :owner_id, authorized_users, { include_blank: true }, disabled: cannot?(@current_action, @task, :owner_id)
+= form.label :status, "status:"
+= form.text_field :status, size: "80", disabled: cannot?(@current_action, @task, :status)
 
-= form.label :size, "size:"
-= form.select :size, Task::SIZES.map { |s| [s.humanize, s] }, { include_blank: true }, disabled: cannot?(@current_action, @task, :size)
+details
+  summary Help
+  a href="https://wiki.engineering.mercuryanalytics.com/en/how_tos/quicksilver" target="_blank" Documentation
 
-div
-  = form.label :description, "description:"
+h2 Details
+#details
+  = form.label :owner_id, "owner:"
+  = form.select :owner_id, authorized_users, { include_blank: true }, disabled: cannot?(@current_action, @task, :owner_id)
+
+  = form.label :size, "size:"
+  = form.select :size, Task::SIZES.map { |s| [s.humanize, s] }, { include_blank: true }, disabled: cannot?(@current_action, @task, :size)
+
+  = form.label :board_id, "board:"
+  = form.collection_select :board_id, Board.order(:name), :id, :name, { include_blank: true }, disabled: cannot?(@current_action, @task, :board_id)
+
+  = form.label :approved, "approved:"
+  = form.check_box :approved, disabled: cannot?(@current_action, @task, :approved)
+
+h2 Statistics
+#statistics
+  fieldset#dates
+    legend Dates
+    = form.label :started_at, "started at:"
+    = form.date_field :started_at, disabled: cannot?(@current_action, @task, :started_at)
+
+    = form.label :expected_at, "expected at:"
+    = form.date_field :expected_at, disabled: cannot?(@current_action, @task, :expected_at)
+
+    = form.label :completed_at, "completed at:"
+    = form.date_field :completed_at, disabled: cannot?(@current_action, @task, :completed_at)
+
+  fieldset#points
+    legend Points
+    = form.label :points, "used:"
+    = form.number_field :points, min: 0, disabled: cannot?(@current_action, @task, :points)
+
+    = form.label :point_estimate, "estimate:"
+    = form.number_field :point_estimate, min: 0, readonly: @task.started_at.present?, disabled: cannot?(@current_action, @task, :point_estimate)
+
+    div
+      ' =
+      output>
+      | Remaining
+
+h2 Description
+#description
   - if can?(@current_action, @task, :description)
     = form.text_area :description, class: "markdown"
   - elsif @task.description?
@@ -18,23 +63,4 @@ div
       .disabled_field
         == markdown.render(@task.description)
 
-= form.label :started_at, "started at:"
-= form.date_field :started_at, disabled: cannot?(@current_action, @task, :started_at)
-
-= form.label :expected_at, "expected at:"
-= form.date_field :expected_at, disabled: cannot?(@current_action, @task, :expected_at)
-
-= form.label :board_id, "board:"
-= form.collection_select :board_id, Board.order(:name), :id, :name, { include_blank: true }, disabled: cannot?(@current_action, @task, :board_id)
-
-= form.label :completed_at, "completed at:"
-= form.date_field :completed_at, disabled: cannot?(@current_action, @task, :completed_at)
-
-= form.label :approved, "approved:"
-= form.check_box :approved, disabled: cannot?(@current_action, @task, :approved)
-
 = form.submit
-
-= content_for :head
-  = stylesheet_link_tag "easymde", "data-turbo-track": "reload"
-  = javascript_include_tag "easymde", "data-turbo-track": "reload", defer: true

@@ -7,8 +7,13 @@ class TasksController < ApplicationController
 
   def index
     board_tasks = Task.where(board: @board)
-    @active_tasks = board_tasks.active
-    @recently_completed_tasks = board_tasks.recently_completed
+    @active_tasks = board_tasks.active.order(approved: :desc, expected_at: :asc)
+    @available_tasks = if @board.nil?
+                         board_tasks.available.sort
+                       else
+                         board_tasks.available.order(approved: :desc)
+                       end
+    @recently_completed_tasks = board_tasks.recently_completed.order(:completed_at)
     authorize! :index, Task
   rescue CanCan::AccessDenied
     redirect_to login_path
@@ -49,7 +54,20 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    @task_params ||= params.require(:task).permit(:title, :description, :started_at, :expected_at, :approved, :board_id, :size, :completed_at, :owner_id)
+    @task_params ||= params.require(:task).permit %i[
+      title
+      status
+      size
+      owner_id
+      board_id
+      approved
+      started_at
+      expected_at
+      completed_at
+      points
+      point_estimate
+      description
+    ]
   end
 
   def board_path
