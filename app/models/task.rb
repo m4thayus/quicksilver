@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Task < ApplicationRecord
+  include Comparable
+
   SIZES = %w[small medium large xlarge].freeze
 
   belongs_to :board, optional: true
@@ -15,6 +17,18 @@ class Task < ApplicationRecord
   scope :active, -> { where.not(started_at: nil).where(completed_at: nil) }
   scope :recently_completed, -> { where("completed_at > ?", 1.month.ago) }
   scope :approved, -> { where(approved: true) }
+
+  def <=>(other)
+    if size == other.size
+      0
+    elsif size.nil?
+      -1
+    elsif other.size.nil?
+      1
+    else
+      SIZES.index(size) <=> SIZES.index(other.size)
+    end
+  end
 
   private
 
