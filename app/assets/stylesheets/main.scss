@@ -90,8 +90,16 @@ form {
 }
 
 form.tasks {
+  #statistics {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 0.33rem;
+    row-gap: 1rem;
+  }
   #details, #dates, #points {
     display: flex;
+    flex-wrap: wrap;
     align-content: center;
     align-items: center;
     gap: 0.33rem;
@@ -102,8 +110,8 @@ form.tasks {
       width: 2rem;
     }
   }
-  #dates {
-    margin-bottom: 1rem;
+  fieldset > legend {
+    font-weight: bold;
   }
 }
 
