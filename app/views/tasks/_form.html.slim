@@ -10,6 +10,10 @@
 = form.label :status, "status:"
 = form.text_field :status, size: "80", disabled: cannot?(@current_action, @task, :status)
 
+details
+  summary Help
+  a href="https://wiki.engineering.mercuryanalytics.com/en/how_tos/quicksilver" target="_blank" Documentation
+
 h2 Details
 #details
   = form.label :owner_id, "owner:"
