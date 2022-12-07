@@ -7,13 +7,13 @@ h1
     ' List of Tasks
 
 - unless @active_tasks.empty?
-  = render "table", board: @board, tasks: @active_tasks, caption: "Active", show_statistics: false
+  = render "table", board: @board, tasks: @active_tasks, caption: "Active", show_dates: true, show_statistics: false
 
 - unless @available_tasks.empty?
-  = render "table", board: @board, tasks: @available_tasks, caption: "Available", show_statistics: false
+  = render "table", board: @board, tasks: @available_tasks, caption: "Available", show_dates: false, show_statistics: false
 
 - unless @recently_completed_tasks.empty?
-  = render "table", board: @board, tasks: @recently_completed_tasks, caption: "Recently Completed", show_statistics: true
+  = render "table", board: @board, tasks: @recently_completed_tasks, caption: "Recently Completed", show_dates: false, show_statistics: true
 
 - if @board.present?
   = button_to "New Task", new_board_task_path(@board), method: :get
