@@ -8,8 +8,8 @@ const setRequiredAttribute = (target) => {
 const pointsField = document.querySelector("form input[name='task[points]']")
 const pointsOutput = document.querySelector("form output")
 const setOutput = () => pointsOutput.textContent = (pointEstimateField.value || 0) - (pointsField.value || 0)
-pointsField.addEventListener("change", setOutput)
-pointEstimateField.addEventListener("change", setOutput)
+pointsField.addEventListener("input", setOutput)
+pointEstimateField.addEventListener("input", setOutput)
 
 const startedAtField = document.querySelector("form input[name='task[started_at]']")
 document.addEventListener("DOMContentLoaded", () => {

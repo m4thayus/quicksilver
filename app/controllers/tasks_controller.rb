@@ -13,7 +13,7 @@ class TasksController < ApplicationController
                        else
                          board_tasks.available.order(approved: :desc)
                        end
-    @recently_completed_tasks = board_tasks.recently_completed.order(completed_at: :desc)
+    @recently_completed_tasks = board_tasks.recently_completed.order(:completed_at)
     authorize! :index, Task
   rescue CanCan::AccessDenied
     redirect_to login_path
