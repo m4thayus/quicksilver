@@ -43,11 +43,13 @@ h2 Statistics
 
   fieldset#points
     legend Points
-    = form.label :points, "used:"
-    = form.number_field :points, min: 0, disabled: cannot?(@current_action, @task, :points)
-
     = form.label :point_estimate, "estimate:"
     = form.number_field :point_estimate, min: 0, readonly: @task.started_at.present?, disabled: cannot?(@current_action, @task, :point_estimate)
+
+    | &minus;
+
+    = form.label :points, "used:"
+    = form.number_field :points, min: 0, disabled: cannot?(@current_action, @task, :points)
 
     div
       ' =

@@ -39,14 +39,14 @@ table
             = task.owner&.name
           - if show_dates.present?
             td
-              = time_tag(task.started_at) if task.started_at.present?
+              = time_tag(task.started_at, format: :short) if task.started_at.present?
             td
-              = time_tag(task.expected_at) if task.expected_at.present?
+              = time_tag(task.expected_at, format: :short) if task.expected_at.present?
           - elsif show_statistics.present?
             td
-              = time_tag(task.started_at) if task.started_at.present?
+              = time_tag(task.started_at, format: :short) if task.started_at.present?
             td
-              = time_tag(task.completed_at) if task.completed_at.present?
+              = time_tag(task.completed_at, format: :short) if task.completed_at.present?
         - if show_statistics.blank?
           td
             = task.status
