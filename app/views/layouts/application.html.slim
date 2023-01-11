@@ -13,6 +13,7 @@ html
     = yield :head
   body
     nav
+      = yield :nav
       = render "nav"
     aside.notice
       = flash[:notice]
