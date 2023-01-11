@@ -4,22 +4,18 @@
       = caption.titleize
     thead
       th &check;
-      - %w[task title].each do |header|
-        th
-          = header.titleize
+      th.sortable[data-sorter="numeric"] Task
+      th.sortable Title
       - if board.nil?
-        th Point of Contact
+        th.sortable Point of Contact
         - if show_dates.present?
           - %w[started_on expected_on].each do |header|
-            th
+            th.sortable[data-sorter="date"]
               = header.titleize
         - elsif show_statistics.present?
           - %w[started_on completed_on].each do |header|
-            th
+            th.sortable[data-sorter="date"]
               = header.titleize
-      - if show_statistics.blank?
-        th
-          | Status
     tbody
       - tasks.each do |task|
         tr
