@@ -1,12 +1,6 @@
 - @current_action = controller.request.path_parameters[:action].to_sym
 
-h1
-  - if @board.present?
-    = @board.name.titleize
-  - else
-    ' List of Tasks
-
-nav[style="border-bottom: none;"]
+= content_for :nav
   ol
     - unless @recently_completed_tasks.empty?
       li
@@ -14,6 +8,12 @@ nav[style="border-bottom: none;"]
     - unless @available_tasks.empty?
       li
         a[href="#available"] Available
+
+h1
+  - if @board.present?
+    = @board.name.titleize
+  - else
+    ' List of Tasks
 
 = render "table", board: @board, tasks: @active_tasks, caption: "active", show_dates: true, show_statistics: false
 
