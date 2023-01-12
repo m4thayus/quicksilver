@@ -5,12 +5,13 @@ th.sortable {
 th.sortable:after {
   position: absolute;
   top: 50%;
-  right: 0;
-  transform: translate(0, -50%);
+  right: 0.5rem;
 }
 th.sortable[data-direction=up]:after {
-  content: "\25B4";
+  content: "\25BE";
+  transform: rotate(0.5turn) translate(0, 50%);
 }
 th.sortable[data-direction=down]:after {
   content: "\25BE";
+  transform: translate(0, -50%);
 }

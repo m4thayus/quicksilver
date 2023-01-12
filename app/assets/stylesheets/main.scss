@@ -59,6 +59,11 @@ table {
   }
   th, td {
     border: thin solid;
+  }
+  th {
+    padding: 0.5rem 1.75rem;
+  }
+  td {
     padding: 0.5rem;
   }
   tbody {

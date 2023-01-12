@@ -16,6 +16,8 @@
           - %w[started_on completed_on].each do |header|
             th.sortable[data-sorter="date"]
               = header.titleize
+      - if show_statistics.blank?
+        th Status
     tbody
       - tasks.each do |task|
         tr
