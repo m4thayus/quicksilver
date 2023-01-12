@@ -39,6 +39,7 @@ table {
   }
   td.approved {
     text-align: center;
+    pointer-events: none;
     input[type="checkbox"] {
       visibility: hidden;
       &::before {
