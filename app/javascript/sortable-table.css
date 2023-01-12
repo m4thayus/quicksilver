@@ -1,0 +1,16 @@
+th.sortable {
+  position: relative;
+  cursor: pointer;
+}
+th.sortable:after {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(0, -50%);
+}
+th.sortable[data-direction=up]:after {
+  content: "\25B4";
+}
+th.sortable[data-direction=down]:after {
+  content: "\25BE";
+}
