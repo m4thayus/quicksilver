@@ -14,7 +14,7 @@ RSpec.describe Ability, type: :model do
     expect(subject.permissions).to include :can, :cannot
   end
 
-  context "when the user is a user" do
+  context "when the user is a stranger" do
     it { is_expected.to_not be_able_to(:read, :all) }
   end
 
