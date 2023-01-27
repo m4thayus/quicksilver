@@ -49,8 +49,6 @@ group :production do
 end
 
 group :development, :test do
-  gem "spring"
-
   gem "rspec-rails"
   gem "factory_bot_rails"
   gem "launchy"
@@ -61,6 +59,8 @@ group :development, :test do
 end
 
 group :development do
+  gem "spring"
+
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 
