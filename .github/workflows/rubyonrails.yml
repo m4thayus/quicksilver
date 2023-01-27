@@ -20,12 +20,10 @@ jobs:
         uses: actions/checkout@v3
       - name: Install Ruby and gems
         uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
       - name: Install esbuild
         run: npm install esbuild
       - name: Set up database schema
-        run: bin/rails db:test:prepare
+        run: bin/rails db:schema:load
       - name: Build js and css
         run: yarn build
       - name: Run tests
