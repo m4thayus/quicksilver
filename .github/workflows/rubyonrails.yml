@@ -22,10 +22,11 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+          cache-version: 1
       - name: Install esbuild
         run: npm install esbuild
       - name: Set up database schema
-        run: bundle exec rails db:schema:load
+        run: bin/rails db:schema:load
       - name: Build js and css
         run: yarn build
       - name: Run tests
