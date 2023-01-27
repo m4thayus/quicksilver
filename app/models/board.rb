@@ -8,9 +8,14 @@ class Board < ApplicationRecord
   validates :name, presence: true, uniqueness: true
 
   WISHLIST_SLUG = "wishlist"
+  SUGGESTIONS_SLUG = "suggestions"
 
   def self.wishlist
     Board.find_by(name: WISHLIST_SLUG)
+  end
+
+  def self.suggestions
+    Board.find_by(name: SUGGESTIONS_SLUG)
   end
 
   def to_param

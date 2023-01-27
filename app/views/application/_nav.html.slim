@@ -9,6 +9,9 @@ ol
     - if Board.wishlist.present?
       li
         a href=board_tasks_path(Board.wishlist) Wishlist
+    - if Board.suggestions.present?
+      li
+        a href=board_tasks_path(Board.suggestions) Suggestions
   - else
     li
       a href=login_path Login

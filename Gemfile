@@ -5,7 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby File.read(".ruby-version")
 
-gem "rails", "~> 7.0.3", ">= 7.0.3.1"
+gem "rails", "~> 7.0.4", ">= 7.0.4.1"
 
 gem "sqlite3", "~> 1.4" # NOTE: Default rails minimum version requirement
 
