@@ -17,5 +17,9 @@ FactoryBot.define do
     factory :member_user do
       email { User::MEMBERS.first }
     end
+
+    factory :guest_user do
+      email { User::GUESTS.first }
+    end
   end
 end

@@ -8,5 +8,9 @@ FactoryBot.define do
     factory :wishlist do
       name { Board::WISHLIST_SLUG }
     end
+
+    factory :suggestions do
+      name { Board::SUGGESTIONS_SLUG }
+    end
   end
 end

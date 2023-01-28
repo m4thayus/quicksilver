@@ -5,7 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby File.read(".ruby-version")
 
-gem "rails", "~> 7.0.3", ">= 7.0.3.1"
+gem "rails", "~> 7.0.4", ">= 7.0.4.1"
 
 gem "sqlite3", "~> 1.4" # NOTE: Default rails minimum version requirement
 
@@ -43,6 +43,8 @@ gem "redcarpet"
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
+
+gem "digest", "3.1.0" # remove this when github action isn't broken
 
 group :production do
   gem "strscan", "3.0.1" # remove this when passenger isn't broken

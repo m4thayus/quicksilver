@@ -7,14 +7,36 @@ RSpec.describe Ability, type: :model do
   subject { described_class.new(user) }
 
   let!(:wishlist) { create(:wishlist) }
+  let!(:suggestions) { create(:suggestions) }
   let(:user) { nil }
 
   it "has serializable permissions" do
     expect(subject.permissions).to include :can, :cannot
   end
 
-  context "when the user is a guest" do
+  context "when the user is a stranger" do
     it { is_expected.to_not be_able_to(:read, :all) }
+  end
+
+  context "when the user is a guest" do
+    let(:user) { create(:guest_user) }
+    let(:task) { create(:task) }
+    let(:suggestions_task) { create(:task, board: suggestions) }
+    let(:wishlist_task) { create(:task, board: wishlist) }
+
+    it { is_expected.to be_able_to(:manage, suggestions_task) }
+
+    it "cannot edit the approved field on a suggestions task" do
+      expect(subject).to_not be_able_to(:update, suggestions_task, :approved)
+    end
+
+    it "cannot manage wishlist tasks" do
+      expect(subject).to_not be_able_to(:manage, wishlist_task)
+    end
+
+    it "cannot manage non-wishlist tasks" do
+      expect(subject).to_not be_able_to(:manage, task)
+    end
   end
 
   context "when the user is a member" do
@@ -22,6 +44,7 @@ RSpec.describe Ability, type: :model do
     let(:other_user) { create(:engineer_user) }
     let(:task) { create(:task) }
     let(:wishlist_task) { create(:task, board: wishlist) }
+    let(:suggestions_task) { create(:task, board: suggestions) }
 
     it { expect(task.board).to be_nil }
     it { is_expected.to be_able_to(:read, user) }
@@ -54,6 +77,10 @@ RSpec.describe Ability, type: :model do
 
     it "can edit the approved field on a wishlist" do
       expect(subject).to be_able_to(:update, wishlist_task, :approved)
+    end
+
+    it "can edit the approved field on suggestions tasks" do
+      expect(subject).to be_able_to(:update, suggestions_task, :approved)
     end
 
     it "cannot edit the approved field on a non-wishlist" do

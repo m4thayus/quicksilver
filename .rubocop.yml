@@ -4,6 +4,7 @@ require:
 
 AllCops:
   TargetRubyVersion: 3.1
+  TargetRailsVersion: 7.0
   NewCops: enable
   Exclude:
     - "db/schema.rb"
@@ -52,6 +53,9 @@ RSpec/ExpectChange:
 RSpec/MultipleExpectations:
   Exclude:
     - "spec/features/**/*_spec.rb"
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 8
 
 RSpec/NamedSubject:
   Enabled: false
