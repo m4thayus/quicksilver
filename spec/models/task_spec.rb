@@ -26,7 +26,7 @@ RSpec.describe Task, type: :model do
   end
 
   it "does not allow invalid sizes" do
-    expect(build(:task, size: "invalid")).to_not be_valid
+    expect(build(:task, size: "invalid")).not_to be_valid
   end
 
   it "uses the custom size error message" do

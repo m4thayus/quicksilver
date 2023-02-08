@@ -11,7 +11,7 @@ RSpec.describe User, type: :model do
 
   context "when password does not match confirmation" do
     it "is invalid" do
-      expect(build(:user, password_confirmation: "wrong")).to_not be_valid
+      expect(build(:user, password_confirmation: "wrong")).not_to be_valid
     end
   end
 

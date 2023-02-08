@@ -10,11 +10,11 @@ RSpec.describe Board, type: :model do
   end
 
   it "requires a name" do
-    expect(build(:board, name: nil)).to_not be_valid
+    expect(build(:board, name: nil)).not_to be_valid
   end
 
   it "requires a unique name" do
-    expect(build(:board, name: subject.name)).to_not be_valid
+    expect(build(:board, name: subject.name)).not_to be_valid
   end
 
   it "paramterizes name before validation" do

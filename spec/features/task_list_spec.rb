@@ -57,7 +57,7 @@ RSpec.describe "Task List", type: :feature do
     end
 
     it "does not show tasks that don't belong to the wishlist board" do
-      expect(page).to_not have_text boardless_list.first.title
+      expect(page).not_to have_text boardless_list.first.title
     end
   end
 end

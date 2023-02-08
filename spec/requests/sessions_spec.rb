@@ -37,7 +37,7 @@ RSpec.describe "Sessions", type: :request do
 
       it "sets the current user in the session" do
         subject
-        expect(session).to_not include :current_user
+        expect(session).not_to include :current_user
       end
     end
   end

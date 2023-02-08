@@ -15,7 +15,7 @@ RSpec.describe Ability, type: :model do
   end
 
   context "when the user is a stranger" do
-    it { is_expected.to_not be_able_to(:read, :all) }
+    it { is_expected.not_to be_able_to(:read, :all) }
   end
 
   context "when the user is a guest" do
@@ -27,15 +27,15 @@ RSpec.describe Ability, type: :model do
     it { is_expected.to be_able_to(:manage, suggestions_task) }
 
     it "cannot edit the approved field on a suggestions task" do
-      expect(subject).to_not be_able_to(:update, suggestions_task, :approved)
+      expect(subject).not_to be_able_to(:update, suggestions_task, :approved)
     end
 
     it "cannot manage wishlist tasks" do
-      expect(subject).to_not be_able_to(:manage, wishlist_task)
+      expect(subject).not_to be_able_to(:manage, wishlist_task)
     end
 
     it "cannot manage non-wishlist tasks" do
-      expect(subject).to_not be_able_to(:manage, task)
+      expect(subject).not_to be_able_to(:manage, task)
     end
   end
 
@@ -60,15 +60,15 @@ RSpec.describe Ability, type: :model do
     end
 
     it "cannot manage non-wishlist tasks" do
-      expect(subject).to_not be_able_to(:manage, task)
+      expect(subject).not_to be_able_to(:manage, task)
     end
 
     it "cannot create non-wishlist tasks" do
-      expect(subject).to_not be_able_to(:create, build(:task))
+      expect(subject).not_to be_able_to(:create, build(:task))
     end
 
     it "cannot edit date fields on wishlist tasks" do
-      expect(subject).to_not be_able_to(:update, task, :created_at)
+      expect(subject).not_to be_able_to(:update, task, :created_at)
     end
 
     it "can edit description on non-wishlist tasks" do
@@ -84,7 +84,7 @@ RSpec.describe Ability, type: :model do
     end
 
     it "cannot edit the approved field on a non-wishlist" do
-      expect(subject).to_not be_able_to(:update, task, :approved)
+      expect(subject).not_to be_able_to(:update, task, :approved)
     end
   end
 
