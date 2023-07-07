@@ -12,8 +12,14 @@ ol
     - if Board.suggestions.present?
       li
         a href=board_tasks_path(Board.suggestions) Suggestions
+    li
   - else
     li
       a href=login_path Login
     li
       a href=new_user_path Sign Up
+- if @current_user.present?
+  = form_with url: search_path, method: :get do |form|
+    ol
+      li
+        = form.text_field :q, placeholder: "Search"

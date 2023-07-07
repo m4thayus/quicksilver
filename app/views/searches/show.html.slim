@@ -1,0 +1,9 @@
+h1 Results
+ul
+  - @tasks.each do |task|
+    li
+      strong
+        = task.id
+      ':
+      a href=task_path(task)
+        = task.title

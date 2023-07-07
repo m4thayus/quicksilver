@@ -9,6 +9,8 @@ Rails.application.routes.draw do
 
   resources :users, only: %i[index new create edit update]
 
+  resource :search, only: %i[show]
+
   resources :tasks
   resources :boards, param: :name, only: %i[index show] do
     resources :tasks, controller: :tasks
@@ -28,6 +30,7 @@ end
                                edit_user GET    /users/:id/edit(.:format)                                                                         users#edit
                                     user PATCH  /users/:id(.:format)                                                                              users#update
                                          PUT    /users/:id(.:format)                                                                              users#update
+                                  search GET    /search(.:format)                                                                                 searches#show
                                    tasks GET    /tasks(.:format)                                                                                  tasks#index
                                          POST   /tasks(.:format)                                                                                  tasks#create
                                 new_task GET    /tasks/new(.:format)                                                                              tasks#new

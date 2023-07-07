@@ -13,4 +13,22 @@ nav {
       margin-right: 0.5rem;
     }
   }
+  form {
+    flex-grow: 1;
+    margin: unset;
+    ol {
+      display: flex;
+      // justify-content: space-around;
+      justify-content: flex-end;
+      padding-left: 0.5rem;
+      li {
+        width: 100%;
+        input {
+          width: 100%;
+          margin: unset;
+          direction: ltr;
+        }
+      }
+    }
+  }
 }

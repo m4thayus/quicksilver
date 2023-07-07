@@ -6,6 +6,7 @@ class Ability
   def initialize(user) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     return if user.blank?
 
+    can :search, Task
     can :manage, user
 
     if user.guest?
