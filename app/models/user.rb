@@ -11,7 +11,7 @@ class User < ApplicationRecord
   ADMINISTRATORS = %w[scottb mattw].map { |u| "#{u}@mercuryanalytics.com" }.freeze
   ENGINEERS = %w[peterv deepthie elizabethk jamesa zoef biancac amitp].map { |u| "#{u}@mercuryanalytics.com" }.freeze
   MEMBERS = %w[ronh jail].map { |u| "#{u}@mercuryanalytics.com" }.freeze
-  GUESTS = %w[andrewg praneetp prasadd aishwaryap].map { |u| "#{u}@mercuryanalytics.com" }.freeze
+  GUESTS = %w[andrewg praneetp prasadd aishwaryap jordank anastasiar jillianh brandonk].map { |u| "#{u}@mercuryanalytics.com" }.freeze
 
   def admin?
     ADMINISTRATORS.include?(email)
