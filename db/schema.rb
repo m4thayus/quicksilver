@@ -34,7 +34,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_21_150422) do
     t.string "status"
     t.integer "point_estimate"
     t.integer "points"
-    t.boolean "critical", default: false
+    t.boolean "critical", default: false, null: false
     t.index ["board_id"], name: "index_tasks_on_board_id"
     t.index ["owner_id"], name: "index_tasks_on_owner_id"
   end
