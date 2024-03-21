@@ -9,7 +9,7 @@ gem "rails", "~> 7.0.8", ">= 7.0.8.1"
 
 gem "sqlite3", "~> 1.4" # NOTE: Default rails minimum version requirement
 
-gem "puma", "~> 5.0"
+gem "puma", "~> 5.0" # NOTE: Default rails minimum version requirement
 
 gem "jsbundling-rails"
 gem "slim-rails"
