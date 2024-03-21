@@ -25,6 +25,8 @@
             input type="checkbox" checked=task.approved readonly="readonly"
           td
             div class="task-size-#{task.size}"
+              - if task.critical?
+                ' &#9888;
               = task.id
           td
             - if board.present?
