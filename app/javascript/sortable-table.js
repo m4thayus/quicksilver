@@ -4,7 +4,9 @@ const columnIndex = (th, n = 0) => th.previousElementSibling ? columnIndex(th.pr
 
 const extractors = {
   date: (cell) => new Date(cell.querySelector("time[datetime]")?.dateTime ?? null),
-  numeric: (cell) => Number(cell.textContent)
+  numeric: (cell) => Number(Array.from(cell.textContent)
+    .filter(c => !isNaN(Number(c)))
+    .join(""))
 };
 const comparators = {
   string: (a, b) => a.localeCompare(b)
