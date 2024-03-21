@@ -5,11 +5,11 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby File.read(".ruby-version")
 
-gem "rails", "~> 7.0.4", ">= 7.0.4.1"
+gem "rails", "~> 7.0.8", ">= 7.0.8.1"
 
 gem "sqlite3", "~> 1.4" # NOTE: Default rails minimum version requirement
 
-gem "puma", "~> 5.0" # NOTE: Default rails minimum version requirement
+gem "puma", "~> 5.6.8"
 
 gem "jsbundling-rails"
 gem "slim-rails"
