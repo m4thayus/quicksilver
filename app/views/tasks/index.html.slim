@@ -21,6 +21,9 @@ h1
 
 = render "table", board: @board, tasks: @recently_completed_tasks, caption: "recently_completed", show_dates: false, show_statistics: true
 
+- unless @proposed_tasks.nil?
+  = render "table", board: @board, tasks: @proposed_tasks, caption: "proposed_tasks", show_dates: false, show_statistics: false
+
 - if @board.present?
   = button_to "New Task", new_board_task_path(@board), method: :get
 - else
