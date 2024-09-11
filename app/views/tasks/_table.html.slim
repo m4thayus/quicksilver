@@ -3,7 +3,11 @@
     caption[id=caption]
       = caption.titleize
     thead
-      th &check;
+      - if show_thumbs.present?
+        th
+          button label="accept" &check;
+      - else
+        th &check;
       th.sortable[data-sorter="numeric"] Task
       th.sortable Title
       - if board.nil?
@@ -21,8 +25,12 @@
     tbody
       - tasks.each do |task|
         tr
-          td.approved
-            input type="checkbox" checked=task.approved readonly="readonly"
+          - if show_thumbs.present?
+            td.accept
+              input type="checkbox"
+          - else
+            td.approved
+              input type="checkbox" checked=task.approved readonly="readonly"
           td
             div class="task-size-#{task.size}"
               - if task.critical?

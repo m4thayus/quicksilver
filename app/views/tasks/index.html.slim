@@ -15,14 +15,19 @@ h1
   - else
     ' List of Tasks
 
-= render "table", board: @board, tasks: @active_tasks, caption: "active", show_dates: true, show_statistics: false
+= render "table", board: @board, tasks: @active_tasks, caption: "active", show_dates: true, show_statistics: false, show_thumbs: false
 
-= render "table", board: @board, tasks: @available_tasks, caption: "available", show_dates: false, show_statistics: false
+= render "table", board: @board, tasks: @available_tasks, caption: "available", show_dates: false, show_statistics: false, show_thumbs: false
 
-= render "table", board: @board, tasks: @recently_completed_tasks, caption: "recently_completed", show_dates: false, show_statistics: true
+= render "table", board: @board, tasks: @recently_completed_tasks, caption: "recently_completed", show_dates: false, show_statistics: true, show_thumbs: false
 
 - unless @proposed_tasks.nil?
-  = render "table", board: @board, tasks: @proposed_tasks, caption: "proposed_tasks", show_dates: false, show_statistics: false
+  = content_for :head
+    link href=task_path(":id") rel="task path"
+    link href=board_task_path(Board.wishlist, ":id") rel="board task path"
+  = render "table", board: @board, tasks: @proposed_tasks, caption: "proposed_tasks", show_dates: false, show_statistics: false, show_thumbs: true
+  = javascript_include_tag "thumbs_form", defer: true
+  = stylesheet_link_tag "thumbs_form"
 
 - if @board.present?
   = button_to "New Task", new_board_task_path(@board), method: :get

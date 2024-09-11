@@ -2,7 +2,7 @@
 
 class TasksController < ApplicationController
   before_action :set_board
-  load_and_authorize_resource except: :index
+  load_and_authorize_resource except: %i[index]
   before_action :associate_board
 
   def index
@@ -33,7 +33,7 @@ class TasksController < ApplicationController
     @task.assign_attributes(task_params)
     @task.approved = false if @task.board_changed? && !@task.approved_changed?
     if @task.save
-      redirect_to board_path
+      redirect_to board_path, status: :see_other
     else
       head :bad_request
     end
