@@ -11,7 +11,8 @@
       th.sortable[data-sorter="numeric"] Task
       th.sortable Title
       - if board.nil?
-        th.sortable Point of Contact
+        - if show_thumbs.blank?
+          th.sortable Point of Contact
         - if show_dates.present?
           - %w[started_on expected_on].each do |header|
             th.sortable[data-sorter="date"]
@@ -44,8 +45,9 @@
               a href=task_path(task)
                 = task.title
           - if board.nil?
-            td
-              = task.owner&.name
+            - if show_thumbs.blank?
+              td
+                = task.owner&.name
             - if show_dates.present?
               td
                 = time_tag(task.started_at, format: :short) if task.started_at.present?
