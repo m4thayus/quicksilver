@@ -1,11 +1,8 @@
 const SESSION_STORAGE_KEY = "approved-tasks"
 const getApprovedTasks = () => JSON.parse(sessionStorage.getItem(SESSION_STORAGE_KEY)) ?? []
 const setApprovedTasks = (tasks) => {
-  if (tasks.length > 0) {
-    sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(tasks))
-  } else {
-    sessionStorage.removeItem(SESSION_STORAGE_KEY)
-  }
+  if (tasks.length > 0) sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(tasks))
+  else sessionStorage.removeItem(SESSION_STORAGE_KEY)
 }
 
 const handleChange = (id) => ({ target }) => {
@@ -51,26 +48,33 @@ const removeRow = ({ parentElement }) => {
   const { parentElement: row } = parentElement
   row.remove()
 }
+const updateTask = async (id, isPromotion) => {
+  await fetch(isPromotion ? taskPath(id) : boardTaskPath(id), {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": csrfToken()
+    },
+    body: JSON.stringify({
+      task: {
+        approved: false,
+        ...(!isPromotion && { status: DEMOTION_STATUS_MESSAGE })
+      }
+    })
+  })
+}
+
 const handleClick = async () => {
   if (!confirm(CONFIRMATION_MESSAGE)) return
 
   for (const [id, input] of collectTasks()) {
     const { checked } = input
-    await fetch(checked ? taskPath(id) : boardTaskPath(id), {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-Token": csrfToken()
-      },
-      body: JSON.stringify({
-        task: {
-          approved: false,
-          ...(!checked && { status: DEMOTION_STATUS_MESSAGE })
-        }
-      })
-    })
+    await updateTask(id, checked)
     removeRow(input)
     await sleep(DEBOUNCE_TIMEOUT)
   }
+
+  setApprovedTasks([])
+  location.reload()
 }
 document.querySelector("th > button[label=accept]")?.addEventListener("click", handleClick)
