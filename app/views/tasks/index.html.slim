@@ -21,7 +21,7 @@ h1
 
 = render "table", board: @board, tasks: @recently_completed_tasks, caption: "recently_completed", show_dates: false, show_statistics: true, show_thumbs: false
 
-- unless @proposed_tasks.nil?
+- if @board.nil? && @proposed_tasks.present?
   = content_for :head
     link href=task_path(":id") rel="task path"
     link href=board_task_path(Board.wishlist, ":id") rel="board task path"
