@@ -36,7 +36,7 @@ for (const [id, input] of collectTasks()) {
 }
 
 const DEBOUNCE_TIMEOUT = 500
-const CONFIRMATION_MESSAGE = "Are you sure you are ready to submit promotions. Any unchecked tasks will remain proposed."
+const CONFIRMATION_MESSAGE = "Are you sure you are ready to submit promotions? Any unchecked tasks will remain proposed."
 
 const taskPath = (id) => new URL(id, new URL(document.querySelector("link[rel~=task][rel~=path]").href))
 const csrfToken = () => document.querySelector("meta[name=csrf-token]").content
