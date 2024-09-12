@@ -35,11 +35,9 @@ for (const [id, input] of collectTasks()) {
   input.checked = approvedTasks.find(task => task === id) != null
 }
 
-const DEMOTION_STATUS_MESSAGE = "Not Approved by Engineering for Active Work"
 const DEBOUNCE_TIMEOUT = 500
-const CONFIRMATION_MESSAGE = "Are you sure you are ready to submit promotions and demotions"
+const CONFIRMATION_MESSAGE = "Are you sure you are ready to submit promotions. Any unchecked tasks will remain proposed."
 
-const boardTaskPath = (id) => new URL(id, new URL(document.querySelector("link[rel~=board][rel~=task][rel~=path]").href))
 const taskPath = (id) => new URL(id, new URL(document.querySelector("link[rel~=task][rel~=path]").href))
 const csrfToken = () => document.querySelector("meta[name=csrf-token]").content
 
@@ -48,8 +46,8 @@ const removeRow = ({ parentElement }) => {
   const { parentElement: row } = parentElement
   row.remove()
 }
-const updateTask = async (id, isPromotion) => {
-  await fetch(isPromotion ? taskPath(id) : boardTaskPath(id), {
+const updateTask = async (id) => {
+  await fetch(taskPath(id), {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -57,8 +55,7 @@ const updateTask = async (id, isPromotion) => {
     },
     body: JSON.stringify({
       task: {
-        approved: false,
-        ...(!isPromotion && { status: DEMOTION_STATUS_MESSAGE })
+        approved: false
       }
     })
   })
@@ -69,7 +66,9 @@ const handleClick = async () => {
 
   for (const [id, input] of collectTasks()) {
     const { checked } = input
-    await updateTask(id, checked)
+    if (!checked) continue
+
+    await updateTask(id)
     removeRow(input)
     await sleep(DEBOUNCE_TIMEOUT)
   }
