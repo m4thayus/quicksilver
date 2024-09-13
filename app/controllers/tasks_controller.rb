@@ -2,7 +2,7 @@
 
 class TasksController < ApplicationController
   before_action :set_board
-  load_and_authorize_resource except: :index
+  load_and_authorize_resource except: %i[index]
   before_action :associate_board
 
   def index
@@ -14,6 +14,7 @@ class TasksController < ApplicationController
                          board_tasks.available.order(approved: :desc)
                        end
     @recently_completed_tasks = board_tasks.recently_completed.order(:completed_at)
+    @proposed_tasks = (Task.proposed if @board.nil?)
     authorize! :index, Task
   rescue CanCan::AccessDenied
     redirect_to login_path
@@ -32,7 +33,7 @@ class TasksController < ApplicationController
     @task.assign_attributes(task_params)
     @task.approved = false if @task.board_changed? && !@task.approved_changed?
     if @task.save
-      redirect_to board_path
+      redirect_to board_path, status: :see_other
     else
       head :bad_request
     end

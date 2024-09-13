@@ -1,0 +1,7 @@
+th > button[label=accept] {
+  height: 100%;
+  width: 100%;
+}
+td.accept {
+  text-align: center;
+}

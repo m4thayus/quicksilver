@@ -17,6 +17,7 @@ class Task < ApplicationRecord
   scope :active, -> { where.not(started_at: nil).where(completed_at: nil) }
   scope :recently_completed, -> { where("completed_at > ?", 1.month.ago) }
   scope :approved, -> { where(approved: true) }
+  scope :proposed, -> { where(board: Board.wishlist).approved }
 
   def <=>(other)
     if size == other.size
