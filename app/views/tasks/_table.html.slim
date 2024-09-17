@@ -37,7 +37,12 @@
             div class="task-size-#{task.size}"
               = task.id
           td
-            = task.priority
+            .meter-container
+              meter min=0 low=4 high=7 max=10 value=task.priority title=task.priority
+                = task.priority
+              .meter-ticks
+                - 4.times do
+                  span
           td
             - if board.present?
               a href=board_task_path(board, task)
