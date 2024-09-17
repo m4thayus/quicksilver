@@ -12,6 +12,7 @@ class Task < ApplicationRecord
 
   validates :title, presence: true
   validates :size, inclusion: { in: SIZES }, allow_nil: true
+  validates :priority, numericality: { only_integer: true, in: 0..10 }
 
   scope :available, -> { where(started_at: nil, completed_at: nil) }
   scope :active, -> { where.not(started_at: nil).where(completed_at: nil) }
