@@ -59,7 +59,7 @@ class TasksController < ApplicationController
       title
       status
       size
-      critical
+      priority
       owner_id
       board_id
       approved

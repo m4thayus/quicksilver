@@ -2,8 +2,9 @@ h1
   = @task.title
 h2
   => @task.board&.name&.humanize || "Active"
-  - if @task.critical?
-    ' (Critical)
+  | (
+  = @task.priority
+  ' )
   ' &mdash;
   = @task.owner&.name || "Unassigned"
 p

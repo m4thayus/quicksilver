@@ -9,6 +9,7 @@
       - else
         th &check;
       th.sortable[data-sorter="numeric"] Task
+      th.sortable[data-sorter="numeric"] Priority
       th.sortable Title
       - if board.nil?
         - if show_thumbs.blank?
@@ -34,9 +35,9 @@
               input type="checkbox" checked=task.approved readonly="readonly"
           td
             div class="task-size-#{task.size}"
-              - if task.critical?
-                ' &#9888;
               = task.id
+          td
+            = task.priority
           td
             - if board.present?
               a href=board_task_path(board, task)
