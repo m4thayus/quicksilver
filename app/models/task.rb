@@ -19,6 +19,7 @@ class Task < ApplicationRecord
   scope :recently_completed, -> { where("completed_at > ?", 1.month.ago) }
   scope :approved, -> { where(approved: true) }
   scope :proposed, -> { where(board: Board.wishlist).approved }
+  scope :highest_priority, -> { order(priority: :desc).limit(15) }
 
   def <=>(other)
     if size == other.size
