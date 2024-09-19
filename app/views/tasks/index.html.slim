@@ -10,7 +10,7 @@
         a[href="#available"] Available
 
 - if @histogram.present?
-  = render "histogram", counts: @histogram, max: @histogram.max { |a, b| a.last <=> b.last }.last
+  = render "histogram", counts: @histogram, max: @histogram.max_by(&:last).last
 
 h1
   - if @board.present?
