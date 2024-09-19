@@ -22,7 +22,7 @@ class Ability
       can :read, Board
       can :read, User
       can :read, Task
-      can :update, Task, :description
+      can :update, Task, %i[description priority]
       can :manage, Task, board: Board.wishlist
       cannot :update, Task, %i[board_id started_at expected_at completed_at points point_estimate]
       cannot :create, Task, %i[board_id started_at expected_at completed_at points point_estimate]
