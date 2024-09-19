@@ -5,7 +5,7 @@ class TasksController < ApplicationController
   load_and_authorize_resource except: %i[index]
   before_action :associate_board
 
-  def index
+  def index # rubocop:disable Metrics/AbcSize
     board_tasks = Task.where(board: @board)
     @active_tasks = board_tasks.active.order(approved: :desc, expected_at: :asc)
     @available_tasks = if @board.nil?
@@ -14,7 +14,13 @@ class TasksController < ApplicationController
                          board_tasks.available.order(approved: :desc)
                        end
     @recently_completed_tasks = board_tasks.recently_completed.order(:completed_at)
-    @proposed_tasks = (Task.proposed if @board.nil?)
+    @proposed_tasks = if @board.nil?
+                        Task.wishlist
+                      elsif @board == Board.wishlist
+                        Task.suggestions
+                      else
+                        Task.none
+                      end.approved.highest_priority
     authorize! :index, Task
   rescue CanCan::AccessDenied
     redirect_to login_path

@@ -18,7 +18,8 @@ class Task < ApplicationRecord
   scope :active, -> { where.not(started_at: nil).where(completed_at: nil) }
   scope :recently_completed, -> { where("completed_at > ?", 1.month.ago) }
   scope :approved, -> { where(approved: true) }
-  scope :proposed, -> { where(board: Board.wishlist).approved }
+  scope :wishlist, -> { where(board: Board.wishlist) }
+  scope :suggestions, -> { where(board: Board.suggestions) }
   scope :highest_priority, -> { order(priority: :desc).limit(15) }
 
   def <=>(other)
