@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_21_150422) do
+ActiveRecord::Schema[7.0].define(version: 2024_09_17_175541) do
   create_table "boards", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -34,7 +34,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_21_150422) do
     t.string "status"
     t.integer "point_estimate"
     t.integer "points"
-    t.boolean "critical", default: false, null: false
+    t.integer "priority", default: 0, null: false
     t.index ["board_id"], name: "index_tasks_on_board_id"
     t.index ["owner_id"], name: "index_tasks_on_owner_id"
   end

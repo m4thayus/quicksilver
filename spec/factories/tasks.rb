@@ -10,5 +10,6 @@ FactoryBot.define do
     completed_at { 2.hours.ago }
     point_estimate { 5 }
     points { 8 }
+    priority { 0 }
   end
 end

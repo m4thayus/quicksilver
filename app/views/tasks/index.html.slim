@@ -9,6 +9,9 @@
       li
         a[href="#available"] Available
 
+- if @histogram.present?
+  = render "histogram", counts: @histogram, max: @histogram.max_by(&:last).last
+
 h1
   - if @board.present?
     = @board.name.titleize
@@ -21,9 +24,12 @@ h1
 
 = render "table", board: @board, tasks: @recently_completed_tasks, caption: "recently_completed", show_dates: false, show_statistics: true, show_thumbs: false
 
-- if @board.nil? && @proposed_tasks.present?
+- if @proposed_tasks.present?
   = content_for :head
-    link href=task_path(":id") rel="task path"
+    - if @board.nil?
+      link href=task_path(":id") rel="task path"
+    - else
+      link href=board_task_path(Board.wishlist, ":id") rel="task path"
   = render "table", board: @board, tasks: @proposed_tasks, caption: "proposed_tasks", show_dates: false, show_statistics: false, show_thumbs: true
   = javascript_include_tag "thumbs_form", defer: true
   = stylesheet_link_tag "thumbs_form"

@@ -14,7 +14,14 @@ class TasksController < ApplicationController
                          board_tasks.available.order(approved: :desc)
                        end
     @recently_completed_tasks = board_tasks.recently_completed.order(:completed_at)
-    @proposed_tasks = (Task.proposed if @board.nil?)
+    @proposed_tasks = if @board.nil?
+                        Task.wishlist
+                      elsif @board == Board.wishlist
+                        Task.suggestions
+                      else
+                        Task.none
+                      end.approved.highest_priority
+    @histogram = @available_tasks.group(:priority).count unless @board.nil?
     authorize! :index, Task
   rescue CanCan::AccessDenied
     redirect_to login_path
@@ -59,7 +66,7 @@ class TasksController < ApplicationController
       title
       status
       size
-      critical
+      priority
       owner_id
       board_id
       approved

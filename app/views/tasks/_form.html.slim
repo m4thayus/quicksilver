@@ -22,8 +22,8 @@ h2 Details
   = form.label :size, "size:"
   = form.select :size, Task::SIZES.map { |s| [s.humanize, s] }, { include_blank: true }, disabled: cannot?(@current_action, @task, :size)
 
-  = form.label :critical, "critical:"
-  = form.check_box :critical, disabled: cannot?(@current_action, @task, :critical)
+  = form.label :priority, "priority:"
+  = form.number_field :priority, min: 0, max: 10, disabled: cannot?(@current_action, @task, :priority)
 
   = form.label :board_id, "board:"
   = form.collection_select :board_id, Board.order(:name), :id, :name, { include_blank: true }, disabled: cannot?(@current_action, @task, :board_id)
