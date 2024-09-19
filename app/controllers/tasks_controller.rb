@@ -5,7 +5,7 @@ class TasksController < ApplicationController
   load_and_authorize_resource except: %i[index]
   before_action :associate_board
 
-  def index # rubocop:disable Metrics/AbcSize
+  def index
     board_tasks = Task.where(board: @board)
     @active_tasks = board_tasks.active.order(approved: :desc, expected_at: :asc)
     @available_tasks = if @board.nil?
