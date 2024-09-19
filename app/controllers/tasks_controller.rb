@@ -21,6 +21,7 @@ class TasksController < ApplicationController
                       else
                         Task.none
                       end.approved.highest_priority
+    @histogram = @available_tasks.group(:priority).count unless @board.nil?
     authorize! :index, Task
   rescue CanCan::AccessDenied
     redirect_to login_path

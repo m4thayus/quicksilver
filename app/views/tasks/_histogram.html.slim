@@ -1,0 +1,10 @@
+.histogram
+  - 11.times do |i|
+    .histogram-row
+      .histogram-cell.label
+        = i
+      - max.times do |j|
+        - if j + 1 <= (counts[i] || 0)
+          .histogram-cell.bar.fill
+        - else
+          .histogram-cell.bar

@@ -1,0 +1,27 @@
+.histogram {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  font-size: 12px;
+  float: right;
+  .histogram-row {
+    display: flex;
+    .histogram-cell {
+      &.label {
+        margin-right: 0.25em;
+        padding-right: 0.25em;
+        width: 1em;
+        text-align: right;
+        border-right: solid black
+      }
+      &.bar {
+        width: 1em;
+        &.fill {
+          background-color: black;
+
+        }
+      }
+    }
+
+  }
+}
