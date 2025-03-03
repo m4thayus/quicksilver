@@ -10,19 +10,24 @@ class User < ApplicationRecord
 
   ADMINISTRATORS = %w[scottb mattw].map { |u| "#{u}@mercuryanalytics.com" }.freeze
   ENGINEERS = %w[peterv deepthie elizabethk jamesa zoef biancac amitp].map { |u| "#{u}@mercuryanalytics.com" }.freeze
-  MEMBERS = %w[ronh jail].map { |u| "#{u}@mercuryanalytics.com" }.freeze
-  GUESTS = %w[andrewg praneetp prasadd aishwaryap jordank anastasiar jillianh brandonk shardulm].map { |u| "#{u}@mercuryanalytics.com" }.freeze
+  MEMBERS = %w[ronh].map { |u| "#{u}@mercuryanalytics.com" }.freeze
+  BUISNESS_DEVELOPERS = %w[jordank leighk].map { |u| "#{u}@mercuryanalytics.com" }.freeze
+  GUESTS = %w[andrewg praneetp prasadd aishwaryap anastasiar jillianh brandonk shardulm].map { |u| "#{u}@mercuryanalytics.com" }.freeze
 
   def admin?
     ADMINISTRATORS.include?(email)
   end
 
   def engineer?
-    ENGINEERS.include?(email) || admin?
+    ENGINEERS.include?(email)
   end
 
   def member?
-    MEMBERS.include?(email) || engineer?
+    MEMBERS.include?(email)
+  end
+
+  def bizdev?
+    BUISNESS_DEVELOPERS.include?(email)
   end
 
   def guest?

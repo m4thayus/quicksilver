@@ -9,6 +9,7 @@ class Board < ApplicationRecord
 
   WISHLIST_SLUG = "wishlist"
   SUGGESTIONS_SLUG = "suggestions"
+  BIZDEV_SLUG = "bizdev"
 
   def self.wishlist
     Board.find_by(name: WISHLIST_SLUG)
@@ -16,6 +17,10 @@ class Board < ApplicationRecord
 
   def self.suggestions
     Board.find_by(name: SUGGESTIONS_SLUG)
+  end
+
+  def self.bizdev
+    Board.find_by(name: BIZDEV_SLUG)
   end
 
   def to_param

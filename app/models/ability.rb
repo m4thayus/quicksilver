@@ -18,6 +18,17 @@ class Ability
       cannot :create, Task, %i[board_id started_at expected_at completed_at points point_estimate approved]
     end
 
+    if user.bizdev?
+      can :read, Board
+      can :read, User
+      can :read, Task
+
+      can :manage, Task, board: Board.bizdev
+
+      cannot :update, Task, %i[board_id started_at expected_at completed_at points point_estimate approved]
+      cannot :create, Task, %i[board_id started_at expected_at completed_at points point_estimate approved]
+    end
+
     if user.member?
       can :read, Board
       can :read, User
