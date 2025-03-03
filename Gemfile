@@ -16,6 +16,8 @@ gem "slim-rails"
 gem "sprockets-rails"
 gem "sassc-rails"
 
+gem "concurrent-ruby", "1.3.4" # concurrent-ruby v1.3.5 has removed the dependency on logger. Upgrade to rails 7.1
+
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
 gem "turbo-rails"
 
