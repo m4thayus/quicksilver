@@ -25,10 +25,11 @@ class Ability
       can :read, User
       can :read, Task
 
-      can :manage, Task, board: Board.bizdev
-
       cannot :update, Task, %i[board_id started_at expected_at completed_at points point_estimate approved]
       cannot :create, Task, %i[board_id started_at expected_at completed_at points point_estimate approved]
+
+      can :manage, Task, board: Board.suggestions
+      can :manage, Task, board: Board.bizdev
     end
 
     if user.in_group?(:member)
@@ -42,6 +43,7 @@ class Ability
       cannot :update, Task, %i[board_id started_at expected_at completed_at points point_estimate]
       cannot :create, Task, %i[board_id started_at expected_at completed_at points point_estimate]
 
+      can :manage, Task, board: Board.bizdev
       can :manage, Task, board: Board.suggestions
     end
 
