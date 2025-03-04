@@ -12,6 +12,9 @@ ol
     - if Board.suggestions.present?
       li
         a href=board_tasks_path(Board.suggestions) Suggestions
+    - if Board.bizdev.present?
+      li
+        a href=board_tasks_path(Board.bizdev) Biz Dev
     li
   - else
     li
