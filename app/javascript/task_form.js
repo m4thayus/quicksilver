@@ -1,8 +1,16 @@
 const expectedAtField = document.querySelector("form input[name='task[expected_at]']")
 const ownerField = document.querySelector("form select[name='task[owner_id]']")
 const pointEstimateField = document.querySelector("form input[name='task[point_estimate]']")
+const boardField = document.querySelector("form select[name='task[board_id]']")
+
+const isBizDevTask = () => Array.from(boardField.querySelectorAll("option")).find(option => option.selected)?.textContent === "bizdev"
+
 const setRequiredAttribute = (target) => {
-  expectedAtField.required = ownerField.required = pointEstimateField.required = !!target.value
+  const present = !!target.value
+  expectedAtField.required = ownerField.required = present
+  if (isBizDevTask()) return
+
+  pointEstimateField.required = present
 }
 
 const pointsField = document.querySelector("form input[name='task[points]']")
