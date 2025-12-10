@@ -22,6 +22,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           rubygems: latest
+          bundler: '2.4.19'
           bundler-cache: true
       - name: Install esbuild
         run: npm install esbuild
@@ -41,6 +42,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           rubygems: latest
+          bundler: '2.4.19'
           bundler-cache: true
       - name: Lint Ruby files
         run: bin/rubocop --parallel
