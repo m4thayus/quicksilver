@@ -1,7 +1,8 @@
 doctype html
 html
   head
-    title Quicksilver
+    title
+      = yield(:title).presence || "Quicksilver"
     meta name="viewport" content="width=device-width,initial-scale=1"
     = favicon_link_tag asset_path("favicon.svg")
     = csrf_meta_tags

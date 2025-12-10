@@ -1,3 +1,8 @@
+= content_for :title
+  => @task.id
+  | |
+  =< @task.title
+
 h1 Edit Task
 - if @board.present?
   = form_with model: @task, url: board_task_path(@board, @task), class: "tasks" do |form|
