@@ -47,8 +47,6 @@ gem "redcarpet"
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
-gem "digest", "3.1.0" # remove this when github action isn't broken
-
 group :production do
   gem "strscan", "3.0.1" # remove this when passenger isn't broken
 end
