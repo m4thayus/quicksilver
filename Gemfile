@@ -5,7 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby File.read(".ruby-version")
 
-gem "rails", "~> 7.0.8", ">= 7.0.8.1"
+gem "rails", "~> 7.1.5", ">= 7.1.5.2"
 
 gem "sqlite3", "~> 1.4" # NOTE: Default rails minimum version requirement
 
@@ -16,7 +16,7 @@ gem "slim-rails"
 gem "sprockets-rails"
 gem "sassc-rails"
 
-gem "concurrent-ruby", "1.3.4" # concurrent-ruby v1.3.5 has removed the dependency on logger. Upgrade to rails 7.1
+gem "concurrent-ruby"
 gem "base64", "0.1.1" # version loaded by passenger in prod
 
 # Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
@@ -46,6 +46,8 @@ gem "redcarpet"
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
+
+gem "mutex_m", "0.2.0" # remove this when github action isn't broken
 
 group :production do
   gem "strscan", "3.0.1" # remove this when passenger isn't broken
