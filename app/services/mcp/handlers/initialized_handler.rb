@@ -3,7 +3,7 @@
 module Mcp
   module Handlers
     class InitializedHandler
-      def call(_params:)
+      def call(params:) # rubocop:disable Lint/UnusedMethodArgument
         {}
       end
     end
