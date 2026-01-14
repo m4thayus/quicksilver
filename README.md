@@ -1,24 +1,43 @@
-# README
+# Quicksilver
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A task management system with MCP (Model Context Protocol) interface support.
 
-Things you may want to cover:
+## Features
 
-* Ruby version
+- Task and board management
+- MCP server interface for AI agent integration
+- RESTful web interface
 
-* System dependencies
+## MCP Interface
 
-* Configuration
+Quicksilver provides an MCP server endpoint for programmatic access to tasks and boards. See the [MCP Documentation](docs/MCP.md) for detailed information about:
 
-* Database creation
+- Authentication setup
+- Available methods and endpoints
+- Request/response examples
+- Error codes
 
-* Database initialization
+## Development Setup
 
-* How to run the test suite
+```bash
+# Install dependencies
+bin/setup
 
-* Services (job queues, cache servers, search engines, etc.)
+# Start the development server
+bin/dev
 
-* Deployment instructions
+# Run tests
+bin/rspec
+```
 
-* ...
+## Configuration
+
+Set the MCP authentication token:
+
+```bash
+export MCP_AUTH_TOKEN="your-secret-token"
+```
+
+## Documentation
+
+- [MCP Interface Documentation](docs/MCP.md)
