@@ -6,8 +6,10 @@ class McpController < ApplicationController
   def create
     return render_streamable_http_error unless valid_accept_header?
 
-    token = request.headers["Authorization"].to_s.delete_prefix("Bearer ").strip
-    return render json: { error: "Unauthorized" }, status: :unauthorized unless token.present? && token == ENV.fetch("MCP_AUTH_TOKEN", nil)
+    authenticated = authenticate_with_http_token do |token, _options|
+      token == ENV.fetch("MCP_AUTH_TOKEN", nil)
+    end
+    return render json: { error: "Unauthorized" }, status: :unauthorized unless authenticated
 
     payload = parse_payload
     validate_protocol_version!(payload)
