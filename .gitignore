@@ -43,5 +43,7 @@
 # Ignore developer personal files
 .envrc
 .powenv
+.beads
+*.local.*
 
 /sandbox
