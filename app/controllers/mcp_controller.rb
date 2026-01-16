@@ -7,7 +7,7 @@ class McpController < ApplicationController
     return render_streamable_http_error unless valid_accept_header?
 
     authenticated = authenticate_with_http_token do |token, _options|
-      token == ENV.fetch("MCP_AUTH_TOKEN", nil)
+      token == Rails.application.credentials.mcp_auth_token
     end
     return render json: { error: "Unauthorized" }, status: :unauthorized unless authenticated
 

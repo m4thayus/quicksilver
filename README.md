@@ -32,10 +32,14 @@ bin/rspec
 
 ## Configuration
 
-Set the MCP authentication token:
+Configure the MCP authentication token in Rails credentials:
 
 ```bash
-export MCP_AUTH_TOKEN="your-secret-token"
+# Edit credentials
+EDITOR=nano bin/rails credentials:edit
+
+# Add to credentials file:
+# mcp_auth_token: your-secret-token
 ```
 
 ## Documentation

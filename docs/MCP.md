@@ -19,10 +19,17 @@ Quicksilver provides an MCP server interface for programmatic access to tasks an
 
 ## Authentication
 
-The MCP interface requires bearer token authentication. Set the `MCP_AUTH_TOKEN` environment variable:
+The MCP interface requires bearer token authentication. Configure the authentication token in Rails credentials:
 
 ```bash
-export MCP_AUTH_TOKEN="your-secret-token"
+# Edit credentials (use EDITOR=vim or your preferred editor)
+EDITOR=nano bin/rails credentials:edit
+```
+
+Add the MCP auth token to your credentials file:
+
+```yaml
+mcp_auth_token: your-secret-token
 ```
 
 All requests must include this token in the `Authorization` header:
@@ -575,8 +582,9 @@ curl -X POST http://localhost:3000/mcp \
 To run the MCP server locally:
 
 ```bash
-# Set authentication token
-export MCP_AUTH_TOKEN="dev-token-123"
+# Configure authentication token in credentials
+EDITOR=nano bin/rails credentials:edit
+# Add: mcp_auth_token: dev-token-123
 
 # Start the Rails server
 bin/rails server

@@ -15,7 +15,7 @@ RSpec.describe "MCP", type: :request do
   let(:valid_token) { "test-token" }
 
   before do
-    allow(ENV).to receive(:fetch).with("MCP_AUTH_TOKEN", nil).and_return(valid_token)
+    allow(Rails.application.credentials).to receive(:mcp_auth_token).and_return(valid_token)
   end
 
   describe "GET /mcp" do
