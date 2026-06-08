@@ -49,6 +49,7 @@ Naming/MethodParameterName:
 RSpec/ExampleLength:
   Exclude:
     - "spec/features/**/*_spec.rb"
+    - "spec/requests/**/*_spec.rb"
 
 RSpec/ExpectChange:
   EnforcedStyle: block
@@ -56,6 +57,7 @@ RSpec/ExpectChange:
 RSpec/MultipleExpectations:
   Exclude:
     - "spec/features/**/*_spec.rb"
+    - "spec/requests/**/*_spec.rb"
 
 RSpec/MultipleMemoizedHelpers:
   Max: 8

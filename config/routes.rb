@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   post :login, to: "sessions#create"
   get :logout, to: "sessions#destroy"
 
+  get :mcp, to: "mcp#show"
+  post :mcp, to: "mcp#create"
+
   resources :users, only: %i[index new create edit update]
 
   resource :search, only: %i[show]
