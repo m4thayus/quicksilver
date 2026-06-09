@@ -6,6 +6,7 @@ Quicksilver provides an MCP server interface for programmatic access to tasks an
 
 - [Authentication](#authentication)
 - [Required Headers](#required-headers)
+  - [Identity Header (`X-Quicksilver-User-Email`)](#identity-header-x-quicksilver-user-email)
 - [Protocol Version](#protocol-version)
 - [Endpoints](#endpoints)
 - [Methods](#methods)
@@ -53,6 +54,20 @@ For all methods except `initialize`, you must also include:
 ```
 MCP-Protocol-Version: 2025-06-18
 ```
+
+### Identity Header (`X-Quicksilver-User-Email`)
+
+Mutating tools are gated on the caller's identity. Supply your email once in your MCP client configuration:
+
+```
+X-Quicksilver-User-Email: you@mercuryanalytics.com
+```
+
+- **Optional** for read-only tools (`available_work`, `proposed_work`, `list_tasks`) and all `resources/*` reads.
+- **Required** for every mutating tool (`create_task`, `update_task`, `complete_task`, `claim_task`, `accept_task`). The resolved user must be an engineer or admin; otherwise the call returns [`-32003 Forbidden`](#error-codes).
+- `list_tasks` uses the header only to resolve `owner: me`.
+
+The connection-level bearer token is still required and is checked before any tool runs. Identity is resolved independently of the token (see `Mcp::CurrentUser`), so a future move to per-engineer tokens will not change this tool contract.
 
 ## Protocol Version
 
@@ -318,6 +333,47 @@ curl -X POST http://localhost:3000/mcp \
           },
           "required": ["id"]
         }
+      },
+      {
+        "name": "available_work",
+        "description": "List available work on the engineering backlog (unstarted, unassigned), in size order.",
+        "inputSchema": { "type": "object", "properties": {} }
+      },
+      {
+        "name": "proposed_work",
+        "description": "List approved tasks proposed for the backlog (the wishlist inbound queue), highest priority first.",
+        "inputSchema": { "type": "object", "properties": {} }
+      },
+      {
+        "name": "claim_task",
+        "description": "Claim a backlog task for yourself: assigns it to you and starts it (sets owner and started_at). Requires an engineer identity.",
+        "inputSchema": {
+          "type": "object",
+          "properties": { "id": { "type": "integer" } },
+          "required": ["id"]
+        }
+      },
+      {
+        "name": "accept_task",
+        "description": "Accept a proposed task onto the backlog: removes its board and clears approved. Requires an engineer identity.",
+        "inputSchema": {
+          "type": "object",
+          "properties": { "id": { "type": "integer" } },
+          "required": ["id"]
+        }
+      },
+      {
+        "name": "list_tasks",
+        "description": "Query tasks by board, status, and owner.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "board": { "type": "string", "description": "Board name (wishlist/suggestions/bizdev); null or empty for the backlog. Omit to span all boards." },
+            "status": { "type": "string", "description": "One of available, active, recently_completed." },
+            "owner": { "type": "string", "description": "Owner email, or 'me' for the identified user." },
+            "limit": { "type": "integer", "description": "Maximum number of tasks (default 50)." }
+          }
+        }
       }
     ]
   }
@@ -327,6 +383,8 @@ curl -X POST http://localhost:3000/mcp \
 ### Call Tool
 
 Executes a tool with the specified arguments.
+
+> **Identity:** the mutating tools below (`create_task`, `update_task`, `complete_task`, `claim_task`, `accept_task`) require an engineer/admin identity supplied via the [`X-Quicksilver-User-Email`](#identity-header-x-quicksilver-user-email) header. The read-only tools (`available_work`, `proposed_work`, `list_tasks`) do not.
 
 #### Create Task
 
@@ -338,6 +396,7 @@ curl -X POST http://localhost:3000/mcp \
   -H "Accept: application/json, text/event-stream" \
   -H "Content-Type: application/json" \
   -H "MCP-Protocol-Version: 2025-06-18" \
+  -H "X-Quicksilver-User-Email: you@mercuryanalytics.com" \
   -d '{
     "jsonrpc": "2.0",
     "method": "tools/call",
@@ -381,6 +440,7 @@ curl -X POST http://localhost:3000/mcp \
   -H "Accept: application/json, text/event-stream" \
   -H "Content-Type: application/json" \
   -H "MCP-Protocol-Version: 2025-06-18" \
+  -H "X-Quicksilver-User-Email: you@mercuryanalytics.com" \
   -d '{
     "jsonrpc": "2.0",
     "method": "tools/call",
@@ -423,6 +483,7 @@ curl -X POST http://localhost:3000/mcp \
   -H "Accept: application/json, text/event-stream" \
   -H "Content-Type: application/json" \
   -H "MCP-Protocol-Version: 2025-06-18" \
+  -H "X-Quicksilver-User-Email: you@mercuryanalytics.com" \
   -d '{
     "jsonrpc": "2.0",
     "method": "tools/call",
@@ -454,6 +515,169 @@ curl -X POST http://localhost:3000/mcp \
 }
 ```
 
+#### Available Work
+
+Lists unstarted, unassigned tasks on the engineering backlog (`board_id = null`), in size order. Read-only — no identity header required.
+
+**Request:**
+
+```bash
+curl -X POST http://localhost:3000/mcp \
+  -H "Authorization: Bearer your-secret-token" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Content-Type: application/json" \
+  -H "MCP-Protocol-Version: 2025-06-18" \
+  -d '{
+    "jsonrpc": "2.0",
+    "method": "tools/call",
+    "id": 9,
+    "params": { "name": "available_work", "arguments": {} }
+  }'
+```
+
+**Response:** the inner `text` is `{"tasks":[ ... ]}`, where each entry is a full task payload.
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 9,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"tasks\":[{\"id\":12,\"title\":\"Fix flaky spec\",\"description\":\"...\",\"status\":null,\"size\":\"small\",\"priority\":3,\"board_id\":null,\"owner_id\":null,\"approved\":false,\"started_at\":null,\"expected_at\":null,\"completed_at\":null,\"created_at\":\"2026-06-01T10:00:00Z\",\"updated_at\":\"2026-06-01T10:00:00Z\"}]}"
+      }
+    ]
+  }
+}
+```
+
+#### Proposed Work
+
+Lists approved tasks on the wishlist (the backlog's inbound queue), highest priority first. Read-only.
+
+**Request:**
+
+```bash
+curl -X POST http://localhost:3000/mcp \
+  -H "Authorization: Bearer your-secret-token" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Content-Type: application/json" \
+  -H "MCP-Protocol-Version: 2025-06-18" \
+  -d '{
+    "jsonrpc": "2.0",
+    "method": "tools/call",
+    "id": 10,
+    "params": { "name": "proposed_work", "arguments": {} }
+  }'
+```
+
+**Response:** `{"tasks":[ ... ]}`, same entry shape as `available_work`.
+
+#### Claim Task
+
+Claims a backlog task for the calling engineer: sets `owner_id` to the resolved user **and** `started_at` to today in a single save. Returns the full task. Errors with `-32602` if the task is already started or owned by another user. **Requires an engineer identity.**
+
+**Request:**
+
+```bash
+curl -X POST http://localhost:3000/mcp \
+  -H "Authorization: Bearer your-secret-token" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Content-Type: application/json" \
+  -H "MCP-Protocol-Version: 2025-06-18" \
+  -H "X-Quicksilver-User-Email: you@mercuryanalytics.com" \
+  -d '{
+    "jsonrpc": "2.0",
+    "method": "tools/call",
+    "id": 11,
+    "params": { "name": "claim_task", "arguments": { "id": 12 } }
+  }'
+```
+
+**Response:**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 11,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"uri\":\"quicksilver://tasks/12\",\"task\":{...\"owner_id\":7,\"started_at\":\"2026-06-08\"}}"
+      }
+    ]
+  }
+}
+```
+
+#### Accept Task
+
+Pulls a proposed task onto the backlog: sets `board_id = null` **and** `approved = false` (mirroring the board-move rule in `TasksController#update`). Returns the full task. **Requires an engineer identity.**
+
+**Request:**
+
+```bash
+curl -X POST http://localhost:3000/mcp \
+  -H "Authorization: Bearer your-secret-token" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Content-Type: application/json" \
+  -H "MCP-Protocol-Version: 2025-06-18" \
+  -H "X-Quicksilver-User-Email: you@mercuryanalytics.com" \
+  -d '{
+    "jsonrpc": "2.0",
+    "method": "tools/call",
+    "id": 12,
+    "params": { "name": "accept_task", "arguments": { "id": 30 } }
+  }'
+```
+
+**Response:**
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 12,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"uri\":\"quicksilver://tasks/30\",\"task\":{...\"board_id\":null,\"approved\":false}}"
+      }
+    ]
+  }
+}
+```
+
+#### List Tasks
+
+Flexible query across boards, status, and owner. All arguments are optional. Read-only; the identity header is used only to resolve `owner: "me"`.
+
+- `board`: board name (`wishlist`/`suggestions`/`bizdev`); `null` or empty for the backlog; omit to span all boards. An unknown name returns `-32602`.
+- `status`: one of `available`, `active`, `recently_completed`. An unknown value returns `-32602`.
+- `owner`: an owner email, or the literal `me` for the identified user (`-32602` if no identity is supplied).
+- `limit`: maximum number of tasks (default 50).
+
+**Request — "what am I working on":**
+
+```bash
+curl -X POST http://localhost:3000/mcp \
+  -H "Authorization: Bearer your-secret-token" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Content-Type: application/json" \
+  -H "MCP-Protocol-Version: 2025-06-18" \
+  -H "X-Quicksilver-User-Email: you@mercuryanalytics.com" \
+  -d '{
+    "jsonrpc": "2.0",
+    "method": "tools/call",
+    "id": 13,
+    "params": { "name": "list_tasks", "arguments": { "owner": "me", "status": "active" } }
+  }'
+```
+
+**Response:** `{"tasks":[ ... ]}`, same entry shape as `available_work`.
+
 ## Error Codes
 
 The MCP interface uses standard JSON-RPC 2.0 error codes:
@@ -465,8 +689,30 @@ The MCP interface uses standard JSON-RPC 2.0 error codes:
 | -32601  | Method Not Found    | The requested method does not exist                   | 200*        |
 | -32602  | Invalid Params      | Invalid method parameters                             | 400         |
 | -32002  | Resource Not Found  | The requested resource does not exist (MCP-specific)  | 404         |
+| -32003  | Forbidden           | Mutating tool called without a resolved engineer/admin identity (MCP-specific) | 403 |
 
 *Note: Method Not Found returns HTTP 200 with an error in the JSON-RPC response body per the JSON-RPC 2.0 specification.
+
+**Forbidden (`-32003`):**
+
+Returned by a mutating tool when the caller lacks an authorized identity. The `data` field distinguishes the cause:
+
+- `"identity required"` — the `X-Quicksilver-User-Email` header is missing or resolves to no user.
+- `"not authorized"` — the resolved user is not an engineer or admin.
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 11,
+  "error": {
+    "code": -32003,
+    "message": "Forbidden",
+    "data": "identity required"
+  }
+}
+```
+
+HTTP Status: 403
 
 **Error Response Format:**
 
