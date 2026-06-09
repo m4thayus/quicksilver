@@ -41,5 +41,11 @@ module Mcp
         super(message, code: -32_002, data:)
       end
     end
+
+    class Forbidden < Base
+      def initialize(message = "Forbidden", data: nil)
+        super(message, code: -32_003, data:)
+      end
+    end
   end
 end
