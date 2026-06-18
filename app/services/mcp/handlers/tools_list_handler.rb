@@ -3,7 +3,7 @@
 module Mcp
   module Handlers
     class ToolsListHandler
-      def call(params:, current_user: nil) # rubocop:disable Lint/UnusedMethodArgument
+      def call(**)
         {
           "tools" => [
             create_task_tool,

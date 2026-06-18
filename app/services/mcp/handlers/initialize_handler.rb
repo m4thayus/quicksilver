@@ -3,7 +3,7 @@
 module Mcp
   module Handlers
     class InitializeHandler
-      def call(params:, current_user: nil) # rubocop:disable Lint/UnusedMethodArgument
+      def call(params:, **)
         client_info = params.fetch("clientInfo", {})
         protocol_version = params["protocolVersion"]
         raise Errors::InvalidParams, "protocolVersion is required" if protocol_version.blank?

@@ -3,7 +3,7 @@
 module Mcp
   module Handlers
     class ResourcesReadHandler
-      def call(params:, current_user: nil) # rubocop:disable Lint/UnusedMethodArgument
+      def call(params:, **)
         uri = params["uri"]
         raise Errors::InvalidParams, "uri is required" if uri.blank?
 
