@@ -15,10 +15,10 @@ module Mcp
       }
     end
 
-    def handle(payload)
+    def handle(payload, current_user: nil)
       validate_payload!(payload)
       handler = @handlers.fetch(payload["method"]) { raise Errors::MethodNotFound }
-      result = handler.call(params: payload.fetch("params", {}))
+      result = handler.call(params: payload.fetch("params", {}), current_user:)
       return nil if payload["id"].nil?
 
       build_result(payload["id"], result)

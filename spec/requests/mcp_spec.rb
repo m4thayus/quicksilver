@@ -13,9 +13,24 @@ RSpec.describe "MCP", type: :request do
   end
 
   let(:valid_token) { "test-token" }
+  let(:engineer) { create(:engineer_user) }
 
   before do
     allow(Rails.application.credentials).to receive(:mcp_auth_token).and_return(valid_token)
+  end
+
+  def engineer_headers
+    valid_headers.merge("X-Quicksilver-User-Email" => engineer.email)
+  end
+
+  def post_tool_call(name, arguments: {}, headers: valid_headers, id: 1)
+    post "/mcp",
+         params: { jsonrpc: "2.0", method: "tools/call", id:, params: { name:, arguments: } }.to_json,
+         headers:
+  end
+
+  def tool_result
+    JSON.parse(JSON.parse(response.body).dig("result", "content", 0, "text"))
   end
 
   describe "GET /mcp" do
@@ -365,6 +380,17 @@ RSpec.describe "MCP", type: :request do
         expect(body["result"]).to be_a(Hash)
         expect(body["result"]["tools"]).to be_an(Array)
       end
+
+      it "lists the workflow tools" do
+        post "/mcp",
+             params: { jsonrpc: "2.0", method: "tools/list", id: 4 }.to_json,
+             headers: valid_headers
+
+        names = JSON.parse(response.body).dig("result", "tools").map { |t| t["name"] }
+        expect(names).to include(
+          "available_work", "proposed_work", "claim_task", "accept_task", "list_tasks"
+        )
+      end
     end
 
     context "with tools/call" do
@@ -381,7 +407,7 @@ RSpec.describe "MCP", type: :request do
                  }
                }
              }.to_json,
-             headers: valid_headers
+             headers: engineer_headers
 
         expect(response).to have_http_status(:ok)
         body = JSON.parse(response.body)
@@ -408,7 +434,7 @@ RSpec.describe "MCP", type: :request do
                  }
                }
              }.to_json,
-             headers: valid_headers
+             headers: engineer_headers
 
         expect(response).to have_http_status(:ok)
         body = JSON.parse(response.body)
@@ -430,7 +456,7 @@ RSpec.describe "MCP", type: :request do
                  }
                }
              }.to_json,
-             headers: valid_headers
+             headers: engineer_headers
 
         expect(response).to have_http_status(:ok)
         body = JSON.parse(response.body)
@@ -485,12 +511,258 @@ RSpec.describe "MCP", type: :request do
                  arguments: {}
                }
              }.to_json,
-             headers: valid_headers
+             headers: engineer_headers
 
         expect(response).to have_http_status(:bad_request)
         body = JSON.parse(response.body)
         expect(body["error"]["code"]).to eq(-32_602)
         expect(body["error"]["message"]).to include("title is required")
+      end
+    end
+
+    context "with identity-gated mutations" do
+      it "rejects create_task without an identity header" do
+        post_tool_call("create_task", arguments: { title: "X" }, headers: valid_headers)
+
+        expect(response).to have_http_status(:forbidden)
+        body = JSON.parse(response.body)
+        expect(body["error"]["code"]).to eq(-32_003)
+        expect(body["error"]["data"]).to eq("identity required")
+      end
+
+      it "rejects mutations from an unknown email as identity required" do
+        task = create(:task)
+        post_tool_call("update_task",
+                       arguments: { id: task.id, title: "X" },
+                       headers: valid_headers.merge("X-Quicksilver-User-Email" => "ghost@example.test"))
+
+        expect(response).to have_http_status(:forbidden)
+        body = JSON.parse(response.body)
+        expect(body["error"]["code"]).to eq(-32_003)
+        expect(body["error"]["data"]).to eq("identity required")
+      end
+
+      it "rejects mutations from a resolved non-engineer as not authorized" do
+        guest = create(:guest_user)
+        task = create(:task)
+        post_tool_call("complete_task",
+                       arguments: { id: task.id },
+                       headers: valid_headers.merge("X-Quicksilver-User-Email" => guest.email))
+
+        expect(response).to have_http_status(:forbidden)
+        body = JSON.parse(response.body)
+        expect(body["error"]["code"]).to eq(-32_003)
+        expect(body["error"]["data"]).to eq("not authorized")
+      end
+
+      it "allows mutations from a resolved engineer" do
+        post_tool_call("create_task", arguments: { title: "Engineer task" }, headers: engineer_headers)
+
+        expect(response).to have_http_status(:ok)
+        body = JSON.parse(response.body)
+        expect(body["result"]["content"]).to be_an(Array)
+      end
+
+      it "allows mutations from a resolved admin" do
+        admin = create(:admin_user)
+        post_tool_call("create_task",
+                       arguments: { title: "Admin task" },
+                       headers: valid_headers.merge("X-Quicksilver-User-Email" => admin.email))
+
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context "with available_work tool" do
+      it "returns backlog available tasks in size order without requiring identity" do
+        medium = create(:task, board: nil, size: "medium", started_at: nil, completed_at: nil)
+        small = create(:task, board: nil, size: "small", started_at: nil, completed_at: nil)
+        unsized = create(:task, board: nil, size: nil, started_at: nil, completed_at: nil)
+        large = create(:task, board: nil, size: "large", started_at: nil, completed_at: nil)
+        create(:task, board: create(:board), size: "small", started_at: nil, completed_at: nil)
+        create(:task, board: nil, size: "small", started_at: 1.day.ago, completed_at: nil)
+        create(:task, board: nil, size: "small", started_at: nil, completed_at: 1.day.ago)
+
+        post_tool_call("available_work", headers: valid_headers)
+
+        expect(response).to have_http_status(:ok)
+        tasks = JSON.parse(JSON.parse(response.body).dig("result", "content", 0, "text"))["tasks"]
+        expect(tasks.map { |t| t["id"] }).to eq([unsized.id, small.id, medium.id, large.id])
+        expect(tasks.first).to include("title", "description", "priority", "size", "expected_at")
+      end
+    end
+
+    context "with proposed_work tool" do
+      it "returns approved wishlist tasks in priority order without requiring identity" do
+        wishlist = create(:wishlist)
+        high = create(:task, board: wishlist, approved: true, priority: 9)
+        low = create(:task, board: wishlist, approved: true, priority: 1)
+        create(:task, board: wishlist, approved: false, priority: 10)
+        create(:task, board: nil, approved: true, priority: 5)
+
+        post_tool_call("proposed_work", headers: valid_headers)
+
+        expect(response).to have_http_status(:ok)
+        tasks = JSON.parse(JSON.parse(response.body).dig("result", "content", 0, "text"))["tasks"]
+        expect(tasks.map { |t| t["id"] }).to eq([high.id, low.id])
+        expect(tasks.first).to include("title", "description", "priority", "size")
+      end
+    end
+
+    context "with claim_task tool" do
+      it "claims an available task by setting owner and started_at atomically" do
+        task = create(:task, owner: nil, started_at: nil, completed_at: nil)
+
+        post_tool_call("claim_task", arguments: { id: task.id }, headers: engineer_headers)
+
+        expect(response).to have_http_status(:ok)
+        payload = JSON.parse(JSON.parse(response.body).dig("result", "content", 0, "text"))
+        expect(payload["uri"]).to eq("quicksilver://tasks/#{task.id}")
+        expect(payload["task"]["owner_id"]).to eq(engineer.id)
+        expect(payload["task"]["started_at"]).to eq(Date.current.iso8601)
+        expect(task.reload.owner_id).to eq(engineer.id)
+        expect(task.started_at).to eq(Date.current)
+      end
+
+      it "rejects claiming a task that is already started" do
+        task = create(:task, owner: nil, started_at: 1.day.ago, completed_at: nil)
+
+        post_tool_call("claim_task", arguments: { id: task.id }, headers: engineer_headers)
+
+        expect(response).to have_http_status(:bad_request)
+        body = JSON.parse(response.body)
+        expect(body["error"]["code"]).to eq(-32_602)
+        expect(body["error"]["message"]).to match(/already started/i)
+      end
+
+      it "rejects claiming a task owned by another user" do
+        task = create(:task, owner: create(:user), started_at: nil, completed_at: nil)
+
+        post_tool_call("claim_task", arguments: { id: task.id }, headers: engineer_headers)
+
+        expect(response).to have_http_status(:bad_request)
+        body = JSON.parse(response.body)
+        expect(body["error"]["code"]).to eq(-32_602)
+        expect(body["error"]["message"]).to match(/another user/i)
+      end
+
+      it "returns not found when claiming a nonexistent task" do
+        post_tool_call("claim_task", arguments: { id: 999_999 }, headers: engineer_headers)
+
+        expect(response).to have_http_status(:not_found)
+        expect(JSON.parse(response.body).dig("error", "code")).to eq(-32_002)
+      end
+
+      it "rejects claim_task from a resolved non-engineer" do
+        guest = create(:guest_user)
+        task = create(:task, owner: nil, started_at: nil, completed_at: nil)
+
+        post_tool_call("claim_task",
+                       arguments: { id: task.id },
+                       headers: valid_headers.merge("X-Quicksilver-User-Email" => guest.email))
+
+        expect(response).to have_http_status(:forbidden)
+        expect(JSON.parse(response.body).dig("error", "code")).to eq(-32_003)
+      end
+    end
+
+    context "with accept_task tool" do
+      it "moves a proposed task onto the backlog and clears approved" do
+        wishlist = create(:wishlist)
+        task = create(:task, board: wishlist, approved: true)
+
+        post_tool_call("accept_task", arguments: { id: task.id }, headers: engineer_headers)
+
+        expect(response).to have_http_status(:ok)
+        payload = JSON.parse(JSON.parse(response.body).dig("result", "content", 0, "text"))
+        expect(payload["uri"]).to eq("quicksilver://tasks/#{task.id}")
+        expect(payload["task"]["board_id"]).to be_nil
+        expect(payload["task"]["approved"]).to be(false)
+        task.reload
+        expect(task.board_id).to be_nil
+        expect(task.approved).to be(false)
+      end
+
+      it "rejects accept_task from a resolved non-engineer" do
+        guest = create(:guest_user)
+        task = create(:task, board: create(:wishlist), approved: true)
+
+        post_tool_call("accept_task",
+                       arguments: { id: task.id },
+                       headers: valid_headers.merge("X-Quicksilver-User-Email" => guest.email))
+
+        expect(response).to have_http_status(:forbidden)
+        expect(JSON.parse(response.body).dig("error", "code")).to eq(-32_003)
+      end
+    end
+
+    context "with list_tasks tool" do
+      it "answers 'what am I working on' via owner: me and status: active" do
+        mine = create(:task, owner: engineer, started_at: 1.day.ago, completed_at: nil)
+        create(:task, owner: engineer, started_at: 1.day.ago, completed_at: 1.day.ago)
+        create(:task, owner: create(:user), started_at: 1.day.ago, completed_at: nil)
+
+        post_tool_call("list_tasks", arguments: { owner: "me", status: "active" }, headers: engineer_headers)
+
+        expect(response).to have_http_status(:ok)
+        expect(tool_result["tasks"].map { |t| t["id"] }).to contain_exactly(mine.id)
+      end
+
+      it "filters by board name" do
+        on_wishlist = create(:task, board: create(:wishlist))
+        create(:task, board: nil)
+
+        post_tool_call("list_tasks", arguments: { board: "wishlist" }, headers: valid_headers)
+
+        expect(tool_result["tasks"].map { |t| t["id"] }).to contain_exactly(on_wishlist.id)
+      end
+
+      it "filters to the backlog when board is null" do
+        backlog_task = create(:task, board: nil)
+        create(:task, board: create(:wishlist))
+
+        post_tool_call("list_tasks", arguments: { board: nil }, headers: valid_headers)
+
+        expect(tool_result["tasks"].map { |t| t["id"] }).to contain_exactly(backlog_task.id)
+      end
+
+      it "filters by owner email" do
+        owner = create(:user)
+        theirs = create(:task, owner:)
+        create(:task, owner: create(:user))
+
+        post_tool_call("list_tasks", arguments: { owner: owner.email }, headers: valid_headers)
+
+        expect(tool_result["tasks"].map { |t| t["id"] }).to contain_exactly(theirs.id)
+      end
+
+      it "respects the limit argument" do
+        create_list(:task, 3, board: nil)
+
+        post_tool_call("list_tasks", arguments: { board: nil, limit: 1 }, headers: valid_headers)
+
+        expect(tool_result["tasks"].size).to eq(1)
+      end
+
+      it "rejects owner: me without an identified user" do
+        post_tool_call("list_tasks", arguments: { owner: "me" }, headers: valid_headers)
+
+        expect(response).to have_http_status(:bad_request)
+        expect(JSON.parse(response.body).dig("error", "code")).to eq(-32_602)
+      end
+
+      it "rejects an unknown status" do
+        post_tool_call("list_tasks", arguments: { status: "bogus" }, headers: valid_headers)
+
+        expect(response).to have_http_status(:bad_request)
+        expect(JSON.parse(response.body).dig("error", "code")).to eq(-32_602)
+      end
+
+      it "rejects an unknown board name" do
+        post_tool_call("list_tasks", arguments: { board: "nonexistent" }, headers: valid_headers)
+
+        expect(response).to have_http_status(:bad_request)
+        expect(JSON.parse(response.body).dig("error", "code")).to eq(-32_602)
       end
     end
 

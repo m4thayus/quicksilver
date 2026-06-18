@@ -21,6 +21,12 @@ RSpec.describe Task, type: :model do
     expect(described_class.recently_completed.count).to eq(1)
   end
 
+  it "has a backlog scope for tasks without a board" do
+    create(:task, board: nil)
+    create(:task, board: create(:board))
+    expect(described_class.backlog.count).to eq(1)
+  end
+
   it "allows valid sizes" do
     expect(build(:task, size: "small")).to be_valid
   end

@@ -3,7 +3,7 @@
 module Mcp
   module Handlers
     class ResourcesListHandler
-      def call(params:) # rubocop:disable Lint/UnusedMethodArgument
+      def call(**)
         resources = task_resources + board_resources
         {
           "resources" => resources,

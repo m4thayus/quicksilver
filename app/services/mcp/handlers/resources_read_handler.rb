@@ -3,7 +3,7 @@
 module Mcp
   module Handlers
     class ResourcesReadHandler
-      def call(params:)
+      def call(params:, **)
         uri = params["uri"]
         raise Errors::InvalidParams, "uri is required" if uri.blank?
 

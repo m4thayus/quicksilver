@@ -14,7 +14,7 @@ class McpController < ApplicationController
     payload = parse_payload
     validate_protocol_version!(payload)
     server = Mcp::Server.new
-    response = server.handle(payload)
+    response = server.handle(payload, current_user:)
     return head :accepted if response.nil?
 
     render json: response, status: response_status(response)
@@ -31,6 +31,10 @@ class McpController < ApplicationController
   end
 
   private
+
+  def current_user
+    Mcp::CurrentUser.new(email: request.headers["X-Quicksilver-User-Email"])
+  end
 
   def parse_payload
     raw_body = request.body.read
@@ -64,6 +68,7 @@ class McpController < ApplicationController
     error_code = response.dig("error", "code")
     return :bad_request if [-32_700, -32_600, -32_602].include?(error_code)
     return :not_found if error_code == -32_002
+    return :forbidden if error_code == -32_003
 
     :ok
   end
